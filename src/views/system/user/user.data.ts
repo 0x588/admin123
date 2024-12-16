@@ -3,7 +3,7 @@ import { h } from 'vue'
 import { Switch } from 'ant-design-vue'
 import dayjs from 'dayjs'
 import { useMessage } from '@/hooks/web/useMessage'
-import { listSimpleDept } from '@/api/system/dept'
+import {treeSimpleDept} from '@/api/system/dept'
 import type { BasicColumn, FormSchema } from '@/components/Table'
 import { useRender } from '@/components/Table'
 import { DICT_TYPE, getDictOptions } from '@/utils/dict'
@@ -150,8 +150,9 @@ export const formSchema: FormSchema[] = [
     required: true,
     component: 'ApiTreeSelect',
     componentProps: {
-      api: () => listSimpleDept(),
-      handleTree: 'id',
+      api: () => treeSimpleDept(),
+      labelField: 'name',
+      valueField: 'id',
     },
   },
   {
