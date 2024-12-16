@@ -1,6 +1,6 @@
 import { BasicColumn, FormSchema, useRender } from '@/components/Table';
 import { DICT_TYPE, getDictOptions } from '@/utils/dict'
-import { listSimpleMenus } from '@/api/system/menu'
+import {treeSimpleMenus} from '@/api/system/menu'
 import { SystemMenuTypeEnum } from '@/enums/systemEnum'
 
 export const columns: BasicColumn[] = [
@@ -86,9 +86,9 @@ export const formSchema: FormSchema[] = [
     required: true,
     component: 'ApiTreeSelect',
     componentProps: {
-      api: () => listSimpleMenus(),
-      parentLabel: '顶级目录',
-      handleTree: 'id',
+      api: () => treeSimpleMenus(),
+      labelField: 'name',
+      valueField: 'id',
     },
   },
   {

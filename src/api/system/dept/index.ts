@@ -22,6 +22,10 @@ export function listSimpleDept() {
   return defHttp.get({ url: '/system/dept/list-all-simple' })
 }
 
+export function treeSimpleDept() {
+  return defHttp.get({ url: '/system/dept/tree-simple' })
+}
+
 // 查询部门列表
 export function getDeptPage(params: DeptPageReqVO) {
   return defHttp.get({ url: '/system/dept/list', params })

@@ -28,6 +28,10 @@ export function listSimpleMenus() {
   return defHttp.get({ url: '/system/menu/list-all-simple' })
 }
 
+export function treeSimpleMenus() {
+  return defHttp.get({ url: '/system/menu/tree-simple' })
+}
+
 export function getMenuList(params: MenuPageReqVO) {
   return defHttp.get({ url: '/system/menu/list', params })
 }

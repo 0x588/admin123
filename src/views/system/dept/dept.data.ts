@@ -1,4 +1,4 @@
-import { listSimpleDept } from '@/api/system/dept'
+import { treeSimpleDept} from '@/api/system/dept'
 import { getListSimpleUsers } from '@/api/system/user'
 import type { BasicColumn, FormSchema } from '@/components/Table'
 import { useRender } from '@/components/Table'
@@ -88,9 +88,9 @@ export const formSchema: FormSchema[] = [
     required: true,
     component: 'ApiTreeSelect',
     componentProps: {
-      api: () => listSimpleDept(),
-      parentLabel: '主类目',
-      handleTree: 'id',
+      api: () => treeSimpleDept(),
+      labelField: 'name',
+      valueField: 'id',
     },
   },
   {
