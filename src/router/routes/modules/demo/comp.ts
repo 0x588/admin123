@@ -397,7 +397,14 @@ const comp: AppRouteModule = {
             },
           ],
         },
-
+        {
+          path: 'ueditor',
+          name: 'UeditorPlus',
+          component: () => import('@/views/demo/editor/ueditor/index.vue'),
+          meta: {
+            title: t('routes.demo.editor.tinymceForm'),
+          },
+        },
         {
           path: 'tinymce',
           component: getParentLayout('TinymceDemo'),

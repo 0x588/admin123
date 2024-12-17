@@ -2,6 +2,8 @@ import 'uno.css';
 import '@/design/index.less';
 import '@/components/VxeTable/src/css/index.scss';
 import 'ant-design-vue/dist/reset.css';
+import { VueUeditorWrap } from 'vue-ueditor-wrap';
+
 // Register icon sprite
 import 'virtual:svg-icons-register';
 
@@ -55,6 +57,7 @@ async function bootstrap() {
   // 配置全局错误处理
   setupErrorHandle(app);
 
+  app.use(VueUeditorWrap);
   // https://next.router.vuejs.org/api/#isready
   // await router.isReady();
 

@@ -110,6 +110,7 @@
     "vxe-pc-ui": "^4.0.44",
     "vxe-table": "^4.7.40",
     "vxe-table-plugin-export-xlsx": "^4.0.4",
+    "vue-ueditor-wrap": "3.x",
     "xe-utils": "^3.5.28",
     "xlsx": "^0.18.5"
   },

@@ -119,6 +119,9 @@ importers:
       vue-types:
         specifier: ^5.1.1
         version: 5.1.1(vue@3.4.25(typescript@5.4.5))
+      vue-ueditor-wrap:
+        specifier: 3.x
+        version: 3.0.8(vue@3.4.25(typescript@5.4.5))
       vuedraggable:
         specifier: ^4.1.0
         version: 4.1.0(vue@3.4.25(typescript@5.4.5))
@@ -7052,6 +7055,11 @@ packages:
     peerDependenciesMeta:
       vue:
         optional: true
+
+  vue-ueditor-wrap@3.0.8:
+    resolution: {integrity: sha512-U1s30pKcz8rr6v2F2ivnomOf1vF1N+n+aNClas4jXfiEf4E5FEtNwkFJBugcyf2VTRFK0UVpx5WspX5nwmImYw==}
+    peerDependencies:
+      vue: ^3.0.0
 
   vue@3.4.25:
     resolution: {integrity: sha512-HWyDqoBHMgav/OKiYA2ZQg+kjfMgLt/T0vg4cbIF7JbXAjDexRf5JRg+PWAfrAkSmTd2I8aPSXtooBFWHB98cg==}
@@ -15000,6 +15008,11 @@ snapshots:
     dependencies:
       is-plain-object: 5.0.0
     optionalDependencies:
+      vue: 3.4.25(typescript@5.4.5)
+
+  vue-ueditor-wrap@3.0.8(vue@3.4.25(typescript@5.4.5)):
+    dependencies:
+      '@babel/runtime': 7.24.4
       vue: 3.4.25(typescript@5.4.5)
 
   vue@3.4.25(typescript@5.4.5):
