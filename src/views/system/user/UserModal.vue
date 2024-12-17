@@ -35,6 +35,7 @@ const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data
 async function handleSubmit() {
   try {
     const values = await validate()
+    values.avatar = values.avatar[0]
     setModalProps({ confirmLoading: true })
     if (unref(isUpdate))
       await updateUser(values as any)

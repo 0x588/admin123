@@ -140,7 +140,7 @@ export const formSchema: FormSchema[] = [
     componentProps: {
       api: uploadApi,
       accept: ['png', 'jpeg', 'jpg'],
-      maxSize: 2,
+      maxSize:5,
       maxNumber: 1,
     },
   },
@@ -159,8 +159,10 @@ export const formSchema: FormSchema[] = [
     label: '手机号码',
     field: 'mobile',
     required: true,
-    defaultValue: 0,
     component: 'InputNumber',
+    componentProps: {
+      type: 'text',
+    },
   },
   {
     label: '邮箱',
