@@ -19,6 +19,7 @@ const editorConfig = {
   UEDITOR_CORS_URL: '/static/UEditorPlus/',
   initialFrameWidth: 1000,
   initialFrameHeight: 500,
+  autoHeightEnabled: false,
 }
 watch(() => props.modelValue, (val) => {
   content.value = val;

@@ -42,6 +42,21 @@
         });
       },
     },
+    {
+      field: 'tinymce2',
+      component: 'Input',
+      label: 'tinymce333',
+      defaultValue: 'defaultValue333',
+      rules: [{ required: true }],
+      render: ({ model, field }) => {
+        return h(Tinymce, {
+          value: model[field],
+          onChange: (value: string) => {
+            model[field] = value;
+          },
+        });
+      },
+    },
   ];
   const { createMessage } = useMessage();
 

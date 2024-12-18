@@ -14,6 +14,7 @@ import {onMounted, h} from "vue";
 import {configEditSave} from "@/api/system/config-edit";
 import {uploadApi} from "@/api/sys/upload";
 import {Tinymce} from "@/components/Tinymce";
+import {Ueditor} from "@/components/Ueditor";
 
 const props = defineProps({
   cats: {
@@ -69,7 +70,7 @@ onMounted(async () => {
           maxNumber: 1,
           maxSize: 100,
         }
-      } else if (cfg.type === 'UEditor') {
+      } else if (cfg.type === 'Tinymce') {
         schema.component = 'Input'
         schema.render = ({ model, field }) => {
           return h(Tinymce, {
@@ -79,7 +80,19 @@ onMounted(async () => {
             },
           });
         }
-      } else if (cfg.type == 'DatePicker' || cfg.type == 'TimePicker') {
+      } else if (cfg.type === 'UEditor') {
+        schema.component = 'Input'
+        schema.render = ({ model, field }) => {
+          return h(Ueditor, {
+            modelValue: model[field],
+            editorId: 'editor-' + field,
+            onChange: (value: string) => {
+              model[field] = value;
+            },
+          });
+        }
+      }
+      else if (cfg.type == 'DatePicker' || cfg.type == 'TimePicker') {
         schema.componentProps = {
           valueFormat: 'YYYY-MM-DD HH:mm:ss',
         }

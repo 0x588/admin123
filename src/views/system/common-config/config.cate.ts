@@ -67,10 +67,8 @@ export const cateFormSchema: FormSchema[] = [
     component: 'ApiTreeSelect',
     componentProps: {
       api: () => listSimpleCate(),
-      parentLabel: '顶级',
-      handleTree: 'id',
       labelField: 'title',
-      parentFiled: 'title',
+      valueField: 'id',
     },
   },
   {

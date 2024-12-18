@@ -45,8 +45,12 @@ const typeOptions = [
         value: "InputTextArea",
     },
     {
-        label: "富文本",
+        label: "Baidu富文本",
         value: "UEditor",
+    },
+    {
+      label: "Tinymce富文本",
+      value: "Tinymce",
     }
 ]
 
@@ -140,9 +144,8 @@ export const configFormSchema: FormSchema[] = [
         component: 'ApiTreeSelect',
         componentProps: {
             api: () => listSimpleCate(),
-            handleTree: 'id',
             labelField: 'title',
-            parentFiled: 'title',
+            valueField: 'id',
         },
     },
     {

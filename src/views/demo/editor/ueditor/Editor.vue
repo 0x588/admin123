@@ -36,6 +36,7 @@ import {h } from 'vue';
       render: ({ model, field }) => {
         return h(Ueditor, {
           modelValue: model[field],
+          editorId: 'editor-' + field,
           onChange: (value: string) => {
             model[field] = value;
           },
