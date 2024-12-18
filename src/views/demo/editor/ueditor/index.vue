@@ -6,7 +6,7 @@
                         editor-id="editor"
                         :config="editorConfig"
                         :editorDependencies="['ueditor.config.js','ueditor.all.js']"
-                        style="height:100%;width: 1000px"/>
+                        />
       </div>
     </PageWrapper>
 </template>
@@ -23,5 +23,7 @@ const editorConfig = {
   serverUrl: '/api/ueditor',
   UEDITOR_HOME_URL: '/static/UEditorPlus/',
   UEDITOR_CORS_URL: '/static/UEditorPlus/',
+  initialFrameWidth: 1000,
+  initialFrameHeight: 500,
 }
 </script>
