@@ -10,7 +10,7 @@ import { BasicTree } from '@/components/Tree'
 import { getRole } from '@/api/system/role'
 import { listSimpleDept } from '@/api/system/dept'
 import { handleTree } from '@/utils/tree'
-import { assignRoleDataScope } from '@/api/system/permission'
+import {assignRoleDataScope, PermissionAssignRoleDataScopeReqVO} from '@/api/system/permission'
 
 defineOptions({ name: 'SystemRoleScopeModal' })
 
@@ -43,7 +43,7 @@ async function handleSubmit() {
   try {
     const values = await validate()
     setModalProps({ confirmLoading: true })
-    await assignRoleDataScope(values)
+    await assignRoleDataScope(values as PermissionAssignRoleDataScopeReqVO)
     closeModal()
     emit('success')
     createMessage.success(t('common.saveSuccessText'))

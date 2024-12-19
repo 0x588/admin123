@@ -1,13 +1,13 @@
 <script lang="ts" setup>
 import { ref, unref } from 'vue'
-import { formSchema } from './role.data'
+import { formSchema } from './adv.data'
 import { useI18n } from '@/hooks/web/useI18n'
 import { useMessage } from '@/hooks/web/useMessage'
 import { BasicForm, useForm } from '@/components/Form'
 import { BasicModal, useModalInner } from '@/components/Modal'
-import {createRole, getRole, RoleVO, updateRole} from '@/api/system/role'
+import {createAdv, AdvVO, getAdv, updateAdv} from '@/api/web/adv'
 
-defineOptions({ name: 'SystemRoleModal' })
+defineOptions({ name: 'WebAdvModal' })
 
 const emit = defineEmits(['success', 'register'])
 const { t } = useI18n()
@@ -27,7 +27,7 @@ const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data
   setModalProps({ confirmLoading: false })
   isUpdate.value = !!data?.isUpdate
   if (unref(isUpdate)) {
-    const res = await getRole(data.record.id)
+    const res = await getAdv(data.record.id)
     setFieldsValue({ ...res })
   }
 })
@@ -35,11 +35,13 @@ const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data
 async function handleSubmit() {
   try {
     const values = await validate()
+    values.cover = values.cover[0]
+    console.log(values)
     setModalProps({ confirmLoading: true })
     if (unref(isUpdate))
-      await updateRole(values as RoleVO)
+      await updateAdv(values as AdvVO)
     else
-      await createRole(values as RoleVO)
+      await createAdv(values as AdvVO)
 
     closeModal()
     emit('success')

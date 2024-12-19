@@ -96,6 +96,11 @@ export enum DICT_TYPE {
   SYSTEM_MAIL_SEND_STATUS = 'system_mail_send_status',
   SYSTEM_NOTIFY_TEMPLATE_TYPE = 'system_notify_template_type',
 
+  //==web==
+  WEB_ADV_JUMP_TYPE = 'web_adv_jump_type',
+  WEB_ADV_LOCATION = 'web_adv_location',
+  WEB_LANG = 'web_lang',
+
   // ========== INFRA 模块 ==========
   INFRA_BOOLEAN_STRING = 'infra_boolean_string',
   INFRA_REDIS_TIMEOUT_TYPE = 'infra_redis_timeout_type',

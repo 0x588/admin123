@@ -143,7 +143,6 @@ export const menuScopeFormSchema: FormSchema[] = [
   {
     label: '菜单权限',
     field: 'menuIds',
-    component: 'Input',
     slot: 'menuIds',
   },
 ]
@@ -180,7 +179,6 @@ export const dataScopeFormSchema: FormSchema[] = [
     label: '数据权限',
     field: 'dataScopeDeptIds',
     ifShow: ({ values }) => values.dataScope === SystemDataScopeEnum.DEPT_CUSTOM,
-    component: 'Input',
     slot: 'dataScopeDeptIds',
   },
 ]

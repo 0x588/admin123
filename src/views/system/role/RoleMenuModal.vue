@@ -7,7 +7,7 @@ import { useMessage } from '@/hooks/web/useMessage'
 import { BasicForm, useForm } from '@/components/Form'
 import { BasicModal, useModalInner } from '@/components/Modal'
 import { getRole } from '@/api/system/role'
-import type { CheckKeys, CheckedEvent, TreeItem } from '@/components/Tree'
+import type { CheckKeys, TreeItem } from '@/components/Tree'
 import { BasicTree } from '@/components/Tree'
 import { listSimpleMenus } from '@/api/system/menu'
 import { handleTree } from '@/utils/tree'
@@ -88,7 +88,7 @@ function menuReset() {
   menuHalfKeys.value = []
 }
 
-function menuCheck(checkedKeys: CheckKeys, event: CheckedEvent) {
+function menuCheck(checkedKeys: CheckKeys, event: any) {
   if (Array.isArray(checkedKeys)) {
     // 这里是子节点的ID
     menuKeys.value = checkedKeys as number[]
