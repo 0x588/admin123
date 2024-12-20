@@ -77,7 +77,7 @@ function handleView(record: Recordable) {
               { icon: IconEnum.EDIT, label: t('action.edit'), onClick: handleEdit.bind(null, record) },
               {
                 icon: 'clarity:info-standard-line',
-                label: '查看详情',
+                label: '详情',
                 onClick: handleView.bind(null, record),
               },
             ]"

@@ -36,7 +36,6 @@ async function handleSubmit() {
   try {
     const values = await validate()
     values.cover = values.cover[0]
-    console.log(values)
     setModalProps({ confirmLoading: true })
     if (unref(isUpdate))
       await updateAdv(values as AdvVO)

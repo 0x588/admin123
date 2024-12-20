@@ -106,12 +106,6 @@ export const searchFormSchema: FormSchema[] = [
 
 export const formSchema: FormSchema[] = [
   {
-    label: '编号',
-    field: 'id',
-    show: false,
-    component: 'Input',
-  },
-  {
     label: '广告位置',
     field: 'location',
     required: true,
@@ -119,6 +113,12 @@ export const formSchema: FormSchema[] = [
     componentProps: {
       options: getDictOptions(DICT_TYPE.WEB_ADV_LOCATION, 'string') as any,
     },
+  },
+  {
+    label: '编号',
+    field: 'id',
+    show: false,
+    component: 'Input',
   },
   {
     label: '广告标题',
