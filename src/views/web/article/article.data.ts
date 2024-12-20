@@ -130,7 +130,6 @@ export const formSchema: FormSchema[] = [
     field: 'content',
     component: 'Input',
     label: '文章内容',
-    defaultValue: '',
     rules: [{ required: true }],
     render: ({ model, field }) => {
       return h(Ueditor, {

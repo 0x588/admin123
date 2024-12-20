@@ -23,12 +23,12 @@ const [registerForm, { setFieldsValue, resetFields, validate }] = useForm({
 })
 
 const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
-  resetFields()
+  await resetFields()
   setModalProps({ confirmLoading: false })
   isUpdate.value = !!data?.isUpdate
   if (unref(isUpdate)) {
     const res = await getArticle(data.record.id)
-    setFieldsValue({ ...res })
+    await setFieldsValue({ ...res })
   }
 })
 
@@ -54,7 +54,7 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <BasicModal v-bind="$attrs" :title="isUpdate ? t('action.edit') : t('action.create')" @register="registerModal" @ok="handleSubmit" width="80%">
+  <BasicModal :destroyOnClose="true" v-bind="$attrs" :title="isUpdate ? t('action.edit') : t('action.create')" @register="registerModal" @ok="handleSubmit" width="80%">
     <BasicForm @register="registerForm" />
   </BasicModal>
 </template>

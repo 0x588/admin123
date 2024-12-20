@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ref, watch} from "vue";
+import { ref, watch} from "vue";
 defineOptions({ name: 'UEditor', inheritAttrs: false });
 const emit = defineEmits(['change'])
 const props = defineProps({
@@ -22,11 +22,15 @@ const editorConfig = {
   autoHeightEnabled: false,
 }
 watch(() => props.modelValue, (val) => {
-  content.value = val;
+  if (val !== undefined) {
+    content.value = val;
+  }
 })
 
 watch(() => content.value, (val) => {
-  emit('change', val);
+  if (val !== undefined && val !== props.modelValue) {
+    emit('change', val);
+  }
 })
 
 </script>
