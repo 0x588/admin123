@@ -92,6 +92,7 @@ export const formSchema: FormSchema[] = [
   {
     label: '分类',
     field: 'cate_id',
+    required: true,
     component: 'ApiTreeSelect',
     componentProps: {
       api: () => getArticleCateTree(),
