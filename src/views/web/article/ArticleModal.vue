@@ -35,7 +35,10 @@ const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data
 async function handleSubmit() {
   try {
     const values = await validate()
-    values.cover = values.cover[0]
+    if (values.cover && values.cover.length > 0)
+    {
+      values.cover = values.cover[0]
+    }
     console.log(values)
     setModalProps({ confirmLoading: true })
     if (unref(isUpdate))

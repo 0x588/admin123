@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { nextTick, ref } from 'vue'
+import { nextTick } from 'vue'
 import CateModal from './CateModal.vue'
 import { columns, searchFormSchema } from './cate.data'
 import { useI18n } from '@/hooks/web/useI18n'
@@ -23,7 +23,7 @@ const [register, { expandAll, collapseAll, reload }] = useTable({
   formConfig: { labelWidth: 120, schemas: searchFormSchema },
   isTreeTable: true,
   pagination: false,
-  useSearchForm: true,
+  useSearchForm: false,
   showTableSetting: true,
   showIndexColumn: false,
   actionColumn: {
