@@ -4,15 +4,6 @@ import type { BasicColumn, FormSchema } from '@/components/Table'
 import { useRender } from '@/components/Table'
 import { DICT_TYPE, getDictOptions } from '@/utils/dict'
 
-let userOptions: any[] = []
-
-async function getUserList() {
-  const res = await getListSimpleUsers()
-  userOptions = res
-}
-
-await getUserList()
-
 export const columns: BasicColumn[] = [
   {
     title: '部门名称',
@@ -24,16 +15,6 @@ export const columns: BasicColumn[] = [
     title: '负责人',
     dataIndex: 'leaderUserId',
     width: 120,
-    customRender: ({ text }) => {
-      if (!text)
-        return '未设置'
-
-      for (const user of userOptions) {
-        if (text === user.id)
-          return user.nickname
-      }
-      return `未知【${text}】`
-    },
   },
   {
     title: '排序',

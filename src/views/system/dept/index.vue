@@ -7,7 +7,7 @@ import { useI18n } from '@/hooks/web/useI18n'
 import { useMessage } from '@/hooks/web/useMessage'
 import { useModal } from '@/components/Modal'
 import { IconEnum } from '@/enums/appEnum'
-import { BasicTable, TableAction, useTable } from '@/components/Table'
+import {BasicTable, TableAction, TableImg, useTable} from '@/components/Table'
 import { getListSimpleUsers } from '@/api/system/user'
 import { deleteDept, getDeptPage } from '@/api/system/dept'
 
@@ -100,6 +100,9 @@ onMounted(async () => {
         <span> {{ userNicknameFormat(text) }} </span>
       </template>
       <template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'leaderUserId'">
+          <span> {{ userNicknameFormat(record) }} </span>
+        </template>
         <template v-if="column.key === 'action'">
           <TableAction
             :actions="[
