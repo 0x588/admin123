@@ -8,22 +8,8 @@ TEST_DEPLOY_PATH:=/home/myne/zsystem
 
 .PHONY: upload
 upload:
-	@rsync -e "ssh -p ${DEPLOY_PORT}" ${PROJECT} ${DEPLOY_SERVER}:${DEPLOY_PATH}/${PROJECT}
-	@rsync -qur -e "ssh -p ${DEPLOY_PORT}" etc/ ${DEPLOY_SERVER}:${DEPLOY_PATH}/etc/
-	@ssh -p ${DEPLOY_PORT} ${DEPLOY_SERVER} "cat ${DEPLOY_PATH}/runtime/${PROJECT}.pid|xargs kill -1"
-
-.PHONY: deploy
-deploy: linux upload
-
-.PHONE: stop
-stop:
-	@cat runtime/*.pid|xargs kill -9
+	@rsync -qur -e "ssh -p ${DEPLOY_PORT}" dist/ ${DEPLOY_SERVER}:${DEPLOY_PATH}/
 
 .PHONY: upload_test
 upload_test:
-	@rsync -e "ssh -p ${TEST_DEPLOY_PORT}" ${PROJECT} ${TEST_DEPLOY_SERVER}:${TEST_DEPLOY_PATH}/${PROJECT}
-	@rsync -qur -e "ssh -p ${TEST_DEPLOY_PORT}" etc/ ${TEST_DEPLOY_SERVER}:${TEST_DEPLOY_PATH}/etc/
-	@ssh -p ${TEST_DEPLOY_PORT} ${TEST_DEPLOY_SERVER} "cat ${DEPLOY_PATH}/runtime/${PROJECT}.pid|xargs kill -1"
-
-.PHONY: deploy_test
-deploy_test: linux upload_test
+	rsync -qur -e "ssh -p ${TEST_DEPLOY_PORT}" dist/ ${TEST_DEPLOY_SERVER}:${TEST_DEPLOY_PATH}/
