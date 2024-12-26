@@ -12,11 +12,13 @@ const props = defineProps({
   },
 })
 
+const publicPath = import.meta.env.VITE_PUBLIC_PATH || '/';
+
 const content  = ref<String>();
 const editorConfig = {
   serverUrl: '/api/ueditor',
-  UEDITOR_HOME_URL: '/static/UEditorPlus/',
-  UEDITOR_CORS_URL: '/static/UEditorPlus/',
+  UEDITOR_HOME_URL: publicPath + 'static/UEditorPlus/',
+  UEDITOR_CORS_URL: publicPath + 'static/UEditorPlus/',
   initialFrameWidth: 1000,
   initialFrameHeight: 500,
   autoHeightEnabled: false,

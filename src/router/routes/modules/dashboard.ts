@@ -21,19 +21,19 @@ const dashboard: AppRouteModule = {
       component: () => import('@/views/dashboard/analysis/index.vue'),
       meta: {
         // affix: true,
-        title: t('routes.dashboard.analysis'),
+        title: t('routes.dashboard.welcome'),
         icon: 'ant-design:bar-chart-outlined',
       },
     },
-    {
-      path: 'workbench',
-      name: 'Workbench',
-      component: () => import('@/views/dashboard/workbench/index.vue'),
-      meta: {
-        title: t('routes.dashboard.workbench'),
-        icon: 'ant-design:appstore-outlined',
-      },
-    },
+    // {
+    //   path: 'workbench',
+    //   name: 'Workbench',
+    //   component: () => import('@/views/dashboard/workbench/index.vue'),
+    //   meta: {
+    //     title: t('routes.dashboard.workbench'),
+    //     icon: 'ant-design:appstore-outlined',
+    //   },
+    // },
   ],
 };
 

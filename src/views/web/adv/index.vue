@@ -5,7 +5,7 @@ import { useI18n } from '@/hooks/web/useI18n'
 import { useMessage } from '@/hooks/web/useMessage'
 import { useModal } from '@/components/Modal'
 import { IconEnum } from '@/enums/appEnum'
-import {BasicTable, TableAction, TableImg, useTable} from '@/components/Table'
+import {BasicTable, TableAction, useTable} from '@/components/Table'
 import { getAdvPage, deleteAdv } from '@/api/web/adv'
 
 defineOptions({ name: 'WebAdv' })
@@ -56,14 +56,13 @@ async function handleDelete(record: Recordable) {
         <template v-if="column.key === 'action'">
           <TableAction
             :actions="[
-              { icon: IconEnum.EDIT, label: t('action.edit'), auth: 'system:role:update', onClick: handleEdit.bind(null, record) },
+              { icon: IconEnum.EDIT, label: t('action.edit'), onClick: handleEdit.bind(null, record) },
             ]"
             :drop-down-actions="[
               {
                 icon: IconEnum.DELETE,
                 danger: true,
                 label: t('action.delete'),
-                auth: 'system:role:delete',
                 popConfirm: {
                   title: t('common.delMessage'),
                   placement: 'left',
