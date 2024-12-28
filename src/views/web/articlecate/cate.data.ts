@@ -12,6 +12,11 @@ export const columns: BasicColumn[] = [
     align: 'left',
   },
   {
+    title: '编号',
+    dataIndex: 'id',
+    width: 60,
+  },
+  {
     title: '排序',
     dataIndex: 'sort',
     width: 60,

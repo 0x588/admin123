@@ -92,7 +92,7 @@ export const searchFormSchema: FormSchema[] = [
     field: 'lang',
     component: 'Select',
     componentProps: {
-      options: getDictOptions(DICT_TYPE.WEB_LANG) as any,
+      options: getDictOptions(DICT_TYPE.WEB_LANG, 'string') as any,
     },
     colProps: { span: 8 },
   },

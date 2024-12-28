@@ -2,7 +2,6 @@ import type { BasicColumn, FormSchema } from '@/components/Table'
 import { useRender } from '@/components/Table'
 import { DICT_TYPE, getDictOptions } from '@/utils/dict'
 import {uploadApi} from "@/api/sys/upload";
-import {getArticleCateTree} from "@/api/web/articlecate";
 import {h} from "vue";
 import {Ueditor} from "@/components/Ueditor";
 import {DescItem} from "@/components/Description";
@@ -93,12 +92,8 @@ export const formSchema: FormSchema[] = [
     label: '分类',
     field: 'cate_id',
     required: true,
-    component: 'ApiTreeSelect',
-    componentProps: {
-      api: () => getArticleCateTree(),
-      labelField: 'title',
-      valueField: 'id',
-    },
+    show: false,
+    component: 'Input',
   },
   {
     label: '标题',

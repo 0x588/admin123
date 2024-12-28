@@ -126,8 +126,8 @@
   const captchaType = ref('clickWord') // blockPuzzle 滑块 clickWord 点击文字
 
   const formData = reactive({
-    account: 'admin',
-    password: 'admin123',
+    account: '',
+    password: '',
   });
 
   const { validForm } = useFormValid(formRef);
