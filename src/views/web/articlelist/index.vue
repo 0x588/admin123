@@ -12,6 +12,7 @@ import {useGo} from "@/hooks/web/usePage";
 import {useRoute} from "vue-router";
 import {useTabs} from "@/hooks/web/useTabs";
 import {getArticleCate} from "@/api/web/articlecate";
+import DetailModal from "@/views/web/article/DetailModal.vue";
 
 defineOptions({ name: 'WebArticleCateList' })
 
@@ -22,6 +23,8 @@ const { setTitle } = useTabs();
 const route = useRoute();
 const { createMessage } = useMessage()
 const [registerModal, { openModal }] = useModal()
+const [registerDetailModal, detailFN] = useModal()
+
 const [registerTable, { reload }] = useTable({
   title: '文章列表',
   api: getArticlePage,
@@ -68,7 +71,7 @@ function updateTitle() {
 }
 
 function handleView(record: Recordable) {
-  go('/article/article-detail/' + record.id);
+  detailFN.openModal(true, { record })
 }
 </script>
 
@@ -112,5 +115,6 @@ function handleView(record: Recordable) {
       </template>
     </BasicTable>
     <ArticleModal @register="registerModal" @success="reload()" />
+    <DetailModal @register="registerDetailModal" />
   </div>
 </template>

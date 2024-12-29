@@ -9,15 +9,15 @@ import {BasicTable, TableAction, TableImg, useTable} from '@/components/Table'
 import { getArticlePage, deleteArticle } from '@/api/web/article'
 import ArticleCateTree from "@/views/web/article/CateTree.vue";
 import {reactive} from "vue";
-import {useGo} from "@/hooks/web/usePage";
+import DetailModal from "./DetailModal.vue";
 
 defineOptions({ name: 'WebArticle' })
 
 const searchInfo = reactive<Recordable>({})
 const { t } = useI18n()
-const go = useGo();
 const { createMessage } = useMessage()
 const [registerModal, { openModal }] = useModal()
+const [registerDetailModal, detailFN] = useModal()
 const [registerTable, { reload }] = useTable({
   title: '文章列表',
   api: getArticlePage,
@@ -54,8 +54,9 @@ function handleSelect(cate_id = '') {
 }
 
 function handleView(record: Recordable) {
-  go('/article/article-detail/' + record.id);
+  detailFN.openModal(true, { record })
 }
+
 </script>
 
 <template>
@@ -99,5 +100,6 @@ function handleView(record: Recordable) {
       </template>
     </BasicTable>
     <ArticleModal @register="registerModal" @success="reload()" />
+    <DetailModal @register="registerDetailModal" />
   </div>
 </template>
