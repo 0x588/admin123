@@ -12,6 +12,7 @@ export interface ArticleCateVO {
 export interface ArticleCateReqVO extends PageParam {
   title?: string
   status?: boolean
+  pid?: string
   createdTime?: Date[]
 }
 

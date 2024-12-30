@@ -16,6 +16,7 @@ export interface ArticleVO {
 
 export interface ArticleReqVO extends PageParam {
   title?: string
+  cate_id?: string
   status?: boolean
   createdTime?: Date[]
 }
