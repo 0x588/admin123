@@ -23,7 +23,7 @@ const { createMessage } = useMessage()
 const [registerModal, { openModal }] = useModal()
 
 const [registerTable, { reload }] = useTable({
-  title: '',
+  title: '分类下的列表',
   api: getArticlePage,
   columns: columns,
   formConfig: {

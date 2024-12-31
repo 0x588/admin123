@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import ArticleModal from './ArticleModal.vue'
-import { columns, searchFormSchema } from './articlelist.data'
+import ArticleModal from '@/views/web/articlelist/ArticleModal.vue'
+import { columns, searchFormSchema } from '@/views/web/articlelist/articlelist.data'
 import { useI18n } from '@/hooks/web/useI18n'
 import { useMessage } from '@/hooks/web/useMessage'
 import { useModal } from '@/components/Modal'
@@ -14,7 +14,7 @@ import {useTabs} from "@/hooks/web/useTabs";
 import {getArticleCate} from "@/api/web/articlecate";
 import DetailModal from "@/views/web/article/DetailModal.vue";
 
-defineOptions({ name: 'WebArticleCateList' })
+defineOptions({ name: 'WebProductList' })
 
 const searchInfo = reactive<Recordable>({})
 const { t } = useI18n()
