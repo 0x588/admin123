@@ -3,6 +3,7 @@ export interface ConfigCateVO {
     id: number
     name: string
     title: string
+    app?: string
     status: number
     pid: number
     sort: number
@@ -10,6 +11,8 @@ export interface ConfigCateVO {
 
 export interface  ConfigCatePageReqVO {
     title?: string,
+    name?: string,
+    app?: string,
     status?: number,
 }
 

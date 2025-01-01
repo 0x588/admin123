@@ -36,6 +36,10 @@ const typeOptions = [
         label: "图片上传",
         value: "ImageUpload",
     },
+  {
+    label: "文件上传",
+    value: "Upload",
+  },
     {
         label: "单选",
         value: "RadioGroup",

@@ -15,6 +15,11 @@ export const cateColumns: BasicColumn[] = [
     width: 100,
   },
   {
+    title: '归属应用',
+    dataIndex: 'app',
+    width: 100,
+  },
+  {
     title: '状态',
     dataIndex: 'status',
     width: 100,
@@ -39,6 +44,12 @@ export const cateSearchFormSchema: FormSchema[] = [
   {
     label: '分类标识',
     field: 'name',
+    component: 'Input',
+    colProps: { span: 8 },
+  },
+  {
+    label: '归属应用',
+    field: 'app',
     component: 'Input',
     colProps: { span: 8 },
   },
@@ -84,11 +95,19 @@ export const cateFormSchema: FormSchema[] = [
     component: 'Input',
   },
   {
+    label: '归属应用',
+    field: 'app',
+    component: 'Input',
+    required: true,
+    ifShow({ values }) {
+      return values.pid === 0
+    }
+  },
+  {
     label: '显示排序',
     field: 'sort',
-    required: true,
     component: 'InputNumber',
-    defaultValue: 10,
+    defaultValue: 1,
   },
   {
     label: '状态',

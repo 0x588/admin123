@@ -70,6 +70,12 @@ onMounted(async () => {
           maxNumber: 1,
           maxSize: 100,
         }
+      } else if (cfg.type === 'Upload') {
+        schema.componentProps = {
+          api: uploadApi,
+          maxNumber: 1,
+          maxSize: 100,
+        }
       } else if (cfg.type === 'Tinymce') {
         schema.component = 'Input'
         schema.render = ({ model, field }) => {
