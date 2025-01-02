@@ -31,7 +31,7 @@ const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data
     setFieldsValue({ ...res })
   }
   else {
-    await setFieldsValue({ productId: data.productId })
+    await setFieldsValue({ product_id: data.product_id })
   }
 })
 

@@ -4,6 +4,7 @@ export interface ParamCateVO {
   id: number
   title: string
   product_id: number
+  property_id: number
   sort: number
 }
 

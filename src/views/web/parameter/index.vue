@@ -28,7 +28,7 @@ const [registerTable, { reload }] = useTable({
     schemas: searchFormSchema,
   },
   useSearchForm: true,
-  showTableSetting: true,
+  showTableSetting: false,
   showIndexColumn: false,
   actionColumn: {
     width: 140,
@@ -44,7 +44,7 @@ function handleRowClick(record) {
 }
 
 function handleCreate() {
-  openModal(true, { isUpdate: false, productId: route.params?.productId })
+  openModal(true, { isUpdate: false, product_id: route.params?.productId })
 }
 
 function handleEdit(record: Recordable) {

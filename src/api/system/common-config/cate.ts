@@ -23,6 +23,14 @@ export function listSimpleCate() {
     return defHttp.get({ url: '/system/common-config-cate/list-all-simple'})
 }
 
+export function listProductCate() {
+  return defHttp.get({ url: '/system/common-config-cate/list-all-simple?app=product'})
+}
+
+export function treeSimpleCate() {
+  return defHttp.get({ url: '/system/common-config-cate/tree-simple'})
+}
+
 export function getConfigCate(id: number) {
     return defHttp.get({ url: `/system/common-config-cate/get?id=${id}` })
 }

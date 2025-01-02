@@ -1,7 +1,7 @@
 import type { BasicColumn, FormSchema } from '@/components/Table'
 import { useRender } from '@/components/Table'
 import { DICT_TYPE, getDictOptions } from '@/utils/dict'
-import {listSimpleCate} from "@/api/system/common-config/cate";
+import { treeSimpleCate} from "@/api/system/common-config/cate";
 
 export const cateColumns: BasicColumn[] = [
   {
@@ -77,7 +77,7 @@ export const cateFormSchema: FormSchema[] = [
     required: true,
     component: 'ApiTreeSelect',
     componentProps: {
-      api: () => listSimpleCate(),
+      api: () => treeSimpleCate(),
       labelField: 'title',
       valueField: 'id',
     },

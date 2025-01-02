@@ -1,4 +1,5 @@
 import type { BasicColumn, FormSchema } from '@/components/Table'
+import {listProductCate} from "@/api/system/common-config/cate";
 
 export const columns: BasicColumn[] = [
   {
@@ -23,7 +24,7 @@ export const searchFormSchema: FormSchema[] = [
   },
   {
     label: '商品ID',
-    field: 'productId',
+    field: 'product_id',
     component: 'Input',
     defaultValue: '6',
     show: false,
@@ -38,9 +39,20 @@ export const formSchema: FormSchema[] = [
   },
   {
     label: '商品ID',
-    field: 'productId',
+    field: 'product_id',
     show: false,
     component: 'Input',
+  },
+  {
+    label: '属性模版',
+    field: 'property_id',
+    component: 'ApiSelect',
+    componentProps: {
+      api: listProductCate,
+      labelField: 'title',
+      valueField: 'id',
+    },
+    required: true,
   },
   {
     label: '名称',
@@ -52,7 +64,7 @@ export const formSchema: FormSchema[] = [
     label: '显示顺序',
     field: 'sort',
     required: true,
-    defaultValue: 0,
+    defaultValue: 1,
     component: 'InputNumber',
   },
 ]
