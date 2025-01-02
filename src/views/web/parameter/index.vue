@@ -41,6 +41,7 @@ const [registerTable, { reload }] = useTable({
 
 function handleRowClick(record) {
   searchInfo.cate_id = record.id
+  searchInfo.property_id = record.property_id
 }
 
 function handleCreate() {

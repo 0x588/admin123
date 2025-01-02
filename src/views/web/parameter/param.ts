@@ -37,22 +37,16 @@ export const formSchema: FormSchema[] = [
     component: 'Input',
   },
   {
-    label: '商品ID',
-    field: 'productId',
+    label: '类别',
+    field: 'cate_id',
     show: false,
-    component: 'Input',
-  },
-  {
-    label: '名称',
-    field: 'title',
-    required: true,
     component: 'Input',
   },
   {
     label: '显示顺序',
     field: 'sort',
     required: true,
-    defaultValue: 0,
+    defaultValue: 1,
     component: 'InputNumber',
-  },
+  }
 ]

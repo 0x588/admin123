@@ -22,6 +22,11 @@ export interface  ConfigPageReqVO {
 export function getConfigList(params: ConfigPageReqVO) {
     return defHttp.get({ url: '/system/common-config/page', params })
 }
+
+export function getConfigListWithCateId(cateId: string) {
+  return defHttp.get({ url: `/system/common-config/list?cateId=${cateId}`})
+}
+
 export function listSimpleConfig() {
     return defHttp.get({ url: '/system/common-config/list-all-simple'})
 }
