@@ -76,6 +76,10 @@ var tableTile = ref("文章列表");
 function handleView(record: Recordable) {
   detailFN.openModal(true, { record })
 }
+
+function handleParam(record: Recordable) {
+  go(`/web/parameter/${record.id}`)
+}
 </script>
 
 <template>
@@ -94,6 +98,8 @@ function handleView(record: Recordable) {
           <TableAction
             :actions="[
               { icon: IconEnum.EDIT, label: t('action.edit'), onClick: handleEdit.bind(null, record) },
+              { icon: IconEnum.EDIT, label: '参数', onClick: handleParam.bind(null, record) },
+
               {
                 icon: 'clarity:info-standard-line',
                 label: '详情',

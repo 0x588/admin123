@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { reactive} from 'vue'
+import {onMounted, reactive, ref} from 'vue'
 import { useI18n } from '@/hooks/web/useI18n'
 import { useMessage } from '@/hooks/web/useMessage'
 import { useModal } from '@/components/Modal'
@@ -10,6 +10,7 @@ import CreateCateModal from "./CreateCateModal.vue";
 import {deleteParamCate, getParamCatePage} from "@/api/web/parametercate";
 import {useRoute} from "vue-router";
 import ParamList from "@/views/web/parameter/ParamList.vue";
+import {getArticle} from "@/api/web/article";
 
 defineOptions({ name: 'WebParameter' })
 const route = useRoute();
@@ -17,7 +18,8 @@ const { t } = useI18n()
 const { createMessage } = useMessage()
 const [registerModal, { openModal }] = useModal()
 const searchInfo = reactive<Recordable>({})
-const cateSearchInfo = reactive<Recordable>({"product_id":'23'})
+const cateSearchInfo = reactive<Recordable>({})
+const product = ref<any>({})
 
 const [registerTable, { reload }] = useTable({
   title: '参数分类',
@@ -27,7 +29,7 @@ const [registerTable, { reload }] = useTable({
     labelWidth: 120,
     schemas: searchFormSchema,
   },
-  useSearchForm: true,
+  useSearchForm: false,
   showTableSetting: false,
   showIndexColumn: false,
   actionColumn: {
@@ -38,6 +40,12 @@ const [registerTable, { reload }] = useTable({
   },
 })
 
+onMounted(() => {
+  cateSearchInfo.product_id = route.params?.productId;
+  getArticle(Number(route.params?.productId)).then(res => {
+    product.value = res
+  })
+})
 
 function handleRowClick(record) {
   searchInfo.cate_id = record.id
@@ -60,6 +68,10 @@ async function handleDelete(record: Recordable) {
 </script>
 
 <template>
+  <div>
+  <div class="p-2">
+    <h1> 设置 <span class="text-blue-500">{{ product.title }}</span>  参数，请先添加参数分类，再点击分类名称添加参数列表</h1>
+  </div>
   <div class="flex">
     <BasicTable class="w-1/3"  :search-info="cateSearchInfo" @register="registerTable" @row-click="handleRowClick">
       <template #toolbar>
@@ -89,5 +101,6 @@ async function handleDelete(record: Recordable) {
     </BasicTable>
     <ParamList class="w-2/3" :search-info="searchInfo"></ParamList>
     <CreateCateModal @register="registerModal" @success="reload()"></CreateCateModal>
+  </div>
   </div>
 </template>
