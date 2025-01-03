@@ -6,12 +6,11 @@ import {BasicModal, useModalInner} from "@/components/Modal";
 defineOptions({ name: 'DetailModal' });
 
 const [register, de] = useDescription({
-  title: '详情',
   schema: detailSchema
 });
 
 const [registerModal, { setModalProps }] = useModalInner(async (data) => {
-  setModalProps({ confirmLoading: false })
+  setModalProps({ confirmLoading: false, showOkBtn: false, showCancelBtn:false })
   de.setDescProps({data: data.record})
 })
 
@@ -20,9 +19,7 @@ const [registerModal, { setModalProps }] = useModalInner(async (data) => {
 <template>
   <BasicModal :destroyOnClose="true"
               v-bind="$attrs"
-              :title="`文章`"
               @register="registerModal"
-              :okButtonProps="{ disabled: true }"
               width="80%">
      <Description
         @register="register"

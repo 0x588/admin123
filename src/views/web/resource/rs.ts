@@ -6,11 +6,6 @@ import {getArticleCateTree} from "@/api/web/articlecate";
 
 export const columns: BasicColumn[] = [
   {
-    title: '编号',
-    dataIndex: 'id',
-    width: 60,
-  },
-  {
     title: '标题',
     dataIndex: 'title',
     width: 150,
@@ -102,6 +97,23 @@ export const formSchema: FormSchema[] = [
     componentProps: {
       api: uploadApi,
       maxSize:500,
+    },
+  },
+  {
+    label: '显示顺序',
+    field: 'sort',
+    required: true,
+    defaultValue: 1,
+    component: 'InputNumber',
+  },
+  {
+    label: '状态',
+    field: 'status',
+    required: true,
+    defaultValue: 1,
+    component: 'Select',
+    componentProps: {
+      options: getDictOptions(DICT_TYPE.COMMON_STATUS) as any,
     },
   },
 ]

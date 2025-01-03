@@ -169,12 +169,13 @@ export const formSchema: FormSchema[] = [
     label: '排序',
     field: 'sort',
     required: true,
-    defaultValue: 0,
+    defaultValue: 1,
     component: 'InputNumber',
   },
   {
     label: '状态',
     field: 'status',
+    defaultValue: 1,
     required: true,
     component: 'Select',
     componentProps: {

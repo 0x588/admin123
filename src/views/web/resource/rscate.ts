@@ -98,7 +98,7 @@ export const formSchema: FormSchema[] = [
     label: '显示顺序',
     field: 'sort',
     required: true,
-    defaultValue: 0,
+    defaultValue: 1,
     component: 'InputNumber',
   },
   {
@@ -113,6 +113,8 @@ export const formSchema: FormSchema[] = [
   {
     label: '状态',
     field: 'status',
+    required: true,
+    defaultValue: 1,
     component: 'Select',
     componentProps: {
       options: getDictOptions(DICT_TYPE.COMMON_STATUS) as any,
