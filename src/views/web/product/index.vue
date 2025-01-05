@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import ArticleModal from '@/views/web/articlelist/ArticleModal.vue'
+import ArticleModal from './ArticleModal.vue'
 import { columns, searchFormSchema } from '@/views/web/articlelist/articlelist.data'
 import { useI18n } from '@/hooks/web/useI18n'
 import { useMessage } from '@/hooks/web/useMessage'
@@ -99,19 +99,17 @@ function handleParam(record: Recordable) {
             :actions="[
               { icon: IconEnum.EDIT, label: t('action.edit'), onClick: handleEdit.bind(null, record) },
               { icon: IconEnum.EDIT, label: '参数', onClick: handleParam.bind(null, record) },
-
-              {
-                icon: 'clarity:info-standard-line',
-                label: '详情',
-                onClick: handleView.bind(null, record),
-              },
             ]"
             :drop-down-actions="[
+               {
+                icon: 'clarity:info-standard-line',
+                label: '查看详情',
+                onClick: handleView.bind(null, record),
+              },
               {
                 icon: IconEnum.DELETE,
                 danger: true,
                 label: t('action.delete'),
-                auth: 'system:role:delete',
                 popConfirm: {
                   title: t('common.delMessage'),
                   placement: 'left',

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, watch} from 'vue'
+import {onMounted, ref, watch} from 'vue'
 import { searchFormSchema } from './param'
 import { useI18n } from '@/hooks/web/useI18n'
 import { useMessage } from '@/hooks/web/useMessage'
@@ -22,9 +22,8 @@ const props = defineProps({
 const { t } = useI18n()
 const { createMessage } = useMessage()
 const [registerModal, { openModal }] = useModal()
-
-const [registerTable, { reload, setColumns, getForm }] = useTable({
-  title: '分类下的列表',
+const [registerTable, { reload, setColumns }] = useTable({
+  // title: '分类下的列表',
   api: getApi,
   // columns: columns,
   formConfig: {
@@ -123,7 +122,8 @@ watch(
 
 <template>
   <div>
-    <BasicTable :search-info="searchInfo" @register="registerTable">
+    <h1><span class="text-blue-500">{{props.searchInfo.title}}</span> 列表</h1>
+    <BasicTable @register="registerTable">
       <template #toolbar>
         <a-button v-if="searchInfo.cate_id"  type="primary" :pre-icon="IconEnum.ADD" @click="handleCreate">
           {{ t('action.create') }}

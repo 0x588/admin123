@@ -8,6 +8,7 @@ export interface ArticleVO {
   seo_content: string
   desc: string
   content: string
+  attach: string
   cate_id: number
   lang: string
   status: boolean

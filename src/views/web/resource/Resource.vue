@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { watch } from 'vue'
+import {reactive, watch} from 'vue'
 import { columns, searchFormSchema } from './rs'
 import { useI18n } from '@/hooks/web/useI18n'
 import { useMessage } from '@/hooks/web/useMessage'
@@ -8,6 +8,7 @@ import { IconEnum } from '@/enums/appEnum'
 import { BasicTable, TableAction, useTable } from '@/components/Table'
 import {deleteArticle, getArticlePage} from "@/api/web/article";
 import WebResourceModal from "@/views/web/resource/ResourceModal.vue";
+import {getParamListPage} from "@/api/web/parameter";
 
 defineOptions({ name: 'ResourceList' })
 
@@ -22,9 +23,9 @@ const { t } = useI18n()
 const { createMessage } = useMessage()
 const [registerModal, { openModal }] = useModal()
 
-const [registerTable, { reload }] = useTable({
-  title: '分类下的列表',
-  api: getArticlePage,
+const [registerTable, { reload, getSearchInfo }] = useTable({
+  // title: '分类下的列表',
+  api: getApi,
   columns: columns,
   formConfig: {
     labelWidth: 120,
@@ -41,6 +42,13 @@ const [registerTable, { reload }] = useTable({
     fixed: 'right',
   },
 })
+
+async function getApi() {
+  var param = getSearchInfo()
+  param.cate_id = props.searchInfo.cate_id
+  var res = await getArticlePage(param)
+  return res
+}
 
 function handleCreate() {
   if (!props.searchInfo.cate_id) {
@@ -74,6 +82,8 @@ watch(
 
 <template>
   <div>
+    <h1 class="ml-2 mt-4"><span class="text-blue-500">{{searchInfo.name}}</span> 下的列表</h1>
+
     <BasicTable :search-info="searchInfo" @register="registerTable">
       <template #toolbar>
         <a-button v-if="searchInfo.cate_id"  type="primary" :pre-icon="IconEnum.ADD" @click="handleCreate">
