@@ -33,4 +33,10 @@ export function getParamList(id: number) {
   return defHttp.get({ url: `/parameter-list/get?id=${id}` })
 }
 
+export function getParam(id: number) {
+  return defHttp.get({ url: `/parameter/get?product_id=${id}` }, { errorMessageMode: 'none' })
+}
 
+export function createParam(params: any) {
+  return defHttp.post({ url: '/parameter/create', params })
+}

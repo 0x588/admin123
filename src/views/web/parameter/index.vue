@@ -5,12 +5,14 @@ import { useMessage } from '@/hooks/web/useMessage'
 import { useModal } from '@/components/Modal'
 import { IconEnum } from '@/enums/appEnum'
 import { BasicTable, TableAction, useTable } from '@/components/Table'
-import {columns, searchFormSchema} from "./paramcate";
+import {columns, paramformSchema, searchFormSchema} from "./paramcate";
 import CreateCateModal from "./CreateCateModal.vue";
 import {deleteParamCate, getParamCatePage} from "@/api/web/parametercate";
 import {useRoute} from "vue-router";
 import ParamList from "@/views/web/parameter/ParamList.vue";
 import {getArticle} from "@/api/web/article";
+import {BasicForm, useForm} from "@/components/Form";
+import {createParam, getParam} from "@/api/web/parameter";
 
 defineOptions({ name: 'WebParameter' })
 const route = useRoute();
@@ -20,6 +22,19 @@ const [registerModal, { openModal }] = useModal()
 const searchInfo = reactive<Recordable>({})
 const cateSearchInfo = reactive<Recordable>({})
 const product = ref<any>({})
+
+const [registerForm, { setFieldsValue, resetFields, validate }] = useForm({
+  labelWidth: 120,
+  baseColProps: { span: 6 },
+  schemas: paramformSchema,
+  showSubmitButton: true,
+  showResetButton: false,
+  submitButtonOptions: {
+    text: '更新参数封面和标题',
+  }
+  // showActionButtonGroup: true,
+  // actionColOptions: { span: 23 },
+})
 
 const [registerTable, { reload }] = useTable({
   title: '参数分类',
@@ -45,6 +60,10 @@ onMounted(() => {
   getArticle(Number(route.params?.productId)).then(res => {
     product.value = res
   })
+  setFieldsValue({ product_id: route.params?.productId })
+  getParam(Number(route.params?.productId)).then(res => {
+    setFieldsValue(res)
+  })
 })
 
 function handleRowClick(record) {
@@ -66,11 +85,27 @@ async function handleDelete(record: Recordable) {
   createMessage.success(t('common.delSuccessText'))
   reload()
 }
+
+function handleSubmit(values: any) {
+  if (values.cover && values.cover.length > 0)
+  {
+    values.cover = values.cover[0]
+  }
+  createParam(values).then(res => {
+    createMessage.success(t('common.saveSuccessText'))
+  }).catch(err => {
+    createMessage.error(err)
+  })
+  console.log('values', values);
+}
+
 </script>
 
 <template>
   <div>
-  <div class="p-2">
+  <div class="m-2 p-2 bg-white">
+    <h1> 设置 <span class="text-blue-500">{{ product.title }}</span>  的参数封面和标题</h1>
+    <BasicForm @register="registerForm"  @submit="handleSubmit" />
     <h1> 设置 <span class="text-blue-500">{{ product.title }}</span>  参数，请先添加参数分类，再点击分类名称添加参数列表</h1>
   </div>
   <div class="flex">
