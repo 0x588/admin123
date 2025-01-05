@@ -20,6 +20,9 @@ const props = defineProps({
   cats: {
     type: Object as PropType<ConfigCate[]>
   },
+  catId: {
+    type: Number as PropType<number>
+  }
 })
 
 const {createMessage} = useMessage();
@@ -49,7 +52,7 @@ onMounted(async () => {
     )
     for (const cfg of cate.config) {
       var schema: FormSchema = {
-        field: cfg.name,
+        field:  `${cate.name}.${cfg.name}`,
         label: cfg.title,
         component: cfg.type as any,
         colProps: {
@@ -108,11 +111,11 @@ onMounted(async () => {
         ''
       );
       if (cfg?.value && cfg.type !== 'ImageUpload'  && cfg.type !== 'CheckboxGroup') {
-        obj[cfg.name] = cfg.value.data
+        obj[ `${cate.name}.${cfg.name}`] = cfg.value.data
       } else if (cfg?.value && cfg.type === 'CheckboxGroup') {
-         obj[cfg.name] = JSON.parse(cfg.value.data)
+         obj[ `${cate.name}.${cfg.name}`] = JSON.parse(cfg.value.data)
       } else if (cfg?.value && cfg.type === 'ImageUpload') {
-        obj[cfg.name] = JSON.parse(cfg.value.data)
+        obj[ `${cate.name}.${cfg.name}`] = JSON.parse(cfg.value.data)
       }
     }
   }
@@ -121,7 +124,7 @@ onMounted(async () => {
 
 async function handleSubmit() {
   const values = await validate()
-  await configEditSave({cateId: 0, data: JSON.stringify(values)})
+  await configEditSave({cateId: props.catId, data: JSON.stringify(values)})
   createMessage.success('更新成功！');
 }
 </script>

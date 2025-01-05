@@ -4,7 +4,7 @@
       <Tabs tab-position="left" :tabBarStyle="tabBarStyle">
         <template v-for="item in settingList" :key="item.id">
           <TabPane :tab="item.title">
-            <BaseSetting :cats="item.children"></BaseSetting>
+            <BaseSetting :cats="item.children" :catId="item.id"></BaseSetting>
           </TabPane>
         </template>
       </Tabs>
