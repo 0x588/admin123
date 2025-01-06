@@ -18,10 +18,12 @@
   import {onMounted, ref} from "vue";
   import {allConfigEdit} from "@/api/system/config-edit";
   import BaseSetting from "@/views/system/config-edit/BaseSetting.vue";
+  import {useRoute} from "vue-router";
 
   defineOptions({ name: 'ConfigEdit' })
 
   const TabPane = Tabs.TabPane;
+  const route = useRoute();
 
   const prefixCls = 'account-setting';
   const tabBarStyle = {
@@ -30,7 +32,7 @@
 
   var settingList = ref()
   onMounted(async  () => {
-    settingList.value = await allConfigEdit()
+    settingList.value = await allConfigEdit(route.params?.app)
   })
 
 </script>

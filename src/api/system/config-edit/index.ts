@@ -28,8 +28,8 @@ export interface ConfigSaveData{
   cateId: number,
   data: string,
 }
-export function allConfigEdit() {
-  return defHttp.get({ url: '/system/config-edit/all' })
+export function allConfigEdit(app: any) {
+  return defHttp.get({ url: `/system/config-edit/all?app=${app}`})
 }
 
 export function configEditSave(data: ConfigSaveData) {
