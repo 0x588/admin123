@@ -9,6 +9,7 @@ import {type BasicColumn, BasicTable, TableAction, useRender, useTable} from '@/
 import CreateParamListModal from "@/views/web/parameter/CreateParamListModal.vue";
 import {deleteParamList, getParamListPage} from "@/api/web/parameter";
 import {getConfigListWithCateId} from "@/api/system/common-config/config";
+import {isArray} from "lodash-es";
 
 defineOptions({ name: 'ParamList' })
 
@@ -48,7 +49,6 @@ async function getApi() {
     var content = JSON.parse(item.content)
     return {...item, ...content}
   })
-  console.log(res)
   return res
 }
 
@@ -97,9 +97,13 @@ async function updateTableColumns() {
       dataIndex: cfg.name,
       title: cfg.title,
     }
-    if (cfg.type !== 'Input') {
+    if (cfg.type === 'Upload') {
       column.customRender = ({ text }) => {
-          return useRender.renderJsonPreview(text)
+        if (!text) return '-'
+        if (isArray(text)) {
+          text = text[0]
+        }
+         return useRender.renderLink(text, "文件下载")
       }
     }
     columns.push(column)

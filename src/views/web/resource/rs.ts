@@ -3,6 +3,7 @@ import { useRender } from '@/components/Table'
 import { DICT_TYPE, getDictOptions } from '@/utils/dict'
 import {uploadApi} from "@/api/sys/upload";
 import {getArticleCateTree} from "@/api/web/articlecate";
+import {isArray} from "lodash-es";
 
 export const columns: BasicColumn[] = [
   {
@@ -21,6 +22,18 @@ export const columns: BasicColumn[] = [
     width: 40,
     customRender: ({ text }) => {
       return useRender.renderDict(text, DICT_TYPE.COMMON_STATUS)
+    },
+  },
+  {
+    title: '资源文件',
+    dataIndex: 'content',
+    width: 90,
+    customRender: ({text}) => {
+      if (!text) return '-'
+      if (isArray(text)) {
+        text = text[0]
+      }
+      return useRender.renderLink(text, "文件下载")
     },
   },
   {
