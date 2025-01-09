@@ -110,11 +110,11 @@ onMounted(async () => {
         schema,
         ''
       );
-      if (cfg?.value && cfg.type !== 'ImageUpload'  && cfg.type !== 'CheckboxGroup') {
+      if (cfg?.value && cfg.type !== 'ImageUpload'  && cfg.type !== 'CheckboxGroup' && cfg.type !== 'Upload') {
         obj[ `${cate.name}.${cfg.name}`] = cfg.value.data
       } else if (cfg?.value && cfg.type === 'CheckboxGroup') {
          obj[ `${cate.name}.${cfg.name}`] = JSON.parse(cfg.value.data)
-      } else if (cfg?.value && cfg.type === 'ImageUpload') {
+      } else if (cfg?.value && (cfg.type === 'ImageUpload' || cfg.type === 'Upload')) {
         obj[ `${cate.name}.${cfg.name}`] = JSON.parse(cfg.value.data)
       }
     }
@@ -124,6 +124,7 @@ onMounted(async () => {
 
 async function handleSubmit() {
   const values = await validate()
+  console.log(values)
   await configEditSave({cateId: props.catId, data: JSON.stringify(values)})
   createMessage.success('更新成功！');
 }
