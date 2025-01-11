@@ -16,6 +16,7 @@ export function uploadApi(
   return defHttp.uploadFile<UploadApiResult>(
     {
       url: uploadUrl,
+      timeout: 3600 * 1000,
       onUploadProgress,
     },
     params,

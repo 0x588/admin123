@@ -94,7 +94,7 @@ onMounted(async () => {
         schema.render = ({ model, field }) => {
           return h(Ueditor, {
             modelValue: model[field],
-            editorId: 'editor-' + field,
+            editorId: 'editor-' + field + cfg.id,
             onChange: (value: string) => {
               model[field] = value;
             },
