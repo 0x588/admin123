@@ -10,6 +10,7 @@ const about: AppRouteModule = {
   redirect: '/about/index',
   meta: {
     hideChildrenInMenu: true,
+    hideMenu: true,
     icon: 'simple-icons:aboutdotme',
     title: t('routes.dashboard.about'),
     orderNo: 100000,
