@@ -89,3 +89,7 @@ export function updateUserStatus(id: number, status: number) {
 export function getListSimpleUsers() {
   return defHttp.get({ url: '/system/user/list-all-simple' })
 }
+
+export function updateUserPwd(params: any) {
+  return defHttp.put({ url: '/system/user/update-pwd', params })
+}

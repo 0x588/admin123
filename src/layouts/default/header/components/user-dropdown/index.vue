@@ -31,15 +31,26 @@
           icon="ion:lock-closed-outline"
         />
         <MenuItem
+          key="pwd"
+          text="修改密码"
+          icon="ion:locked"
+        />
+        <MenuItem
           key="logout"
           :text="t('layout.header.dropdownItemLoginOut')"
           icon="ion:power-outline"
+        />
+        <MenuItem
+          key="clear"
+          text="清除缓存"
+          icon="ion:trash-bin"
         />
       </Menu>
     </template>
   </Dropdown>
   <LockAction @register="register" />
   <ChangeApi @register="registerApi" />
+  <ChangePwd @register="registerPwd" />
 </template>
 <script lang="ts" setup>
   import { Dropdown, Menu } from 'ant-design-vue';
@@ -55,12 +66,16 @@
   import { propTypes } from '@/utils/propTypes';
   import { openWindow } from '@/utils';
   import { createAsyncComponent } from '@/utils/factory/createAsyncComponent';
+  import {usePermissionStore} from "@/store/modules/permission";
+  import {useMultipleTabStore} from "@/store/modules/multipleTab";
+  import {useAppStore} from "@/store/modules/app";
 
-  type MenuEvent = 'logout' | 'doc' | 'lock' | 'api';
+  type MenuEvent = 'logout' | 'doc' | 'lock' | 'api' | 'pwd' | 'clear';
 
   const MenuItem = createAsyncComponent(() => import('./DropMenuItem.vue'));
   const LockAction = createAsyncComponent(() => import('../lock/LockModal.vue'));
   const ChangeApi = createAsyncComponent(() => import('../ChangeApi/index.vue'));
+  const ChangePwd = createAsyncComponent(() => import('../changePwd/index.vue'));
 
   defineOptions({ name: 'UserDropdown' });
 
@@ -72,6 +87,9 @@
   const { t } = useI18n();
   const { getShowDoc, getUseLockPage, getShowApi } = useHeaderSetting();
   const userStore = useUserStore();
+  const permissionStore = usePermissionStore();
+  const tabStore = useMultipleTabStore();
+  const appStore = useAppStore();
 
   const getUserInfo = computed(() => {
     const { realName = '', avatar, desc } = userStore.getUserInfo || {};
@@ -80,6 +98,7 @@
 
   const [register, { openModal }] = useModal();
   const [registerApi, { openModal: openApiModal }] = useModal();
+  const [registerPwd, { openModal: openPwdModal }] = useModal();
 
   function handleLock() {
     openModal(true);
@@ -89,9 +108,21 @@
     openApiModal(true, {});
   }
 
+  function handlePwd() {
+    openPwdModal(true, {});
+  }
   //  login out
   function handleLoginOut() {
     userStore.confirmLoginOut();
+  }
+
+  function handleClear() {
+    localStorage.clear();
+    appStore.resetAllState();
+    permissionStore.resetState();
+    tabStore.resetState();
+    userStore.resetState();
+    location.reload();
   }
 
   // open doc
@@ -112,6 +143,12 @@
         break;
       case 'api':
         handleApi();
+        break;
+      case 'pwd':
+        handlePwd();
+        break;
+      case 'clear':
+        handleClear();
         break;
     }
   }
