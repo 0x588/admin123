@@ -170,6 +170,15 @@ export const formSchema: FormSchema[] = [
     },
   },
   {
+    field: 'recommend',
+    component: 'Checkbox',
+    label: '推荐到首页',
+    colProps: {
+      span: 8,
+    },
+    renderComponentContent: '推荐',
+  },
+  {
     label: '语言',
     required: true,
     field: 'lang',
