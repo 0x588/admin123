@@ -1,5 +1,6 @@
 <template>
   <TreeSelect
+    @dropdown-visible-change="handleFetch"
     v-bind="getAttrs"
     @change="handleChange"
     :field-names="fieldNames"
@@ -34,6 +35,7 @@ const props = defineProps({
   labelField: propTypes.string.def('title'),
   valueField: propTypes.string.def('value'),
   childrenField: propTypes.string.def('children'),
+  alwaysLoad: propTypes.bool.def(false),
   beforeFetch: {
     type: Function as PropType<Fn>,
     default: null,
@@ -69,7 +71,7 @@ function handleChange(...args) {
 watch(
   () => props.params,
   () => {
-    !unref(isFirstLoaded) && fetch();
+    fetch();
   },
   { deep: true },
 );
@@ -93,6 +95,16 @@ function onLoadData(treeNode) {
     }
     emit('load-data', { treeData, treeNode, resolve });
   });
+}
+
+async function handleFetch(visible: boolean) {
+  if (visible) {
+    if (props.alwaysLoad) {
+      await fetch();
+    } else if (!props.immediate && !unref(isFirstLoaded)) {
+      await fetch();
+    }
+  }
 }
 
 async function fetch() {

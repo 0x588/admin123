@@ -13,7 +13,7 @@
 <script lang="ts" setup>
   import { ref, computed, unref } from 'vue';
   import { BasicForm, useForm } from '@/components/Form';
-  import { formSchema } from './menu.data';
+  import { formSchema, formApiParams } from './menu.data';
   import { BasicDrawer, useDrawerInner } from '@/components/Drawer';
   import { createMenu, getMenu, updateMenu } from '@/api/sys/menu'
 
@@ -56,6 +56,7 @@
       else
         await createMenu(values as any)
       closeDrawer();
+      formApiParams['title'] = values.title;
       emit('success');
     } finally {
       setDrawerProps({ confirmLoading: false });

@@ -51,7 +51,7 @@
   import { useDrawer } from '@/components/Drawer';
   import MenuDrawer from './MenuDrawer.vue';
 
-  import { columns, searchFormSchema } from './menu.data';
+  import {columns, formApiParams, searchFormSchema} from './menu.data';
   import { usePermission } from '@/hooks/web/usePermission'
   import { useMessage } from '@/hooks/web/useMessage'
   import {IconEnum} from "@/enums/appEnum";
@@ -115,6 +115,7 @@
 
   function handleDelete(record: Recordable) {
     deleteMenu(record.id)
+    formApiParams['title'] = record.title;
     reload()
   }
 

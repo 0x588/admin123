@@ -2,6 +2,7 @@ import { BasicColumn, FormSchema, useRender } from '@/components/Table';
 import { DICT_TYPE, getDictOptions } from '@/utils/dict'
 import {treeSimpleMenus} from '@/api/system/menu'
 import { SystemMenuTypeEnum } from '@/enums/systemEnum'
+import {reactive} from "vue";
 
 export const columns: BasicColumn[] = [
   {
@@ -73,6 +74,7 @@ export const searchFormSchema: FormSchema[] = [
   },
 ];
 
+export const formApiParams = reactive({ })
 export const formSchema: FormSchema[] = [
   {
     label: '编号',
@@ -87,9 +89,7 @@ export const formSchema: FormSchema[] = [
     component: 'ApiTreeSelect',
     componentProps: {
       api: () => treeSimpleMenus(),
-      params: {
-        cnt: 2,
-      },
+      params: formApiParams,
       labelField: 'name',
       valueField: 'id',
     },
