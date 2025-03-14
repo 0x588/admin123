@@ -76,6 +76,7 @@ export enum DICT_TYPE {
   USER_TYPE = 'user_type',
   COMMON_STATUS = 'common_status',
   AUTH_TYPE = 'auth_type',
+  SPEC_TYPE = 'spec_type',
   SYSTEM_TENANT_PACKAGE_ID = 'system_tenant_package_id',
 
   COMMON_CONFIG_TYPE = 'common_config_type',

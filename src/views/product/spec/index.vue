@@ -1,0 +1,97 @@
+<script lang="ts" setup>
+import {reactive, ref} from 'vue'
+import { commonSpecColumns, commonSpecSearchFormSchema } from './common.spec'
+import { useI18n } from '@/hooks/web/useI18n'
+import { useMessage } from '@/hooks/web/useMessage'
+import { useModal } from '@/components/Modal'
+import { IconEnum } from '@/enums/appEnum'
+import { BasicTable, TableAction, useTable } from '@/components/Table'
+import {getCommonSpecPage, deleteCommonSpec} from "@/api/product/spec";
+import CommonSpecModal from "@/views/product/spec/CommonSpecModal.vue";
+import { Tag } from 'ant-design-vue';
+
+defineOptions({ name: 'ProductSpec' })
+
+const { t } = useI18n()
+const { createMessage } = useMessage()
+const [registerModal, { openModal }] = useModal()
+const searchInfo = reactive<Recordable>({})
+
+const [registerTable, { reload }] = useTable({
+  title: '规格列表',
+  api: getCommonSpecPage,
+  columns: commonSpecColumns,
+  formConfig: {
+    labelWidth: 120,
+    schemas: commonSpecSearchFormSchema,
+  },
+  useSearchForm: true,
+  showTableSetting: true,
+  showIndexColumn: false,
+  actionColumn: {
+    width: 140,
+    title: t('common.action'),
+    dataIndex: 'action',
+    fixed: 'right',
+  },
+})
+
+function handleRowClick(record) {
+  searchInfo.dictType = record.type
+}
+
+function handleCreate() {
+  openModal(true, { isUpdate: false })
+}
+
+function handleEdit(record: Recordable) {
+  openModal(true, { record, isUpdate: true })
+}
+
+async function handleDelete(record: Recordable) {
+  await deleteCommonSpec(record.id)
+  createMessage.success(t('common.delSuccessText'))
+  reload()
+}
+
+function handleSuc() {
+  reload()
+}
+
+</script>
+
+<template>
+  <div class="flex">
+    <BasicTable  @register="registerTable" @row-click="handleRowClick">
+      <template #toolbar>
+        <a-button type="primary" :pre-icon="IconEnum.ADD" @click="handleCreate">
+          {{ t('action.create') }}
+        </a-button>
+      </template>
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'values'">
+          <Tag color="green" v-for="item in record.values">{{item.title}}</Tag>
+        </template>
+        <template v-if="column.key === 'action'">
+          <TableAction
+            :actions="[
+              { icon: IconEnum.EDIT, label: t('action.edit'), auth: 'system:dict:update', onClick: handleEdit.bind(null, record) },
+              {
+                icon: IconEnum.DELETE,
+                danger: true,
+                label: t('action.delete'),
+                auth: 'system:dict:delete',
+                popConfirm: {
+                  title: t('common.delMessage'),
+                  placement: 'left',
+                  confirm: handleDelete.bind(null, record),
+                },
+              },
+            ]"
+          />
+        </template>
+      </template>
+    </BasicTable>
+    <CommonSpecModal width="80%"  @register="registerModal" @success="handleSuc()" />
+  </div>
+</template>

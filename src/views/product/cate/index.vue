@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { nextTick, onMounted, ref } from 'vue'
+import { nextTick, onMounted } from 'vue'
 import CateModal from './CateModal.vue'
 import { columns, searchFormSchema, formApiParam } from './cate.data'
 import { handleTree } from '@/utils/tree'
