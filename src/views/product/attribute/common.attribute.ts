@@ -9,7 +9,7 @@ export const tableColumns: BasicColumn[] = [
     width: 120,
   },
   {
-    title: '参数标签',
+    title: '属性',
     dataIndex: 'values',
     width: 220,
   },
@@ -83,14 +83,39 @@ export const formSchema: FormSchema[] = [
   {
     field: 'divider-others',
     component: 'Divider',
-    label: '规格值列表',
+    label: '',
     colProps: {
       span: 24,
     },
   },
+]
+
+
+export const tableValuesColumns: BasicColumn[] = [
   {
-    field: '123',
-    label: ' ',
-    slot: 'add',
+    title: 'ID',
+    dataIndex: 'id',
+    width: 20,
+    ifShow: false,
+  },
+  {
+    title: '属性名称',
+    dataIndex: 'title',
+    width: 120,
+  },
+  {
+    title: '类型',
+    dataIndex: 'type',
+    width: 120,
+  },
+  {
+    title: '属性值',
+    dataIndex: 'value',
+    width: 220,
+  },
+  {
+    title: '排序',
+    dataIndex: 'sort',
+    width: 50,
   },
 ]

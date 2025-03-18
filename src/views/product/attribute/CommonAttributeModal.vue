@@ -1,17 +1,19 @@
 <script lang="ts" setup>
-import { ref, unref } from 'vue'
-import { formSchema } from './common.attribute'
+import {ref, toRaw, unref} from 'vue'
+import {formSchema, tableValuesColumns} from './common.attribute'
 import { useI18n } from '@/hooks/web/useI18n'
 import { useMessage } from '@/hooks/web/useMessage'
 import { BasicForm, useForm } from '@/components/Form'
 import { BasicModal, useModalInner } from '@/components/Modal'
-import {isArray} from "lodash-es";
 import {
   CommonAttributeVO,
   createCommonAttribute,
   getCommonAttribute,
   updateCommonAttribute
 } from "@/api/product/attribute";
+import {BasicTable, TableAction, useTable} from "@/components/Table";
+import {IconEnum} from "@/enums/appEnum";
+import { Select, Button, Modal, Textarea } from 'ant-design-vue';
 
 defineOptions({ name: 'CommonAttributeModal' })
 
@@ -20,7 +22,7 @@ const { t } = useI18n()
 const { createMessage } = useMessage()
 const isUpdate = ref(true)
 
-const [registerForm, { setFieldsValue, resetSchema, resetFields, validate, appendSchemaByField,removeSchemaByField }] = useForm({
+const [registerForm, { setFieldsValue, resetSchema, resetFields, validate }] = useForm({
   labelWidth: 120,
   baseColProps: { span: 24 },
   schemas: formSchema,
@@ -28,32 +30,46 @@ const [registerForm, { setFieldsValue, resetSchema, resetFields, validate, appen
   actionColOptions: { span: 23 },
 })
 
+let values: any[] = []
+
+const [registerTable,{setTableData, getDataSource, deleteTableDataRecord}] = useTable({
+  title: '属性列表',
+  dataSource: values,
+  columns: tableValuesColumns,
+  showIndexColumn: false,
+  bordered: true,
+  pagination:false,
+  actionColumn: {
+    width: 60,
+    title: t('common.action'),
+    dataIndex: 'action',
+    fixed: 'right',
+  },
+});
+
 const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
-  n.value = 0
   resetSchema(formSchema)
   resetFields()
+  setTableData([])
   setModalProps({ confirmLoading: false })
   isUpdate.value = !!data?.isUpdate
   if (unref(isUpdate)) {
     const res = await getCommonAttribute(data.record.id)
-    if (isArray(res.values)) {
-      let i = 0;
-      for (i = 0; i < res.values.length; i++) {
-        addValueItem(i)
-      }
-      n.value = i
-    }
     setFieldsValue({ ...res })
+    setTableData(res.values)
   }
 })
 
 async function handleSubmit() {
   try {
     const values = await validate()
-    console.log(values)
-    if (values.values) {
-      values.values = values.values.filter((v) => v !== null)
+    var value2 = toRaw(getDataSource())
+    console.log(value2)
+
+    if (value2 != null && value2.length > 0) {
+      values.values = value2.filter((v) => v !== null && v.title !== null && v.title !== '')
     }
+    console.log("123", values)
     setModalProps({ confirmLoading: true })
     if (unref(isUpdate))
       await updateCommonAttribute(values as CommonAttributeVO)
@@ -69,73 +85,101 @@ async function handleSubmit() {
   }
 }
 
-function del(field: string) {
-  removeSchemaByField([`values[${field}].id`, `values[${field}].title`, `values[${field}].sort`, `${field}`]);
+function handleCreate() {
+  values = getDataSource()
+  console.log(values)
+  values.push({
+    title: '',
+    type: 1,
+    value: '',
+    sort: 10,
+  })
+  console.log('value', values)
+  setTableData(values)
 }
 
-const n = ref(0);
-
-function addValueItem(num: number) {
-  appendSchemaByField( {
-    label: '编号',
-    field:  `values[${num}].id`,
-    show: false,
-    component: 'Input',
-  }, '')
-  appendSchemaByField(
-    {
-      field: `values[${num}].title`,
-      component: 'Input',
-      label: '规格值名称',
-      required: true,
-      colProps: {
-        span: 8,
-      },
-    },
-    '',
-  );
-  appendSchemaByField(
-    {
-      field: `values[${num}].sort`,
-      component: 'InputNumber',
-      label: '排序',
-      defaultValue:10,
-      colProps: {
-        span: 8,
-      },
-    },
-    '',
-  );
-
-  appendSchemaByField(
-    {
-      field: `${num}`,
-      component: 'Input',
-      label: ' ',
-      slot: 'del',
-      colProps: {
-        span: 2,
-      },
-    },
-    '',
-  );
+async function handleDelete(record: Recordable) {
+  deleteTableDataRecord(record.key)
 }
 
-function add() {
-  addValueItem(n.value)
-  n.value++;
+const typeOptions = [
+  { value: 1, label: '输入框' },
+  { value: 2, label: '单选' },
+  { value: 3, label: '多选' },
+];
+
+const open = ref<boolean>(false);
+var currentKey:any
+const handleOk = (e: MouseEvent) => {
+  open.value = false;
+  var v = getDataSource()
+  v = v.map(item => {
+      if (item.key === currentKey) {
+        item.value = editValue.value
+      }
+      return toRaw(item)
+    }
+  );
+  setTableData(v)
 }
+
+const btnClick = (record: Record<string, any>) => {
+  open.value = true;
+  currentKey = record.key
+  editValue.value = record.value
+}
+const editValue = ref<string>('')
 </script>
 
 <template>
   <BasicModal v-bind="$attrs" :title="isUpdate ? t('action.edit') : t('action.create')" @register="registerModal" @ok="handleSubmit">
     <BasicForm @register="registerForm" >
-      <template #add="{ }">
-        <a-button color="error" @click="add">添加规格值</a-button>
-      </template>
-      <template #del="{ field }">
-        <a-button color="warning" @click="del(field)">删除</a-button>
+      <template #formFooter>
+        <BasicTable
+          @register="registerTable"
+        >
+          <template #toolbar>
+            <a-button type="primary" :pre-icon="IconEnum.ADD" @click="handleCreate">
+              {{ t('action.create') }}
+            </a-button>
+          </template>
+          <template #bodyCell="{ column, record }">
+            <template v-if="['title', 'sort'].includes(column.dataIndex as string)">
+              <a-input v-model:value="record[column.dataIndex as string]"></a-input>
+            </template>
+            <template v-if="column.dataIndex === 'type'">
+              <Select style="width: 120px" v-model:value="record[column.dataIndex as string]" :options="typeOptions"></Select>
+            </template>
+            <template v-if="column.dataIndex === 'value'">
+              <template v-if="record.type != 1">
+                <div>{{record.value}}</div>
+                <Button type="primary" @click="btnClick(record)">编辑</Button>
+              </template>
+              <template v-else>用户输入</template>
+            </template>
+            <template v-if="column.key === 'action'">
+              <TableAction
+                :actions="[
+              {
+                icon: IconEnum.DELETE,
+                danger: true,
+                label: t('action.delete'),
+                popConfirm: {
+                  title: t('common.delMessage'),
+                  placement: 'left',
+                  confirm: handleDelete.bind(null, record),
+                },
+              },
+            ]"
+              />
+            </template>
+          </template>
+        </BasicTable>
       </template>
     </BasicForm>
   </BasicModal>
+  <Modal title="属性值编辑" v-model:open="open" :centered="true" @ok="handleOk">
+    <Textarea style="height: 200px" v-model:value="editValue"></Textarea>
+    <p class="m-2">一行为一个属性值，多个属性值用换行输入</p>
+  </Modal>
 </template>
