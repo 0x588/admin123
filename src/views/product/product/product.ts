@@ -1,7 +1,7 @@
 import type { BasicColumn, FormSchema } from '@/components/Table'
 import { useRender } from '@/components/Table'
 import { DICT_TYPE, getDictOptions } from '@/utils/dict'
-import {uploadApi} from "@/api/sys/upload";
+import {listSimpleCate} from "@/api/product/cate";
 
 export const columns: BasicColumn[] = [
   {
@@ -55,54 +55,71 @@ export const searchFormSchema: FormSchema[] = [
   },
 ]
 
-export const formSchema: FormSchema[] = [
-  {
-    label: '编号',
-    field: 'id',
-    show: false,
-    component: 'Input',
-  },
-  {
-    label: '服务名称',
-    field: 'name',
-    required: true,
-    component: 'Input',
-  },
-  {
-    label: '广告封面图',
-    field: 'cover',
-    component: 'ImageUpload',
-    componentProps: {
-      api: uploadApi,
-      accept: ['png', 'jpeg', 'jpg'],
-      maxSize:5,
-      maxNumber: 1,
+export const tabsFormSchema: FormSchema[][] = [
+  [
+    {
+      label: '编号',
+      field: 'id',
+      show: false,
+      component: 'Input',
     },
-  },
-  {
-    label: '服务说明',
-    field: 'explain',
-    component: 'InputTextArea',
-  },
-  {
-    label: '显示排序',
-    field: 'sort',
-    component: 'InputNumber',
-    colProps: {
-      span: 8,
+    {
+      label: '商品名称',
+      required: true,
+      field: 'name',
+      component: 'Input',
     },
-    defaultValue: 10,
-  },
-  {
-    label: '状态',
-    field: 'status',
-    defaultValue: 1,
-    colProps: {
-      span: 8,
+    {
+      label: '商品卖点',
+      field: 'sketch',
+      component: 'Input',
+      componentProps: {
+        placeholder: '在商品详情页标题下面展示卖点信息，建议60字以内',
+      },
     },
-    component: 'Select',
-    componentProps: {
-      options: getDictOptions(DICT_TYPE.COMMON_STATUS) as any,
+    {
+      label: '商品分类',
+      field: 'cateIds',
+      required: true,
+      component: 'ApiCascader',
+      componentProps: {
+        api: listSimpleCate,
+        apiParamKey: 'pid',
+        labelField: 'title',
+        valueField: 'id',
+        multiple: true,
+        initFetchParams: {
+          pid: 0,
+        },
+        isLeaf: (record) => {
+          if (record.children == null) return true
+          return false
+        },
+      },
     },
-  },
+  ],
+  [
+    {
+      label: '编号',
+      field: 'id',
+      show: false,
+      component: 'Input',
+    }
+  ],
+  [
+    {
+      label: '编号',
+      field: 'id',
+      show: false,
+      component: 'Input',
+    }
+  ],
+  [
+    {
+      label: '编号',
+      field: 'id',
+      show: false,
+      component: 'Input',
+    }
+  ],
 ]

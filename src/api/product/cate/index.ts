@@ -18,8 +18,8 @@ export interface CatePageReqVO {
 }
 
 // 查询部门（精简)列表
-export function listSimpleCate() {
-  return defHttp.get({ url: '/product/cate/list-all-simple' })
+export function listSimpleCate(params?: any) {
+  return defHttp.post({ url: '/product/cate/list-all-simple', params })
 }
 
 export function treeSimpleCate() {

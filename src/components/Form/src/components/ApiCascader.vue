@@ -3,6 +3,8 @@
     v-model:value="state"
     :options="options"
     :load-data="loadData"
+    :multiple="multiple"
+    :show-checked-strategy="Cascader.SHOW_CHILD"
     change-on-select
     @change="handleChange"
     :displayRender="handleRenderDisplay"
@@ -56,6 +58,7 @@
     childrenField: propTypes.string.def('children'),
     apiParamKey: propTypes.string.def('parentCode'),
     immediate: propTypes.bool.def(true),
+    multiple: propTypes.bool.def(false),
     // init fetch params
     initFetchParams: {
       type: Object as PropType<Recordable<any>>,
@@ -199,10 +202,14 @@
 
   function handleChange(keys, args) {
     emitData.value = args;
+    console.log("ff", emitData.value);
     emit('defaultChange', keys, args);
   }
 
   const handleRenderDisplay: CascaderProps['displayRender'] = ({ labels, selectedOptions }) => {
+    if (props.multiple) {
+      return labels.join(' / ');
+    }
     if (unref(emitData).length === selectedOptions?.length) {
       return labels.join(' / ');
     }
