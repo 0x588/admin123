@@ -13,9 +13,9 @@ export interface TagPageReqVO {
 }
 
 // // 查询部门（精简)列表
-// export function listSimpleCate() {
-//   return defHttp.get({ url: '/product/cate/list-all-simple' })
-// }
+export function listSimpleTag() {
+  return defHttp.get({ url: '/product/tag/list' })
+}
 //
 // export function treeSimpleCate() {
 //   return defHttp.get({ url: '/product/cate/tree-simple' })

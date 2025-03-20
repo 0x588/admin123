@@ -3,6 +3,7 @@
     @dropdown-visible-change="handleFetch"
     v-bind="$attrs"
     @change="handleChange"
+    :mode="modes"
     :options="getOptions"
     v-model:value="state"
   >
@@ -50,6 +51,10 @@
     valueField: propTypes.string.def('value'),
     immediate: propTypes.bool.def(true),
     alwaysLoad: propTypes.bool.def(false),
+    modes: {
+      type: String as PropType<"multiple" | "tags" | "SECRET_COMBOBOX_MODE_DO_NOT_USE" | undefined>,
+      default: undefined,
+    },
     options: {
       type: Array<OptionsItem>,
       default: [],

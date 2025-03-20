@@ -2,6 +2,7 @@ import type { BasicColumn, FormSchema } from '@/components/Table'
 import { useRender } from '@/components/Table'
 import { DICT_TYPE, getDictOptions } from '@/utils/dict'
 import {listSimpleCate} from "@/api/product/cate";
+import {listSimpleTag} from "@/api/product/tag";
 
 export const columns: BasicColumn[] = [
   {
@@ -95,6 +96,17 @@ export const tabsFormSchema: FormSchema[][] = [
           if (record.children == null) return true
           return false
         },
+      },
+    },
+    {
+      label: '商品标签',
+      field: 'tags',
+      component: 'ApiSelect',
+      componentProps: {
+        api: listSimpleTag,
+        labelField: 'title',
+        valueField: 'id',
+        modes: 'tags',
       },
     },
   ],
