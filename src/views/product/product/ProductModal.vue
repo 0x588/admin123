@@ -8,6 +8,7 @@ import { BasicModal, useModalInner } from '@/components/Modal'
 import {tabsFormSchema} from "@/views/product/product/product";
 import {createProduct, ProductVO, updateProduct} from "@/api/product/product";
 import {omit} from "lodash-es";
+import SpecList from "@/views/product/product/SpecList.vue";
 
 
 defineOptions({ name: 'ProductModal' })
@@ -87,6 +88,9 @@ async function handleSubmit() {
         v-bind="omit(item, ['Form', 'key'])"
       >
         <BasicForm @register="item.Form[0]"/>
+        <template v-if="item.key == 'tabs1'">
+          <SpecList></SpecList>
+        </template>
       </TabPane>
     </Tabs>
   </BasicModal>

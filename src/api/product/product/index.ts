@@ -13,6 +13,21 @@ export interface ProductPageReqVO {
   status?: number
 }
 
+export interface ProductSpecValue {
+  id?: number
+  title: string
+  data?: string|string[]|undefined
+  pitch_on: boolean
+}
+
+export interface ProductSpec {
+  id: number
+  title: string
+  type: number
+  show_image: boolean
+  values?: ProductSpecValue[]
+}
+
 export function getProductPage(params:ProductPageReqVO) {
   return defHttp.get({ url: '/product/product/page', params })
 }

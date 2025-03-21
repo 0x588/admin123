@@ -1,10 +1,12 @@
 import { defHttp } from '@/utils/http/axios'
 
 
-export interface SpecValue {
+export interface SpecValueVo {
   id?: number,
   title: string,
   sort: number,
+  isTmp?: boolean,
+  specId?: number,
 }
 
 export interface CommonSpecVO {
@@ -12,9 +14,10 @@ export interface CommonSpecVO {
   type: number
   title: string
   desc: string
+  isTmp: boolean
   sort: number
   status: number
-  values?: SpecValue[]
+  values?: SpecValueVo[]
 }
 
 export interface CommonSpecPageReqVO {
@@ -50,3 +53,8 @@ export function updateCommonSpec(params: CommonSpecVO) {
 export function deleteCommonSpec(id: number) {
   return defHttp.delete({ url: `/product/common-spec/delete?id=${id}` })
 }
+
+export function createCommonSpecValue(data: SpecValueVo) {
+  return defHttp.post({ url: '/product/common-spec-value/create', data })
+}
+

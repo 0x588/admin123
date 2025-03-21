@@ -73,7 +73,7 @@ export const tabsFormSchema: FormSchema[][] = [
     {
       label: '商品卖点',
       field: 'sketch',
-      component: 'Input',
+      component: 'InputTextArea',
       componentProps: {
         placeholder: '在商品详情页标题下面展示卖点信息，建议60字以内',
       },
@@ -109,14 +109,319 @@ export const tabsFormSchema: FormSchema[][] = [
         modes: 'tags',
       },
     },
+    {
+      field: 'delivery_type',
+      component: 'RadioGroup',
+      label: '配送方式',
+      required: true,
+      defaultValue: 1,
+      componentProps: {
+        options: [
+          {
+            label: '物流配送',
+            value: 1,
+          },
+          {
+            label: '同城配送',
+            value: 2,
+          },
+          {
+            label: '买家自提',
+            value: 100,
+          },
+        ],
+      },
+    },
+    {
+      field: 'shipping_type',
+      component: 'RadioGroup',
+      label: '运费类型',
+      defaultValue: 1,
+      colProps: {
+        span: 12,
+      },
+      componentProps: {
+        options: [
+          {
+            label: '包邮',
+            value: 1,
+          },
+          {
+            label: '买家承担运费',
+            value: 2,
+          },
+          {
+            label: '统一邮费',
+            value: 3,
+          },
+        ],
+      },
+    },
+    {
+      field: 'shipping_fee',
+      component: 'Input',
+      label: '运费(元)',
+      colProps: {
+        span: 12,
+      },
+      ifShow: ({ values }) => {
+        return values.shipping_type == 3;
+      },
+      dynamicRules: ({ values }) => {
+        return values.shipping_type == 3 ? [{ required: true, message: '字段4必填' }] : [];
+      },
+    },
+    {
+      label: '运费模版',
+      field: 'shipping_fee_id',
+      component: 'ApiSelect',
+      colProps: {
+        span: 12,
+      },
+      componentProps: {
+        api: listSimpleTag,
+        labelField: 'title',
+        valueField: 'id',
+      },
+      ifShow: ({ values }) => {
+        return values.shipping_type == 2;
+      },
+      dynamicRules: ({ values }) => {
+        return values.shipping_type == 2 ? [{ required: true, message: '字段4必填' }] : [];
+      },
+    },
+    {
+      field: 'shipping_fee_type',
+      component: 'RadioGroup',
+      label: '计价方式',
+      defaultValue: 1,
+      colProps: {
+        span: 12,
+      },
+      componentProps: {
+        options: [
+          {
+            label: '计件',
+            value: 1,
+          },
+          {
+            label: '体积',
+            value: 2,
+          },
+          {
+            label: '重量',
+            value: 3,
+          },
+        ],
+      },
+      ifShow: ({ values }) => {
+        return values.shipping_type == 2;
+      },
+    },
+    {
+      label: '商品单位',
+      required: true,
+      colProps: {
+        span: 12,
+      },
+      field: 'unit',
+      component: 'Input',
+    },
+    {
+      label: '最少买几件',
+      required: true,
+      defaultValue: 1,
+      colProps: {
+        span: 8,
+      },
+      field: 'min_buy_num',
+      component: 'InputNumber',
+    },
+    {
+      label: '总限购',
+      required: true,
+      defaultValue: 0,
+      colProps: {
+        span: 8,
+      },
+      field: 'max_buy_num',
+      component: 'InputNumber',
+    },
+    {
+      label: '单笔下单限购',
+      required: true,
+      defaultValue: 0,
+      colProps: {
+        span: 8,
+      },
+      field: 'order_max_buy_num',
+      component: 'InputNumber',
+    },
+    {
+      label: '虚拟销量',
+      field: 'sales',
+      defaultValue: 0,
+      colProps: {
+        span: 8,
+      },
+      component: 'InputNumber',
+    },
+    {
+      label: '商品点击数',
+      field: 'view',
+      defaultValue: 0,
+      colProps: {
+        span: 8,
+      },
+      component: 'InputNumber',
+    },
+    {
+      label: '商品分享数',
+      field: 'transmit_num',
+      defaultValue: 0,
+      colProps: {
+        span: 8,
+      },
+      component: 'InputNumber',
+    },
+    {
+      field: 'production_date',
+      component: 'DatePicker',
+      label: '生产日期',
+      colProps: {
+        span: 12,
+      },
+    },
+    {
+      field: 'shelf_life',
+      component: 'Input',
+      label: '保质期(单位:天)',
+      colProps: {
+        span: 12,
+      },
+    },
+    {
+      field: 'is_new',
+      component: 'Checkbox',
+      defaultValue: false,
+      label: '新品',
+      colProps: {
+        span: 8,
+      },
+    },
+    {
+      field: 'is_hot',
+      component: 'Checkbox',
+      defaultValue: false,
+      label: '热销',
+      colProps: {
+        span: 8,
+      },
+    },
+    {
+      field: 'is_recommend',
+      component: 'Checkbox',
+      defaultValue: false,
+      label: '推荐',
+      colProps: {
+        span: 8,
+      },
+    },
+    {
+      label: '商品状态',
+      field: 'status',
+      defaultValue: 1,
+      component: 'Select',
+      colProps: {
+        span: 12,
+      },
+      componentProps: {
+        options: getDictOptions(DICT_TYPE.PRODUCT_STATUS) as any,
+      },
+    },
+
+
   ],
+  //Tab2
   [
     {
-      label: '编号',
-      field: 'id',
-      show: false,
-      component: 'Input',
-    }
+      label: '库存预警',
+      field: 'stock_warning_num',
+      component: 'InputNumber',
+      defaultValue: 0,
+      colProps: {
+        span: 12,
+      },
+    },
+    {
+      label: '库存扣减类型',
+      field: 'stock_deduction_type',
+      helpMessage: ['付款减库存: 买家提交订单，扣减库存数量，可能存在恶意占用库存风险。商品参加“拼团”活动时，默认为付款减库存。', '拍下减库存: 买家支付成功扣减库存数量，可能存在超卖风险。可以设置人工处理超卖订单。商品参加“砍价”活动时，默认为拍下减库存'],
+      component: 'RadioGroup',
+      defaultValue: 1,
+      colProps: {
+        span: 12,
+      },
+      componentProps: {
+        options: [
+          {
+            label: '付款减库存',
+            value: 1,
+          },
+          {
+            label: '拍下减库存',
+            value: 2,
+          },
+
+        ],
+      },
+    },
+    {
+      field: 'is_stock_visible',
+      component: 'Checkbox',
+      defaultValue: true,
+      label: '显示库存',
+    },
+    {
+      label: '规格类型',
+      field: 'is_spec',
+      component: 'RadioGroup',
+      defaultValue: 0,
+      colProps: {
+        span: 12,
+      },
+      componentProps: {
+        options: [
+          {
+            label: '单规格',
+            value: 0,
+          },
+          {
+            label: '多规格',
+            value: 1,
+          },
+        ],
+      },
+    },
+    {
+      label: '规格模版',
+      field: 'spec_template_id',
+      component: 'ApiSelect',
+      colProps: {
+        span: 12,
+      },
+      componentProps: {
+        api: listSimpleTag,
+        labelField: 'title',
+        valueField: 'id',
+        onChange: (e, v) => {
+          console.log('ApiSelect====>:', e, v);
+        },
+      },
+      ifShow: ({ values }) => {
+        return values.is_spec == 1;
+      },
+    },
   ],
   [
     {
