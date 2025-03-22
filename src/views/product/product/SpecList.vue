@@ -129,7 +129,7 @@ function optionsChange() {
   <div class="p-2 my-1 bg-gray:10 hover:bg-gray:20" v-for="spec in specs">
     <div class="mb-2">
       <div class="mb-1"><span>规格名称:  </span><span>{{ spec.title }}</span> <Button class="ml-10" type="primary" danger size="small" @click="deleteSpec(spec)" >删除规格</Button> </div>
-      <span>规格类型: </span><Select size="small" class="w-30" v-model:value="spec.type"><SelectOption :value="1">文字</SelectOption> <SelectOption :value="3">图片</SelectOption></Select>
+      <span>展示样式: </span><Select size="small" class="w-30" v-model:value="spec.type"><SelectOption :value="1">文字</SelectOption> <SelectOption :value="3">图片</SelectOption></Select>
     </div>
     <div class="mb-1 text-red-4">请点击选择规则值</div>
     <div class="flex justify-between mx-4">
