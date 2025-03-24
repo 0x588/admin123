@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import {onMounted, ref} from "vue";
+import {onMounted, ref, toRaw} from "vue";
 import {ProductSpec} from "@/api/product/product";
 import {Button, CheckableTag, Modal, Select, SelectOption} from 'ant-design-vue';
 import PicUpload from "@/components/Upload/src/PicUpload.vue";
@@ -35,9 +35,9 @@ onMounted(()=>{
     type:1,
     show_image: false,
     values: [
-      {id: 1, title: '红色', pitch_on:false},
-      {id: 2, title: '蓝色', pitch_on:false},
-      {id: 3, title: '绿色', pitch_on:false},
+      {id: 31, title: '红色', pitch_on:false},
+      {id: 32, title: '蓝色', pitch_on:false},
+      {id: 33, title: '绿色', pitch_on:false},
     ]
   })
   specs.value?.push({
@@ -46,9 +46,9 @@ onMounted(()=>{
     type:1,
     show_image: false,
     values: [
-      {id: 1, title: '红色', pitch_on:false},
-      {id: 2, title: '蓝色', pitch_on:false},
-      {id: 3, title: '绿色', pitch_on:false},
+      {id: 41, title: 'A', pitch_on:false},
+      {id: 42, title: 'B', pitch_on:false},
+      {id: 43, title: 'C', pitch_on:false},
     ]
   })
   console.log(props.options)
@@ -114,11 +114,22 @@ function addSpecValue(v: any) {
 }
 
 function dataChanged() {
-  emit('change', specs.value)
+  emit('change', toRaw(specs.value))
 }
 
 function optionsChange() {
-  emit('options-change', specs.value)
+  let ret:ProductSpec[] = []
+  toRaw(specs.value).forEach((v)=>{
+    if (v.values && v.values?.length > 0) {
+      let values = v.values.filter((v) => v.pitch_on)
+      if (values.length > 0) {
+        let spec = {...v}
+        spec.values = values
+        ret.push(spec)
+      }
+    }
+  })
+  emit('options-change', ret)
 }
 
 </script>

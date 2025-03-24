@@ -1,7 +1,7 @@
 <template>
   <div>
       <template v-if="fileList.length">
-        <div @click.stop="openUploadModal">
+        <div @click.stop="openPreviewModal">
           <Image :width="30" :preview="false" :src="fileList[0].url"></Image>
         </div>
       </template>

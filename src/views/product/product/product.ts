@@ -440,3 +440,60 @@ export const tabsFormSchema: FormSchema[][] = [
     }
   ],
 ]
+
+
+export const skuColumns: BasicColumn[] = [
+  {
+    title: '图片',
+    dataIndex: 'picture',
+    width: 20,
+  },
+  {
+    title: '销售价(元)',
+    editRow: true,
+    dataIndex: 'price',
+    width: 40,
+  },
+  {
+    title: '市场价(元)',
+    editRow: true,
+    dataIndex: 'market_price',
+    width: 40,
+  },
+  {
+    title: '成本价(元)',
+    editRow: true,
+    dataIndex: 'cost_price',
+    width: 40,
+  },
+  {
+    title: '库存',
+    editRow: true,
+    dataIndex: 'stock',
+    width: 40,
+  },
+  {
+    title: '重量(kg)',
+    editRow: true,
+    dataIndex: 'weight',
+    width: 40,
+  },
+  {
+    title: '体积(m³)',
+    editRow: true,
+    dataIndex: 'volume',
+    width: 40,
+  },
+  {
+    title: '商品编码',
+    editRow: true,
+    dataIndex: 'sku_no',
+    width: 40,
+  },
+  {
+    title: '商品条码',
+    editRow: true,
+    dataIndex: 'bar_code',
+    width: 40,
+  },
+]

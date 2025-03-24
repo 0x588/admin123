@@ -28,6 +28,24 @@ export interface ProductSpec {
   values?: ProductSpecValue[]
 }
 
+export interface ProductSkuVo {
+  id?: number
+  product_id?: number
+  name?: string
+  picture?: string[]
+  price: number
+  market_price: number
+  cost_price: number
+  stock: number
+  sku_no?: string
+  bar_code?: string
+  weight?: number
+  volume?: number
+  data?: string
+  is_default?: boolean
+  items?: any
+}
+
 export function getProductPage(params:ProductPageReqVO) {
   return defHttp.get({ url: '/product/product/page', params })
 }

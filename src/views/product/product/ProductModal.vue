@@ -6,9 +6,10 @@ import { useMessage } from '@/hooks/web/useMessage'
 import {BasicForm, useForm, UseFormReturnType} from '@/components/Form'
 import { BasicModal, useModalInner } from '@/components/Modal'
 import {tabsFormSchema} from "@/views/product/product/product";
-import {createProduct, ProductVO, updateProduct} from "@/api/product/product";
+import {createProduct, ProductSkuVo, ProductVO, updateProduct} from "@/api/product/product";
 import {omit} from "lodash-es";
 import SpecList from "@/views/product/product/SpecList.vue";
+import SkuList from "@/views/product/product/SkuList.vue";
 
 
 defineOptions({ name: 'ProductModal' })
@@ -76,6 +77,42 @@ async function handleSubmit() {
   }
 }
 
+function specChanged(v: any) {
+  console.log(v)
+}
+
+let skuList = ref<ProductSkuVo[]>([])
+
+function specOptionsChanged(v: any) {
+  console.log(v)
+  let arr = v.reduce((acc, curr) => {
+    const result:any = [];
+    acc.forEach(a => {
+      curr.values.forEach(b => {
+        result.push([...a, {...b, pid:curr.id, pname:curr.title}]);
+      });
+    });
+    return result;
+  }, [[]]);
+  console.log(arr);
+  skuList.value = arr.map((v:any)=>{
+    let obj:ProductSkuVo = {
+      stock: 0,
+      price: 0,
+      cost_price: 0,
+      market_price: 0,
+      sku_no: '',
+      bar_code: '',
+      weight: 0,
+      volume: 0,
+      picture: [],
+    }
+    obj.data = v.map(item => item.id).join('-');
+    obj.items = v;
+    return obj
+  })
+  console.log(skuList.value)
+}
 </script>
 
 <template>
@@ -89,7 +126,8 @@ async function handleSubmit() {
       >
         <BasicForm @register="item.Form[0]"/>
         <template v-if="item.key == 'tabs1'">
-          <SpecList></SpecList>
+          <SpecList @options-change="specOptionsChanged" @change="specChanged"></SpecList>
+          <SkuList :data-list="skuList"></SkuList>
         </template>
       </TabPane>
     </Tabs>
