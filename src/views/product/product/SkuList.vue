@@ -1,20 +1,27 @@
 <script lang="ts" setup>
 import { useI18n } from '@/hooks/web/useI18n'
-import { useMessage } from '@/hooks/web/useMessage'
-import { IconEnum } from '@/enums/appEnum'
-import {BasicColumn, BasicTable, TableAction, useTable} from '@/components/Table'
+import {
+  ActionItem,
+  BasicColumn,
+  BasicTable,
+  EditRecordRow,
+  TableAction,
+  useTable
+} from '@/components/Table'
 import {ProductSkuVo} from "@/api/product/product";
 import {skuColumns} from "@/views/product/product/product";
-import {ref, watch} from "vue";
-import {isEqual} from "lodash-es";
-import ImageUpload from "@/components/Upload/src/components/ImageUpload.vue";
+import {ref, toRaw, watch} from "vue";
+import {cloneDeep, isEqual} from "lodash-es";
 import {uploadApi} from "@/api/sys/upload";
 import PicUpload from "@/components/Upload/src/PicUpload.vue";
+import {Input, InputNumber, Button} from 'ant-design-vue';
+import HeaderCell from "@/components/Table/src/components/HeaderCell.vue";
+
 
 defineOptions({ name: 'SkuList' })
 
 const { t } = useI18n()
-const { createMessage } = useMessage()
+const currentEditKeyRef = ref('');
 
 const props = defineProps({
   dataList: {
@@ -22,12 +29,13 @@ const props = defineProps({
     default:[]
   },
 })
+const emit = defineEmits(['change']);
 
 let data = ref<ProductSkuVo[]>([])
+let modifiedData: ProductSkuVo[] = []
 
 
-
-const [registerTable, { reload, setColumns }] = useTable({
+const [registerTable, { setTableData, setColumns }] = useTable({
   title: '商品属性',
   dataSource: data,
   columns: skuColumns,
@@ -64,17 +72,66 @@ watch(
       setColumns(skuColumns)
     }
     data.value = value
+    modifiedData = cloneDeep(value)
   },
   { deep: true},
 );
 
-async function handleDelete(record: Recordable) {
-  createMessage.success(t('common.delSuccessText'))
-  reload()
+function handleEdit(record: EditRecordRow) {
+  currentEditKeyRef.value = record.key;
+  record.onEdit?.(true);
 }
 
-async function handleEdit(record: Recordable) {
-  record.onEdit?.(true);
+function handleCancel(record: EditRecordRow) {
+  currentEditKeyRef.value = '';
+  record.onEdit?.(false, false);
+}
+
+async function handleSave(record: EditRecordRow) {
+  const valid = await record.onValid?.();
+  if (valid) {
+    try {
+      let rowData = cloneDeep(record.editValueRefs);
+      const pass = await record.onEdit?.(false, true);
+      if (pass) {
+        currentEditKeyRef.value = '';
+      }
+      let ret = modifiedData.map((item) => {
+        if (item.data == record.data) {
+            return Object.assign(item, rowData);
+        }
+        return item;
+      })
+      emit('change', ret)
+    } catch (error) {
+    }
+  } else {
+  }
+}
+
+function createActions(record: EditRecordRow): ActionItem[] {
+  if (!record.editable) {
+    return [
+      {
+        label: '编辑',
+        disabled: currentEditKeyRef.value ? currentEditKeyRef.value !== record.key : false,
+        onClick: handleEdit.bind(null, record),
+      },
+    ];
+  }
+  return [
+    {
+      label: '保存',
+      onClick: handleSave.bind(null, record),
+    },
+    {
+      label: '取消',
+      popConfirm: {
+        title: '是否取消编辑',
+        confirm: handleCancel.bind(null, record),
+      },
+    },
+  ];
 }
 
 function getSpecValue(items: any, pid: any) {
@@ -87,11 +144,93 @@ function getSpecValue(items: any, pid: any) {
   return result
 }
 
+let batchProductSku = ref({
+  picture: [],
+  price: '',
+  market_price: '',
+  cost_price: '',
+  stock: '',
+  sku_no: '',
+  bar_code: '',
+  weight: '',
+  volume: '',
+})
+
+function clearBatchProductSku() {
+  batchProductSku.value = {
+    picture: [],
+    price: '',
+    market_price: '',
+    cost_price: '',
+    stock: '',
+    sku_no: '',
+    bar_code: '',
+    weight: '',
+    volume: '',
+  }
+}
+
+function setBatchProductSku() {
+  console.log(batchProductSku.value)
+  data.value.forEach((item) => {
+    if (batchProductSku.value.picture.length > 0) {
+      item.picture = batchProductSku.value.picture
+    }
+    if (batchProductSku.value.market_price !== '' && batchProductSku.value.market_price !== undefined) {
+      item.market_price = Number(batchProductSku.value.market_price)
+    }
+    if (batchProductSku.value.price !== '' && batchProductSku.value.price !== undefined) {
+      item.price = Number(batchProductSku.value.price)
+    }
+    if (batchProductSku.value.cost_price !== '' && batchProductSku.value.cost_price !== undefined) {
+      item.cost_price = Number(batchProductSku.value.cost_price)
+    }
+    if (batchProductSku.value.stock !== '' && batchProductSku.value.stock !== undefined) {
+      item.stock = Number(batchProductSku.value.stock)
+    }
+    if (batchProductSku.value.weight !== '' && batchProductSku.value.weight !== undefined) {
+      item.weight = Number(batchProductSku.value.weight)
+    }
+    if (batchProductSku.value.volume !== '' && batchProductSku.value.volume !== undefined) {
+      item.volume = Number(batchProductSku.value.volume)
+    }
+    if (batchProductSku.value.sku_no.length > 0) {
+      item.sku_no = batchProductSku.value.sku_no
+    }
+    if (batchProductSku.value.bar_code.length > 0) {
+      item.bar_code = batchProductSku.value.bar_code
+    }
+  })
+  console.log(data.value)
+  setTableData(data.value)
+}
+
 </script>
 
 <template>
   <div class="flex">
     <BasicTable  @register="registerTable">
+      <template #headerCell="{ column }">
+        <template v-if="['sku_no', 'bar_code'].includes(column.key as string)">
+          <div>{{column.title}}</div>
+          <Input v-model:value="batchProductSku[column.key as string]" size="small"></Input>
+        </template>
+        <template v-else-if="['price', 'market_price', 'cost_price', 'stock', 'weight', 'volume'].includes(column.key as string)">
+          <div>{{column.title}}</div>
+          <InputNumber v-model:value="batchProductSku[column.key as string]" size="small"></InputNumber>
+        </template>
+        <template v-else-if="column.key === 'picture'">
+          <div>{{column.title}}</div>
+          <PicUpload v-model:value="batchProductSku.picture" :max-number="1" :api="uploadApi"></PicUpload>
+        </template>
+        <template v-else-if="column.key === 'action'">
+          <div>{{column.title}}</div>
+          <div class="flex justify-center"><Button @click="setBatchProductSku" type="link" danger>批量设置</Button> <Button @click="clearBatchProductSku" type="link" danger>清空</Button></div>
+        </template>
+        <template v-else>
+          <HeaderCell :column="column" />
+        </template>
+      </template>
       <template #bodyCell="{ column, record }">
         <template v-if="column.key == 'specValue'">
           {{getSpecValue(record.items, column.dataIndex)}}
@@ -100,22 +239,7 @@ function getSpecValue(items: any, pid: any) {
           <PicUpload v-model:value="record.picture" :max-number="1" :api="uploadApi"></PicUpload>
         </template>
         <template v-if="column.key === 'action'">
-          <TableAction
-            :actions="[
-              { icon: IconEnum.EDIT, label: t('action.edit'), auth: 'system:dict:update', onClick: handleEdit.bind(null, record) },
-              {
-                icon: IconEnum.DELETE,
-                danger: true,
-                label: t('action.delete'),
-                auth: 'system:dict:delete',
-                popConfirm: {
-                  title: t('common.delMessage'),
-                  placement: 'left',
-                  confirm: handleDelete.bind(null, record),
-                },
-              },
-            ]"
-          />
+          <TableAction :actions="createActions(record)" />
         </template>
       </template>
     </BasicTable>

@@ -82,6 +82,7 @@ function deleteSpec(v: any) {
     onOk() {
       specs.value.splice(specs.value.indexOf(v), 1)
       dataChanged()
+      optionsChange()
     },
   })
 }

@@ -113,6 +113,10 @@ function specOptionsChanged(v: any) {
   })
   console.log(skuList.value)
 }
+
+function skuChanged(v: any) {
+  console.log(v)
+}
 </script>
 
 <template>
@@ -127,7 +131,7 @@ function specOptionsChanged(v: any) {
         <BasicForm @register="item.Form[0]"/>
         <template v-if="item.key == 'tabs1'">
           <SpecList @options-change="specOptionsChanged" @change="specChanged"></SpecList>
-          <SkuList :data-list="skuList"></SkuList>
+          <SkuList :data-list="skuList" @change="skuChanged"></SkuList>
         </template>
       </TabPane>
     </Tabs>

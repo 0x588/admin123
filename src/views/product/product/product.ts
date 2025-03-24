@@ -452,18 +452,21 @@ export const skuColumns: BasicColumn[] = [
     title: '销售价(元)',
     editRow: true,
     dataIndex: 'price',
+    editComponent: 'InputNumber',
     width: 40,
   },
   {
     title: '市场价(元)',
     editRow: true,
     dataIndex: 'market_price',
+    editComponent: 'InputNumber',
     width: 40,
   },
   {
     title: '成本价(元)',
     editRow: true,
     dataIndex: 'cost_price',
+    editComponent: 'InputNumber',
     width: 40,
   },
   {
@@ -471,17 +474,20 @@ export const skuColumns: BasicColumn[] = [
     editRow: true,
     dataIndex: 'stock',
     width: 40,
+    editComponent: 'InputNumber',
   },
   {
     title: '重量(kg)',
     editRow: true,
     dataIndex: 'weight',
+    editComponent: 'InputNumber',
     width: 40,
   },
   {
     title: '体积(m³)',
     editRow: true,
     dataIndex: 'volume',
+    editComponent: 'InputNumber',
     width: 40,
   },
   {
