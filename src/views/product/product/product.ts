@@ -3,12 +3,16 @@ import { useRender } from '@/components/Table'
 import { DICT_TYPE, getDictOptions } from '@/utils/dict'
 import {listSimpleCate} from "@/api/product/cate";
 import {listSimpleTag} from "@/api/product/tag";
-import {reactive} from "vue";
+import {h, reactive} from "vue";
 import {listSimpleSpecTemplate} from "@/api/product/spec-temp";
+import {uploadApi} from "@/api/sys/upload";
+import {Ueditor} from "@/components/Ueditor";
+import {listSimpleAttribute} from "@/api/product/attribute";
 
 export let productModel = reactive({
   is_spec: false,
   spec_template_id: 0,
+  attribute_id: 0,
 })
 
 export const columns: BasicColumn[] = [
@@ -438,19 +442,65 @@ export const tabsFormSchema: FormSchema[][] = [
   ],
   [
     {
-      label: '编号',
-      field: 'id',
-      show: false,
+      label: '幻灯片',
+      field: 'covers',
+      component: 'ImageUpload',
+      helpMessage: '建议尺寸：800*800像素，第一张图片将作为商品主图',
+      required: true,
+      componentProps: {
+        api: uploadApi,
+        accept: ['png', 'jpeg', 'jpg'],
+        maxSize:5,
+        maxNumber: 5,
+      },
+    },
+    {
+      label: '展示视频',
+      field: 'video_url',
+      component: 'Upload',
+      helpMessage: '建议时长 9-30 秒、视频宽高和商品图一致',
+      componentProps: {
+        api: uploadApi,
+        accept: ['mp4', 'mov'],
+        maxSize:100,
+        maxNumber: 1,
+      },
+    },
+    {
+      field: 'intro',
       component: 'Input',
-    }
+      label: '商品描述',
+      rules: [{ required: true }],
+      render: ({ model, field }) => {
+        return h(Ueditor, {
+          modelValue: model[field],
+          editorId: 'editor-' + field,
+          onChange: (value: string) => {
+            model[field] = value;
+          },
+        });
+      },
+    },
   ],
   [
     {
-      label: '编号',
-      field: 'id',
-      show: false,
-      component: 'Input',
-    }
+      label: '商品参数模版',
+      field: 'attribute_id',
+      component: 'ApiSelect',
+      colProps: {
+        span: 12,
+      },
+      componentProps: {
+        api: listSimpleAttribute,
+        labelField: 'title',
+        valueField: 'id',
+        onChange: (e, v) => {
+          if (v) {
+            productModel.attribute_id = v.value
+          }
+        },
+      },
+    },
   ],
 ]
 

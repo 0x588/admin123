@@ -31,6 +31,10 @@ export interface CommonAttributePageReqVO {
 //   return defHttp.get({ url: '/product/cate/tree-simple' })
 // }
 
+export function listSimpleAttribute() {
+  return defHttp.get({ url: '/product/common-attribute/list' })
+}
+
 export function getCommonAttributePage(params: CommonAttributePageReqVO) {
   return defHttp.get({ url: '/product/common-attribute/page', params })
 }
