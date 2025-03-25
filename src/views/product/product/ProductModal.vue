@@ -6,10 +6,17 @@ import { useMessage } from '@/hooks/web/useMessage'
 import {BasicForm, useForm, UseFormReturnType} from '@/components/Form'
 import { BasicModal, useModalInner } from '@/components/Modal'
 import {tabsFormSchema, productModel} from "@/views/product/product/product";
-import {createProduct, ProductSkuVo, ProductVO, updateProduct} from "@/api/product/product";
+import {
+  createProduct,
+  ProductSkuVo,
+  ProductSpecVo,
+  ProductVO,
+  updateProduct
+} from "@/api/product/product";
 import {omit} from "lodash-es";
 import SpecList from "@/views/product/product/SpecList.vue";
 import SkuList from "@/views/product/product/SkuList.vue";
+import {getCommonSpecsByTemplateId} from "@/api/product/spec-temp";
 
 
 defineOptions({ name: 'ProductModal' })
@@ -77,11 +84,23 @@ async function handleSubmit() {
   }
 }
 
+let specList = ref<ProductSpecVo[]>([])
+
 function specChanged(v: any) {
   console.log(v)
 }
 
-let skuList = ref<ProductSkuVo[]>([])
+let skuList = ref<ProductSkuVo[]>([ {
+  stock: 0,
+  price: 0,
+  cost_price: 0,
+  market_price: 0,
+  sku_no: '',
+  bar_code: '',
+  weight: 0,
+  volume: 0,
+  picture: [],
+}])
 
 function specOptionsChanged(v: any) {
   console.log(v)
@@ -120,6 +139,31 @@ function skuChanged(v: any) {
 
 watch(()=>productModel.is_spec, (v)=>{
     console.log("11", v)
+  if (!v) {
+    skuList.value = [
+      {
+        stock: 0,
+        price: 0,
+        cost_price: 0,
+        market_price: 0,
+        sku_no: '',
+        bar_code: '',
+        weight: 0,
+        volume: 0,
+        picture: [],
+      }
+    ]
+  } else {
+
+  }
+})
+
+watch(()=>productModel.spec_template_id,  async (v) => {
+  if (v) {
+    let res = await getCommonSpecsByTemplateId(v)
+    specList.value = res
+    console.log(specList.value)
+  }
 })
 </script>
 
@@ -134,7 +178,7 @@ watch(()=>productModel.is_spec, (v)=>{
       >
         <BasicForm @register="item.Form[0]"/>
         <template v-if="item.key == 'tabs1'">
-          <SpecList v-if="productModel.is_spec"  @options-change="specOptionsChanged" @change="specChanged"></SpecList>
+          <SpecList v-if="productModel.is_spec" :spec-list="specList"  @options-change="specOptionsChanged" @change="specChanged"></SpecList>
           <SkuList :data-list="skuList" @change="skuChanged"></SkuList>
         </template>
       </TabPane>

@@ -10,7 +10,7 @@ import {
 } from '@/components/Table'
 import {ProductSkuVo} from "@/api/product/product";
 import {skuColumns} from "@/views/product/product/product";
-import {ref, toRaw, watch} from "vue";
+import {onMounted, ref, toRaw, watch} from "vue";
 import {cloneDeep, isEqual} from "lodash-es";
 import {uploadApi} from "@/api/sys/upload";
 import PicUpload from "@/components/Upload/src/PicUpload.vue";
@@ -72,10 +72,36 @@ watch(
       setColumns(skuColumns)
     }
     data = toRaw(value)
+    currentEditKeyRef.value = '';
     setTableData(data)
   },
   {deep: true},
 );
+
+onMounted(() => {
+  console.log(props.dataList)
+  if (props.dataList.length > 0) {
+    let columns: BasicColumn[] = []
+    let items = props.dataList[0].items
+    if (items && items.length > 0) {
+      items.forEach(item => {
+        columns.push({
+          title: item.pname,
+          dataIndex: item.pid,
+          width: 30,
+          key: 'specValue',
+        })
+      })
+    }
+    columns.push(...skuColumns)
+    setColumns(columns)
+  } else {
+    setColumns(skuColumns)
+  }
+  data = toRaw(props.dataList)
+  currentEditKeyRef.value = '';
+  setTableData(data)
+})
 
 function handleEdit(record: EditRecordRow) {
   currentEditKeyRef.value = record.key;
@@ -189,15 +215,21 @@ function setBatchProductSku() {
 <template>
   <div class="flex">
     <BasicTable @register="registerTable">
-      <template #headerCell="{ column }">
+      <template v-if="dataList.length > 1" #headerCell="{ column }">
         <template v-if="['sku_no', 'bar_code'].includes(column.key as string)">
           <div>{{ column.title }}</div>
           <Input v-model:value="batchProductSku[column.key as string]" size="small"></Input>
         </template>
         <template
-          v-else-if="['price', 'market_price', 'cost_price', 'stock', 'weight', 'volume'].includes(column.key as string)">
+          v-else-if="['price', 'market_price', 'cost_price','weight', 'volume'].includes(column.key as string)">
           <div>{{ column.title }}</div>
-          <InputNumber :min="0" v-model:value="batchProductSku[column.key as string]"
+          <InputNumber :precision="2" :min="0" v-model:value="batchProductSku[column.key as string]"
+                       size="small"></InputNumber>
+        </template>
+        <template
+          v-else-if="['stock'].includes(column.key as string)">
+          <div>{{ column.title }}</div>
+          <InputNumber :precision="0" :min="0" v-model:value="batchProductSku[column.key as string]"
                        size="small"></InputNumber>
         </template>
         <template v-else-if="column.key === 'picture'">

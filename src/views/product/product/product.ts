@@ -4,6 +4,7 @@ import { DICT_TYPE, getDictOptions } from '@/utils/dict'
 import {listSimpleCate} from "@/api/product/cate";
 import {listSimpleTag} from "@/api/product/tag";
 import {reactive} from "vue";
+import {listSimpleSpecTemplate} from "@/api/product/spec-temp";
 
 export let productModel = reactive({
   is_spec: false,
@@ -421,11 +422,13 @@ export const tabsFormSchema: FormSchema[][] = [
         span: 12,
       },
       componentProps: {
-        api: listSimpleTag,
+        api: listSimpleSpecTemplate,
         labelField: 'title',
         valueField: 'id',
         onChange: (e, v) => {
-          productModel.spec_template_id = v.value
+          if (v) {
+            productModel.spec_template_id = v.value
+          }
         },
       },
       ifShow: ({ values }) => {
@@ -464,9 +467,10 @@ export const skuColumns: BasicColumn[] = [
     dataIndex: 'price',
     editComponent: 'InputNumber',
     editComponentProps:{
+      precision:2,
       min:0,
     },
-    width: 40,
+    width: 50,
   },
   {
     title: '市场价(元)',
@@ -474,9 +478,10 @@ export const skuColumns: BasicColumn[] = [
     dataIndex: 'market_price',
     editComponent: 'InputNumber',
     editComponentProps:{
+      precision:2,
       min:0,
     },
-    width: 40,
+    width: 50,
   },
   {
     title: '成本价(元)',
@@ -484,9 +489,10 @@ export const skuColumns: BasicColumn[] = [
     dataIndex: 'cost_price',
     editComponent: 'InputNumber',
     editComponentProps:{
+      precision:2,
       min:0,
     },
-    width: 40,
+    width: 50,
   },
   {
     title: '库存',
@@ -495,6 +501,7 @@ export const skuColumns: BasicColumn[] = [
     width: 40,
     editComponent: 'InputNumber',
     editComponentProps:{
+      precision:0,
       min:0,
     },
   },
@@ -504,9 +511,10 @@ export const skuColumns: BasicColumn[] = [
     dataIndex: 'weight',
     editComponent: 'InputNumber',
     editComponentProps:{
+      precision:2,
       min:0,
     },
-    width: 40,
+    width: 50,
   },
   {
     title: '体积(m³)',
@@ -514,9 +522,10 @@ export const skuColumns: BasicColumn[] = [
     dataIndex: 'volume',
     editComponent: 'InputNumber',
     editComponentProps:{
+      precision:2,
       min:0,
     },
-    width: 40,
+    width: 50,
   },
   {
     title: '商品编码',

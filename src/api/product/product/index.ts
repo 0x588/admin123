@@ -22,7 +22,7 @@ export interface ProductSpecValue {
   pitch_on: boolean
 }
 
-export interface ProductSpec {
+export interface ProductSpecVo {
   id: number
   title: string
   type: number

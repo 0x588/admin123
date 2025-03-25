@@ -31,3 +31,12 @@ export function updateCommonSpecTemp(params: CommonSpecTemplateVO) {
 export function deleteCommonSpecTemp(id: number) {
   return defHttp.delete({ url: `/product/common-spec-template/delete?id=${id}` })
 }
+
+export function listSimpleSpecTemplate() {
+  return defHttp.get({ url: '/product/common-spec-template/list' })
+}
+
+export function getCommonSpecsByTemplateId(id: number) {
+  return defHttp.get({ url: `/product/common-spec-by-template-id/list?id=${id}` })
+}
+

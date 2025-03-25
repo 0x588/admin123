@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
-import {onMounted, ref, toRaw} from "vue";
-import {ProductSpec} from "@/api/product/product";
+import {onMounted, ref, toRaw, watch} from "vue";
+import {ProductSpecVo} from "@/api/product/product";
 import {Button, CheckableTag, Modal, Select, SelectOption} from 'ant-design-vue';
 import PicUpload from "@/components/Upload/src/PicUpload.vue";
 import {uploadApi} from "@/api/sys/upload";
@@ -17,42 +17,53 @@ import SpecModal from "@/views/product/product/SpecModal.vue";
 
 defineOptions({ name: 'SpecList' })
 const props = defineProps({
-  options: {
-    type: Array,
-    default: () => []
+  specList: {
+    type: Array<ProductSpecVo>,
+    default: []
   },
 })
 const emit = defineEmits(['options-change', 'change']);
 
-let specs = ref<ProductSpec[]>([])
+let specs = ref<ProductSpecVo[]>([])
 
 const [register, { openModal: openModal }] = useModal();
 
-onMounted(()=>{
-  specs.value?.push({
-    id: 3,
-    title: '颜色',
-    type:1,
-    show_image: false,
-    values: [
-      {id: 31, title: '红色', pitch_on:false},
-      {id: 32, title: '蓝色', pitch_on:false},
-      {id: 33, title: '绿色', pitch_on:false},
-    ]
-  })
-  specs.value?.push({
-    id: 4,
-    title: 'jjj',
-    type:1,
-    show_image: false,
-    values: [
-      {id: 41, title: 'A', pitch_on:false},
-      {id: 42, title: 'B', pitch_on:false},
-      {id: 43, title: 'C', pitch_on:false},
-    ]
-  })
-  console.log(props.options)
-  console.log(specs.value)
+// onMounted(()=>{
+//   specs.value?.push({
+//     id: 3,
+//     title: '颜色',
+//     type:1,
+//     show_image: false,
+//     values: [
+//       {id: 31, title: '红色', pitch_on:false},
+//       {id: 32, title: '蓝色', pitch_on:false},
+//       {id: 33, title: '绿色', pitch_on:false},
+//     ]
+//   })
+//   specs.value?.push({
+//     id: 4,
+//     title: 'jjj',
+//     type:1,
+//     show_image: false,
+//     values: [
+//       {id: 41, title: 'A', pitch_on:false},
+//       {id: 42, title: 'B', pitch_on:false},
+//       {id: 43, title: 'C', pitch_on:false},
+//     ]
+//   })
+//   console.log(specs.value)
+// })
+
+watch(() => props.specList, (newValue, oldValue) => {
+    specs.value = toRaw(newValue)
+    dataChanged()
+    optionsChange()
+})
+
+onMounted(() => {
+  specs.value = toRaw(props.specList)
+  dataChanged()
+  optionsChange()
 })
 
 function  createSpec() {
@@ -119,7 +130,7 @@ function dataChanged() {
 }
 
 function optionsChange() {
-  let ret:ProductSpec[] = []
+  let ret:ProductSpecVo[] = []
   toRaw(specs.value).forEach((v)=>{
     if (v.values && v.values?.length > 0) {
       let values = v.values.filter((v) => v.pitch_on)
