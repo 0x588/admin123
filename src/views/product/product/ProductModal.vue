@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import { ref, unref } from 'vue'
+import {ref, unref, watch} from 'vue'
 import { useI18n } from '@/hooks/web/useI18n'
 import { Tabs } from 'ant-design-vue';
 import { useMessage } from '@/hooks/web/useMessage'
 import {BasicForm, useForm, UseFormReturnType} from '@/components/Form'
 import { BasicModal, useModalInner } from '@/components/Modal'
-import {tabsFormSchema} from "@/views/product/product/product";
+import {tabsFormSchema, productModel} from "@/views/product/product/product";
 import {createProduct, ProductSkuVo, ProductVO, updateProduct} from "@/api/product/product";
 import {omit} from "lodash-es";
 import SpecList from "@/views/product/product/SpecList.vue";
@@ -117,6 +117,10 @@ function specOptionsChanged(v: any) {
 function skuChanged(v: any) {
   console.log(v)
 }
+
+watch(()=>productModel.is_spec, (v)=>{
+    console.log("11", v)
+})
 </script>
 
 <template>
@@ -130,7 +134,7 @@ function skuChanged(v: any) {
       >
         <BasicForm @register="item.Form[0]"/>
         <template v-if="item.key == 'tabs1'">
-          <SpecList @options-change="specOptionsChanged" @change="specChanged"></SpecList>
+          <SpecList v-if="productModel.is_spec"  @options-change="specOptionsChanged" @change="specChanged"></SpecList>
           <SkuList :data-list="skuList" @change="skuChanged"></SkuList>
         </template>
       </TabPane>

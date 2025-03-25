@@ -3,6 +3,12 @@ import { useRender } from '@/components/Table'
 import { DICT_TYPE, getDictOptions } from '@/utils/dict'
 import {listSimpleCate} from "@/api/product/cate";
 import {listSimpleTag} from "@/api/product/tag";
+import {reactive} from "vue";
+
+export let productModel = reactive({
+  is_spec: false,
+  spec_template_id: 0,
+})
 
 export const columns: BasicColumn[] = [
   {
@@ -390,6 +396,7 @@ export const tabsFormSchema: FormSchema[][] = [
       colProps: {
         span: 12,
       },
+
       componentProps: {
         options: [
           {
@@ -401,6 +408,9 @@ export const tabsFormSchema: FormSchema[][] = [
             value: 1,
           },
         ],
+        onChange: (e) => {
+          productModel.is_spec = e.target.value
+        }
       },
     },
     {
@@ -415,7 +425,7 @@ export const tabsFormSchema: FormSchema[][] = [
         labelField: 'title',
         valueField: 'id',
         onChange: (e, v) => {
-          console.log('ApiSelect====>:', e, v);
+          productModel.spec_template_id = v.value
         },
       },
       ifShow: ({ values }) => {
@@ -453,6 +463,9 @@ export const skuColumns: BasicColumn[] = [
     editRow: true,
     dataIndex: 'price',
     editComponent: 'InputNumber',
+    editComponentProps:{
+      min:0,
+    },
     width: 40,
   },
   {
@@ -460,6 +473,9 @@ export const skuColumns: BasicColumn[] = [
     editRow: true,
     dataIndex: 'market_price',
     editComponent: 'InputNumber',
+    editComponentProps:{
+      min:0,
+    },
     width: 40,
   },
   {
@@ -467,6 +483,9 @@ export const skuColumns: BasicColumn[] = [
     editRow: true,
     dataIndex: 'cost_price',
     editComponent: 'InputNumber',
+    editComponentProps:{
+      min:0,
+    },
     width: 40,
   },
   {
@@ -475,12 +494,18 @@ export const skuColumns: BasicColumn[] = [
     dataIndex: 'stock',
     width: 40,
     editComponent: 'InputNumber',
+    editComponentProps:{
+      min:0,
+    },
   },
   {
     title: '重量(kg)',
     editRow: true,
     dataIndex: 'weight',
     editComponent: 'InputNumber',
+    editComponentProps:{
+      min:0,
+    },
     width: 40,
   },
   {
@@ -488,6 +513,9 @@ export const skuColumns: BasicColumn[] = [
     editRow: true,
     dataIndex: 'volume',
     editComponent: 'InputNumber',
+    editComponentProps:{
+      min:0,
+    },
     width: 40,
   },
   {

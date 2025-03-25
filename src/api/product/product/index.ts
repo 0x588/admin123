@@ -4,6 +4,8 @@ export interface ProductVO {
   id?: number
   name: string
   picture: string
+  is_spec: boolean
+  spec_template_id: number
   sort: number
   status: number
 }

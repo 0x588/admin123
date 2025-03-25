@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useI18n } from '@/hooks/web/useI18n'
+import {useI18n} from '@/hooks/web/useI18n'
 import {
   ActionItem,
   BasicColumn,
@@ -18,22 +18,22 @@ import {Input, InputNumber, Button} from 'ant-design-vue';
 import HeaderCell from "@/components/Table/src/components/HeaderCell.vue";
 
 
-defineOptions({ name: 'SkuList' })
+defineOptions({name: 'SkuList'})
 
-const { t } = useI18n()
+const {t} = useI18n()
 const currentEditKeyRef = ref('');
 
 const props = defineProps({
   dataList: {
     type: Array<ProductSkuVo>,
-    default:[]
+    default: []
   },
 })
 const emit = defineEmits(['change']);
 
-let data :ProductSkuVo[] = []
+let data: ProductSkuVo[] = []
 
-const [registerTable, { setTableData, setColumns }] = useTable({
+const [registerTable, {setTableData, setColumns}] = useTable({
   title: '商品属性',
   dataSource: data,
   columns: skuColumns,
@@ -54,16 +54,18 @@ watch(
   (value, oldValue) => {
     if (isEqual(value, oldValue)) return;
     if (value.length > 0) {
-      let columns:BasicColumn[] = []
+      let columns: BasicColumn[] = []
       let items = value[0].items
-      items.forEach(item => {
-        columns.push( {
-          title: item.pname,
-          dataIndex: item.pid,
-          width: 30,
-          key: 'specValue',
+      if (items && items.length > 0) {
+        items.forEach(item => {
+          columns.push({
+            title: item.pname,
+            dataIndex: item.pid,
+            width: 30,
+            key: 'specValue',
+          })
         })
-      })
+      }
       columns.push(...skuColumns)
       setColumns(columns)
     } else {
@@ -72,7 +74,7 @@ watch(
     data = toRaw(value)
     setTableData(data)
   },
-  { deep: true},
+  {deep: true},
 );
 
 function handleEdit(record: EditRecordRow) {
@@ -96,7 +98,7 @@ async function handleSave(record: EditRecordRow) {
       }
       data.forEach((item) => {
         if (item.data == record.data) {
-            return Object.assign(item, rowData);
+          return Object.assign(item, rowData);
         }
         return item;
       })
@@ -186,37 +188,43 @@ function setBatchProductSku() {
 
 <template>
   <div class="flex">
-    <BasicTable  @register="registerTable">
+    <BasicTable @register="registerTable">
       <template #headerCell="{ column }">
         <template v-if="['sku_no', 'bar_code'].includes(column.key as string)">
-          <div>{{column.title}}</div>
+          <div>{{ column.title }}</div>
           <Input v-model:value="batchProductSku[column.key as string]" size="small"></Input>
         </template>
-        <template v-else-if="['price', 'market_price', 'cost_price', 'stock', 'weight', 'volume'].includes(column.key as string)">
-          <div>{{column.title}}</div>
-          <InputNumber v-model:value="batchProductSku[column.key as string]" size="small"></InputNumber>
+        <template
+          v-else-if="['price', 'market_price', 'cost_price', 'stock', 'weight', 'volume'].includes(column.key as string)">
+          <div>{{ column.title }}</div>
+          <InputNumber :min="0" v-model:value="batchProductSku[column.key as string]"
+                       size="small"></InputNumber>
         </template>
         <template v-else-if="column.key === 'picture'">
-          <div>{{column.title}}</div>
-          <PicUpload v-model:value="batchProductSku.picture" :max-number="1" :api="uploadApi"></PicUpload>
+          <div>{{ column.title }}</div>
+          <PicUpload v-model:value="batchProductSku.picture" :max-number="1"
+                     :api="uploadApi"></PicUpload>
         </template>
         <template v-else-if="column.key === 'action'">
-          <div>{{column.title}}</div>
-          <div class="flex justify-center"><Button @click="setBatchProductSku" type="link" danger>批量设置</Button> <Button @click="clearBatchProductSku" type="link" danger>清空</Button></div>
+          <div>{{ column.title }}</div>
+          <div class="flex justify-center">
+            <Button @click="setBatchProductSku" type="link" danger>批量设置</Button>
+            <Button @click="clearBatchProductSku" type="link" danger>清空</Button>
+          </div>
         </template>
         <template v-else>
-          <HeaderCell :column="column" />
+          <HeaderCell :column="column"/>
         </template>
       </template>
       <template #bodyCell="{ column, record }">
         <template v-if="column.key == 'specValue'">
-          {{getSpecValue(record.items, column.dataIndex)}}
+          {{ getSpecValue(record.items, column.dataIndex) }}
         </template>
         <template v-if="column.key == 'picture'">
           <PicUpload v-model:value="record.picture" :max-number="1" :api="uploadApi"></PicUpload>
         </template>
         <template v-if="column.key === 'action'">
-          <TableAction :actions="createActions(record)" />
+          <TableAction :actions="createActions(record)"/>
         </template>
       </template>
     </BasicTable>
