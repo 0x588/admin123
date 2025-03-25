@@ -31,9 +31,7 @@ const props = defineProps({
 })
 const emit = defineEmits(['change']);
 
-let data = ref<ProductSkuVo[]>([])
-let modifiedData: ProductSkuVo[] = []
-
+let data :ProductSkuVo[] = []
 
 const [registerTable, { setTableData, setColumns }] = useTable({
   title: '商品属性',
@@ -71,8 +69,8 @@ watch(
     } else {
       setColumns(skuColumns)
     }
-    data.value = value
-    modifiedData = cloneDeep(value)
+    data = toRaw(value)
+    setTableData(data)
   },
   { deep: true},
 );
@@ -96,13 +94,13 @@ async function handleSave(record: EditRecordRow) {
       if (pass) {
         currentEditKeyRef.value = '';
       }
-      let ret = modifiedData.map((item) => {
+      data.forEach((item) => {
         if (item.data == record.data) {
             return Object.assign(item, rowData);
         }
         return item;
       })
-      emit('change', ret)
+      emit('change', data)
     } catch (error) {
     }
   } else {
@@ -171,38 +169,17 @@ function clearBatchProductSku() {
 }
 
 function setBatchProductSku() {
-  console.log(batchProductSku.value)
-  data.value.forEach((item) => {
-    if (batchProductSku.value.picture.length > 0) {
-      item.picture = batchProductSku.value.picture
-    }
-    if (batchProductSku.value.market_price !== '' && batchProductSku.value.market_price !== undefined) {
-      item.market_price = Number(batchProductSku.value.market_price)
-    }
-    if (batchProductSku.value.price !== '' && batchProductSku.value.price !== undefined) {
-      item.price = Number(batchProductSku.value.price)
-    }
-    if (batchProductSku.value.cost_price !== '' && batchProductSku.value.cost_price !== undefined) {
-      item.cost_price = Number(batchProductSku.value.cost_price)
-    }
-    if (batchProductSku.value.stock !== '' && batchProductSku.value.stock !== undefined) {
-      item.stock = Number(batchProductSku.value.stock)
-    }
-    if (batchProductSku.value.weight !== '' && batchProductSku.value.weight !== undefined) {
-      item.weight = Number(batchProductSku.value.weight)
-    }
-    if (batchProductSku.value.volume !== '' && batchProductSku.value.volume !== undefined) {
-      item.volume = Number(batchProductSku.value.volume)
-    }
-    if (batchProductSku.value.sku_no.length > 0) {
-      item.sku_no = batchProductSku.value.sku_no
-    }
-    if (batchProductSku.value.bar_code.length > 0) {
-      item.bar_code = batchProductSku.value.bar_code
+  data.forEach((item) => {
+    for (const kk in batchProductSku.value) {
+      if (kk === 'picture' && batchProductSku.value.picture.length > 0) {
+        item.picture = batchProductSku.value.picture
+      } else if (batchProductSku.value[kk] !== '' && batchProductSku.value[kk] !== undefined) {
+        item[kk] = batchProductSku.value[kk]
+      }
     }
   })
-  console.log(data.value)
-  setTableData(data.value)
+  setTableData(data)
+  emit('change', data)
 }
 
 </script>
