@@ -397,7 +397,7 @@ export const tabsFormSchema: FormSchema[][] = [
       label: '规格类型',
       field: 'is_spec',
       component: 'RadioGroup',
-      defaultValue: 0,
+      required:true,
       colProps: {
         span: 12,
       },

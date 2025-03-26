@@ -7,11 +7,8 @@ import {BasicForm, useForm, UseFormReturnType} from '@/components/Form'
 import { BasicModal, useModalInner } from '@/components/Modal'
 import {tabsFormSchema, productModel} from "@/views/product/product/product";
 import {
-  createProduct,
   ProductSkuVo,
   ProductSpecVo,
-  ProductVO,
-  updateProduct
 } from "@/api/product/product";
 import {omit} from "lodash-es";
 import SpecList from "@/views/product/product/SpecList.vue";
@@ -19,6 +16,7 @@ import SkuList from "@/views/product/product/SkuList.vue";
 import {getCommonSpecsByTemplateId} from "@/api/product/spec-temp";
 import AttributeList from "@/views/product/product/AttributeList.vue";
 import {AttributeValue, getCommonAttribute} from "@/api/product/attribute";
+import {deepMerge} from "@/utils";
 
 
 defineOptions({ name: 'ProductModal' })
@@ -44,6 +42,7 @@ function createSchema() {
     tabsForms.value.push({
       key: tabsKey,
       tab: tabTitle[i],
+      forceRender: true,
       Form: useForm({
         labelWidth: 120,
         baseColProps: { span: 24 },
@@ -69,43 +68,56 @@ const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data
 })
 
 async function handleSubmit() {
+  let lastKey = '';
   try {
-    const values = {}
+    let values: Recordable = {};
     setModalProps({ confirmLoading: true })
-    if (unref(isUpdate))
-      await updateProduct(values as ProductVO)
-    else
-      await createProduct(values as ProductVO)
+    for (const item of tabsForms.value) {
+      lastKey = item.key;
+      const { validate, getFieldsValue } = item.Form[1];
+      console.log('11', validate, getFieldsValue)
+      await validate();
+      console.log('22')
+      // 表单已支持多级key
+      values = deepMerge(getFieldsValue(), values);
+      console.log(values)
+    }
+    if (values.is_spec) {
+      if (specList.length <= 0 || skuList.value.length <= 0 ) {
+        activeKey.value = 'tabs1';
+        createMessage.error('请填写规格信息,并选择规格值');
+        return
+      }
+      values.spec_list = specList
+    } else {
 
+    }
+    values.sku_list = skuList.value
+
+    console.log('submit values: ', values);
     closeModal()
     emit('success')
-    createMessage.success(t('common.saveSuccessText'))
-  }
-  finally {
+    createMessage.success('提交成功');
+  } catch (e) {
+    // 验证失败或出错，切换到对应标签页
+    activeKey.value = lastKey;
+    console.log(e);
+  } finally {
     setModalProps({ confirmLoading: false })
   }
 }
 
-let specList = ref<ProductSpecVo[]>([])
+let specList:ProductSpecVo[] = []
+let specTempList = ref<ProductSpecVo[]>([])
 
 function specChanged(v: any) {
-  console.log(v)
 }
 
-let skuList = ref<ProductSkuVo[]>([ {
-  stock: 0,
-  price: 0,
-  cost_price: 0,
-  market_price: 0,
-  sku_no: '',
-  bar_code: '',
-  weight: 0,
-  volume: 0,
-  picture: [],
-}])
+let skuList = ref<ProductSkuVo[]>([])
 
 function specOptionsChanged(v: any) {
   console.log(v)
+  specList = v
   let arr = v.reduce((acc, curr) => {
     const result:any = [];
     acc.forEach(a => {
@@ -132,7 +144,6 @@ function specOptionsChanged(v: any) {
     obj.items = v;
     return obj
   })
-  console.log(skuList.value)
 }
 
 function skuChanged(v: any) {
@@ -163,8 +174,8 @@ watch(()=>productModel.is_spec, (v)=>{
 watch(()=>productModel.spec_template_id,  async (v) => {
   if (v) {
     let res = await getCommonSpecsByTemplateId(v)
-    specList.value = res
-    console.log(specList.value)
+    specTempList.value = res
+    console.log(specTempList.value)
   }
 })
 
@@ -194,7 +205,7 @@ watch( attributes, (v) => {
       >
         <BasicForm @register="item.Form[0]"/>
         <template v-if="item.key == 'tabs1'">
-          <SpecList v-if="productModel.is_spec" :spec-list="specList"  @options-change="specOptionsChanged" @change="specChanged"></SpecList>
+          <SpecList v-if="productModel.is_spec" :spec-list="specTempList"  @options-change="specOptionsChanged" @change="specChanged"></SpecList>
           <SkuList :data-list="skuList" @change="skuChanged"></SkuList>
         </template>
         <template v-else-if="item.key == 'tabs3'">

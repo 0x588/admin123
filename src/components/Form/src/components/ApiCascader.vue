@@ -4,7 +4,7 @@
     :options="options"
     :load-data="loadData"
     :multiple="multiple"
-    :show-checked-strategy="Cascader.SHOW_CHILD"
+    :show-checked-strategy="Cascader.SHOW_PARENT"
     change-on-select
     @change="handleChange"
     :displayRender="handleRenderDisplay"
@@ -208,7 +208,7 @@
 
   const handleRenderDisplay: CascaderProps['displayRender'] = ({ labels, selectedOptions }) => {
     if (props.multiple) {
-      return labels.join(' / ');
+      return labels.at(-1);
     }
     if (unref(emitData).length === selectedOptions?.length) {
       return labels.join(' / ');

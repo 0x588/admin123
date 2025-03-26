@@ -13,6 +13,7 @@ import {
 } from "@/api/product/spec";
 import {useModal} from "@/components/Modal";
 import SpecModal from "@/views/product/product/SpecModal.vue";
+import {isEqual} from "lodash-es";
 
 
 defineOptions({ name: 'SpecList' })
@@ -55,6 +56,7 @@ const [register, { openModal: openModal }] = useModal();
 // })
 
 watch(() => props.specList, (newValue, oldValue) => {
+    if (isEqual(newValue, oldValue)) return;
     specs.value = toRaw(newValue)
     dataChanged()
     optionsChange()
