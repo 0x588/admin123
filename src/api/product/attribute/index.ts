@@ -6,6 +6,7 @@ export interface AttributeValue {
   title: string,
   type: number,
   value?: string,
+  data?: string,
   sort: number,
 }
 

@@ -590,3 +590,27 @@ export const skuColumns: BasicColumn[] = [
     width: 40,
   },
 ]
+
+export const tableValuesColumns: BasicColumn[] = [
+  {
+    title: 'ID',
+    dataIndex: 'id',
+    width: 20,
+    ifShow: false,
+  },
+  {
+    title: '参数名称',
+    dataIndex: 'title',
+    width: 120,
+  },
+  {
+    title: '参数值',
+    dataIndex: 'data',
+    width: 220,
+  },
+  {
+    title: '排序',
+    dataIndex: 'sort',
+    width: 50,
+  },
+]

@@ -17,6 +17,8 @@ import {omit} from "lodash-es";
 import SpecList from "@/views/product/product/SpecList.vue";
 import SkuList from "@/views/product/product/SkuList.vue";
 import {getCommonSpecsByTemplateId} from "@/api/product/spec-temp";
+import AttributeList from "@/views/product/product/AttributeList.vue";
+import {AttributeValue, getCommonAttribute} from "@/api/product/attribute";
 
 
 defineOptions({ name: 'ProductModal' })
@@ -165,6 +167,20 @@ watch(()=>productModel.spec_template_id,  async (v) => {
     console.log(specList.value)
   }
 })
+
+let attributes = ref<AttributeValue[]>([])
+watch(()=>productModel.attribute_id,  async (v)=>{
+  if (v) {
+    let res = await getCommonAttribute(v)
+    attributes.value = res.values
+    console.log(res)
+  }
+})
+
+watch( attributes, (v) => {
+  console.log("aaa", v)
+})
+
 </script>
 
 <template>
@@ -180,6 +196,9 @@ watch(()=>productModel.spec_template_id,  async (v) => {
         <template v-if="item.key == 'tabs1'">
           <SpecList v-if="productModel.is_spec" :spec-list="specList"  @options-change="specOptionsChanged" @change="specChanged"></SpecList>
           <SkuList :data-list="skuList" @change="skuChanged"></SkuList>
+        </template>
+        <template v-else-if="item.key == 'tabs3'">
+         <AttributeList v-model:values="attributes"></AttributeList>
         </template>
       </TabPane>
     </Tabs>
