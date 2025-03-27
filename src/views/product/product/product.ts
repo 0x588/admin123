@@ -116,7 +116,7 @@ export const tabsFormSchema: FormSchema[][] = [
       componentProps: {
         api: listSimpleTag,
         labelField: 'title',
-        valueField: 'id',
+        valueField: 'title',
         modes: 'tags',
       },
     },

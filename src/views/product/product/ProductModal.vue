@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {ref, unref, watch} from 'vue'
+import {ref, toRaw, unref, watch} from 'vue'
 import { useI18n } from '@/hooks/web/useI18n'
 import { Tabs } from 'ant-design-vue';
 import { useMessage } from '@/hooks/web/useMessage'
@@ -7,8 +7,9 @@ import {BasicForm, useForm, UseFormReturnType} from '@/components/Form'
 import { BasicModal, useModalInner } from '@/components/Modal'
 import {tabsFormSchema, productModel} from "@/views/product/product/product";
 import {
+  createProduct,
   ProductSkuVo,
-  ProductSpecVo,
+  ProductSpecVo, ProductVO, updateProduct,
 } from "@/api/product/product";
 import {omit} from "lodash-es";
 import SpecList from "@/views/product/product/SpecList.vue";
@@ -92,8 +93,20 @@ async function handleSubmit() {
     } else {
 
     }
-    values.sku_list = skuList.value
+    values.sku_list = toRaw(skuList.value)
 
+    let selectAttributes:AttributeValue[] = []
+    attributes.value.forEach((v)=>{
+      if (v.title && v.data) {
+        selectAttributes.push(toRaw(v))
+      }
+    })
+    values.attributes = selectAttributes
+    if (unref(isUpdate)) {
+      updateProduct(values as ProductVO)
+    } else {
+      createProduct(values as ProductVO)
+    }
     console.log('submit values: ', values);
     closeModal()
     emit('success')
@@ -186,10 +199,6 @@ watch(()=>productModel.attribute_id,  async (v)=>{
     attributes.value = res.values
     console.log(res)
   }
-})
-
-watch( attributes, (v) => {
-  console.log("aaa", v)
 })
 
 </script>
