@@ -103,9 +103,9 @@ async function handleSubmit() {
     })
     values.attributes = selectAttributes
     if (unref(isUpdate)) {
-      updateProduct(values as ProductVO)
+      await updateProduct(values as ProductVO)
     } else {
-      createProduct(values as ProductVO)
+      await createProduct(values as ProductVO)
     }
     console.log('submit values: ', values);
     closeModal()
