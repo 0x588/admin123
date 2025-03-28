@@ -93,7 +93,17 @@ async function handleSubmit() {
     } else {
 
     }
-    values.sku_list = toRaw(skuList.value)
+
+    let tmpSku:any = []
+    skuList.value.forEach(item => {
+      let pic = ''
+      if (item.picture && item.picture.length > 0) {
+        pic = item.picture[0]
+      }
+      let name = item.items.map((v:any)=>v.title).join(' ')
+      tmpSku.push(Object.assign(item, {picture: pic, name: name}))
+    })
+    values.sku_list = tmpSku
 
     let selectAttributes:AttributeValue[] = []
     attributes.value.forEach((v)=>{

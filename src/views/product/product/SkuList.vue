@@ -210,6 +210,11 @@ function setBatchProductSku() {
   emit('change', data)
 }
 
+function handlePictureChange(record: EditRecordRow, index: number) {
+  data[index].picture = record.picture
+  emit('change', data)
+}
+
 </script>
 
 <template>
@@ -248,12 +253,12 @@ function setBatchProductSku() {
           <HeaderCell :column="column"/>
         </template>
       </template>
-      <template #bodyCell="{ column, record }">
+      <template #bodyCell="{ column, record, index }">
         <template v-if="column.key == 'specValue'">
           {{ getSpecValue(record.items, column.dataIndex) }}
         </template>
         <template v-if="column.key == 'picture'">
-          <PicUpload v-model:value="record.picture" :max-number="1" :api="uploadApi"></PicUpload>
+          <PicUpload v-model:value="record.picture" :max-number="1" :api="uploadApi" @change="handlePictureChange(record, index)"></PicUpload>
         </template>
         <template v-if="column.key === 'action'">
           <TableAction :actions="createActions(record)"/>

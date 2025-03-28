@@ -122,10 +122,9 @@ export const tabsFormSchema: FormSchema[][] = [
     },
     {
       field: 'delivery_type',
-      component: 'RadioGroup',
+      component: 'CheckboxGroup',
       label: '配送方式',
       required: true,
-      defaultValue: 1,
       componentProps: {
         options: [
           {
