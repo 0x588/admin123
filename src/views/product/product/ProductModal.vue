@@ -7,7 +7,7 @@ import {BasicForm, useForm, UseFormReturnType} from '@/components/Form'
 import { BasicModal, useModalInner } from '@/components/Modal'
 import {tabsFormSchema, productModel} from "@/views/product/product/product";
 import {
-  createProduct,
+  createProduct, getProduct,
   ProductSkuVo,
   ProductSpecVo, ProductVO, updateProduct,
 } from "@/api/product/product";
@@ -58,14 +58,22 @@ function createSchema() {
 createSchema()
 
 const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
-  console.log("1234")
   activeKey.value = 'tabs0'
   setModalProps({ confirmLoading: false })
   isUpdate.value = !!data?.isUpdate
-  // if (unref(isUpdate)) {
-  //   const res = await getProduct(data.record.id)
-  //   // setFieldsValue({ ...res })
-  // }
+  if (unref(isUpdate)) {
+    const res = await getProduct(data.record.id)
+    console.log(res)
+    for (const item of tabsForms.value) {
+      const { setFieldsValue } = item.Form[1];
+      setFieldsValue({ ...res })
+    }
+  } else {
+    for (const item of tabsForms.value) {
+      const { resetFields } = item.Form[1];
+      resetFields()
+    }
+  }
 })
 
 async function handleSubmit() {
@@ -78,7 +86,7 @@ async function handleSubmit() {
       const { validate, getFieldsValue } = item.Form[1];
       console.log('11', validate, getFieldsValue)
       await validate();
-      console.log('22')
+      console.log('22', getFieldsValue())
       // 表单已支持多级key
       values = deepMerge(getFieldsValue(), values);
       console.log(values)

@@ -3,7 +3,13 @@ import { defHttp } from '@/utils/http/axios'
 export interface ProductVO {
   id?: number
   name: string
-  picture: string
+  sketch: string
+  cateIds: number[]
+  tags?: string[]
+  delivery_type: number[]
+  shipping_type: number
+  shipping_fee: number
+  shipping_fee_id: number
   is_spec: boolean
   spec_template_id: number
   sort: number
