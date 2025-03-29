@@ -413,7 +413,9 @@ export const tabsFormSchema: FormSchema[][] = [
           },
         ],
         onChange: (e) => {
-          productModel.is_spec = e.target.value
+          if (e.target){
+             productModel.is_spec = e.target.value
+          }
         }
       },
     },

@@ -24,48 +24,16 @@ const props = defineProps({
   },
 })
 const emit = defineEmits(['options-change', 'change']);
-
 let specs = ref<ProductSpecVo[]>([])
-
 const [register, { openModal: openModal }] = useModal();
-
-// onMounted(()=>{
-//   specs.value?.push({
-//     id: 3,
-//     title: '颜色',
-//     type:1,
-//     show_image: false,
-//     values: [
-//       {id: 31, title: '红色', pitch_on:false},
-//       {id: 32, title: '蓝色', pitch_on:false},
-//       {id: 33, title: '绿色', pitch_on:false},
-//     ]
-//   })
-//   specs.value?.push({
-//     id: 4,
-//     title: 'jjj',
-//     type:1,
-//     show_image: false,
-//     values: [
-//       {id: 41, title: 'A', pitch_on:false},
-//       {id: 42, title: 'B', pitch_on:false},
-//       {id: 43, title: 'C', pitch_on:false},
-//     ]
-//   })
-//   console.log(specs.value)
-// })
 
 watch(() => props.specList, (newValue, oldValue) => {
     if (isEqual(newValue, oldValue)) return;
     specs.value = toRaw(newValue)
-    dataChanged()
-    optionsChange()
 })
 
 onMounted(() => {
   specs.value = toRaw(props.specList)
-  dataChanged()
-  optionsChange()
 })
 
 function  createSpec() {
@@ -95,7 +63,6 @@ function deleteSpec(v: any) {
     onOk() {
       specs.value.splice(specs.value.indexOf(v), 1)
       dataChanged()
-      optionsChange()
     },
   })
 }
@@ -132,18 +99,19 @@ function dataChanged() {
 }
 
 function optionsChange() {
-  let ret:ProductSpecVo[] = []
-  toRaw(specs.value).forEach((v)=>{
-    if (v.values && v.values?.length > 0) {
-      let values = v.values.filter((v) => v.pitch_on)
-      if (values.length > 0) {
-        let spec = {...v}
-        spec.values = values
-        ret.push(spec)
-      }
-    }
-  })
-  emit('options-change', ret)
+  // let ret:ProductSpecVo[] = []
+  // toRaw(specs.value).forEach((v)=>{
+  //   if (v.values && v.values?.length > 0) {
+  //     let values = v.values.filter((v) => v.pitch_on)
+  //     if (values.length > 0) {
+  //       let spec = {...v}
+  //       spec.values = values
+  //       ret.push(spec)
+  //     }
+  //   }
+  // })
+  // emit('options-change', ret)
+  dataChanged()
 }
 
 </script>

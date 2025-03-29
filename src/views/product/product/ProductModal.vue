@@ -68,10 +68,18 @@ const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data
       const { setFieldsValue } = item.Form[1];
       setFieldsValue({ ...res })
     }
+    productModel.is_spec = res.is_spec
     if (res.attributes)
       attributes.value = res.attributes
-    if (res.sku_list)
-      skuList.value = res.sku_list
+    if (res.sku_list) {
+      let tmpSku = res.sku_list.map(item => {
+        item.picture = [item.picture]
+        return item
+      })
+      skuList.value = tmpSku
+    }
+    specChanged(res.spec_list)
+
 
   } else {
     for (const item of tabsForms.value) {
@@ -97,12 +105,12 @@ async function handleSubmit() {
       console.log(values)
     }
     if (values.is_spec) {
-      if (specList.length <= 0 || skuList.value.length <= 0 ) {
+      if (specTempList.value.length <= 0 || skuList.value.length <= 0 ) {
         activeKey.value = 'tabs1';
         createMessage.error('请填写规格信息,并选择规格值');
         return
       }
-      values.spec_list = specList
+      values.spec_list = toRaw(specTempList.value)
     } else {
 
     }
@@ -143,17 +151,28 @@ async function handleSubmit() {
   }
 }
 
-let specList:ProductSpecVo[] = []
 let specTempList = ref<ProductSpecVo[]>([])
-
-function specChanged(v: any) {
-}
-
 let skuList = ref<ProductSkuVo[]>([])
 
+function specChanged(v: any) {
+  specTempList.value = v
+  console.log("spec change", v)
+  let selectedSpecs:ProductSpecVo[] = []
+  specTempList.value.forEach((v)=>{
+    if (v.values && v.values?.length > 0) {
+      let values = v.values.filter((v) => v.pitch_on)
+      if (values.length > 0) {
+        let spec = {...v}
+        spec.values = values
+        selectedSpecs.push(spec)
+      }
+    }
+  })
+  specOptionsChanged(selectedSpecs)
+}
+
+let oldSkuList:ProductSkuVo[] = []
 function specOptionsChanged(v: any) {
-  console.log(v)
-  specList = v
   let arr = v.reduce((acc, curr) => {
     const result:any = [];
     acc.forEach(a => {
@@ -163,8 +182,10 @@ function specOptionsChanged(v: any) {
     });
     return result;
   }, [[]]);
-  console.log(arr);
+  console.log("arr", arr);
+  oldSkuList = toRaw(skuList.value)
   skuList.value = arr.map((v:any)=>{
+    let data = v.map((item:any) => item.id).join('-');
     let obj:ProductSkuVo = {
       stock: 0,
       price: 0,
@@ -176,10 +197,18 @@ function specOptionsChanged(v: any) {
       volume: 0,
       picture: [],
     }
+    if (oldSkuList.length > 0) {
+      let old = oldSkuList.find((item)=>item.data == data)
+      if (old) {
+        obj = old
+      }
+    }
     obj.data = v.map(item => item.id).join('-');
     obj.items = v;
     return obj
   })
+  console.log("old",oldSkuList)
+  console.log("new",skuList.value)
 }
 
 function skuChanged(v: any) {
@@ -237,7 +266,7 @@ watch(()=>productModel.attribute_id,  async (v)=>{
       >
         <BasicForm @register="item.Form[0]"/>
         <template v-if="item.key == 'tabs1'">
-          <SpecList v-if="productModel.is_spec" :spec-list="specTempList"  @options-change="specOptionsChanged" @change="specChanged"></SpecList>
+          <SpecList v-if="productModel.is_spec" :spec-list="specTempList"  @change="specChanged"></SpecList>
           <SkuList :data-list="skuList" @change="skuChanged"></SkuList>
         </template>
         <template v-else-if="item.key == 'tabs3'">
