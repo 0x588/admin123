@@ -68,6 +68,11 @@ const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data
       const { setFieldsValue } = item.Form[1];
       setFieldsValue({ ...res })
     }
+    if (res.attributes)
+      attributes.value = res.attributes
+    if (res.sku_list)
+      skuList.value = res.sku_list
+
   } else {
     for (const item of tabsForms.value) {
       const { resetFields } = item.Form[1];
