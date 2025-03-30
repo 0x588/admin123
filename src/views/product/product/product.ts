@@ -63,8 +63,9 @@ export const columns: BasicColumn[] = [
   },
   {
     title: '排序',
+    edit: true,
     dataIndex: 'sort',
-    width: 50,
+    width: 130,
   },
 ]
 

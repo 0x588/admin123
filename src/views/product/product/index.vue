@@ -4,7 +4,7 @@ import { useMessage } from '@/hooks/web/useMessage'
 import { useModal } from '@/components/Modal'
 import { IconEnum } from '@/enums/appEnum'
 import { BasicTable, TableAction, useTable } from '@/components/Table'
-import {deleteProduct, getProductPage} from "@/api/product/product";
+import {deleteProduct, getProductPage, modifyProduct} from "@/api/product/product";
 import {columns, searchFormSchema} from "@/views/product/product/product";
 import ProductModal from "@/views/product/product/ProductModal.vue";
 import { Tag } from 'ant-design-vue';
@@ -52,11 +52,19 @@ function handleSuc() {
   reload()
 }
 
+function handleEditEnd({ record, index, key, value }: Recordable) {
+  reload()
+  return false;
+}
+
+async function beforeEditSubmit({ record, index, key, value }) {
+  return await modifyProduct({id: record.id, key: key, value: value})
+}
 </script>
 
 <template>
   <div class="flex">
-    <BasicTable  @register="registerTable">
+    <BasicTable  @register="registerTable" @edit-end="handleEditEnd" :beforeEditSubmit="beforeEditSubmit">
       <template #toolbar>
         <a-button type="primary" :pre-icon="IconEnum.ADD" @click="handleCreate">
           {{ t('action.create') }}

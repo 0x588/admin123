@@ -73,3 +73,7 @@ export function updateProduct(params: ProductVO) {
 export function deleteProduct(id: number) {
   return defHttp.delete({ url: `/product/product/delete?id=${id}` })
 }
+
+export function modifyProduct(params: any) {
+  return defHttp.post({ url: '/product/product/modify', params })
+}
