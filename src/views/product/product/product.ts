@@ -17,29 +17,48 @@ export let productModel = reactive({
 
 export const columns: BasicColumn[] = [
   {
-    title: '服务名称',
-    dataIndex: 'name',
-    width: 120,
+    title: 'ID',
+    dataIndex: 'id',
+    width: 60,
   },
   {
     title: '广告封面',
-    dataIndex: 'cover',
-    width: 80,
+    dataIndex: 'picture',
+    width: 60,
     customRender: ({ text }) => {
       return useRender.renderImg(text)
     },
   },
   {
-    title: '服务说明',
-    dataIndex: 'explain',
-    width: 250,
+    title: '商品名称',
+    dataIndex: 'name',
+  },
+  {
+    title: '销售价',
+    dataIndex: 'price',
+    width: 80,
+  },
+  {
+    title: '实际销量',
+    dataIndex: 'real_sales',
+    width: 80,
+  },
+  {
+    title: '库存',
+    dataIndex: 'stock',
+    width: 80,
+  },
+  {
+    title: '商品分类',
+    dataIndex: 'cate_id',
+    width: 100,
   },
   {
     title: '状态',
     dataIndex: 'status',
     width: 60,
     customRender: ({ text }) => {
-      return useRender.renderDict(text, DICT_TYPE.COMMON_STATUS)
+      return useRender.renderDict(text, DICT_TYPE.PRODUCT_STATUS)
     },
   },
   {

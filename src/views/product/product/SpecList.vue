@@ -124,7 +124,7 @@ function optionsChange() {
       <div class="mb-1"><span>规格名称:  </span><span>{{ spec.title }}</span> <Button class="ml-10" type="primary" danger size="small" @click="deleteSpec(spec)" >删除规格</Button> </div>
       <span>展示样式: </span><Select size="small" class="w-30" v-model:value="spec.type"><SelectOption :value="1">文字</SelectOption> <SelectOption :value="3">图片</SelectOption></Select>
     </div>
-    <div class="mb-1 text-red-4">请点击选择规则值</div>
+    <div class="mb-1"><span class="text-red-4 mr-3">请点击选择规则值</span> <Button size="small" @click="addSpecValue(spec)">增加规格值</Button> </div>
     <div class="flex justify-between mx-4">
       <div class="flex align-center items-center">
         <div class="bg-danger-500" v-for="value in spec.values">
@@ -137,7 +137,6 @@ function optionsChange() {
           </div>
         </div>
       </div>
-      <Button size="small" @click="addSpecValue(spec)">增加规格值</Button>
     </div>
   </div>
   <SpecModal @register="register" @success="addSpecSuc"></SpecModal>

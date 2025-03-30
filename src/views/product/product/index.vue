@@ -7,6 +7,7 @@ import { BasicTable, TableAction, useTable } from '@/components/Table'
 import {deleteProduct, getProductPage} from "@/api/product/product";
 import {columns, searchFormSchema} from "@/views/product/product/product";
 import ProductModal from "@/views/product/product/ProductModal.vue";
+import { Tag } from 'ant-design-vue';
 
 defineOptions({ name: 'ProductList' })
 
@@ -62,6 +63,19 @@ function handleSuc() {
         </a-button>
       </template>
       <template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'name'">
+          <div class="whitespace-normal break-wordsi text-left" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">{{record.name}}</div>
+          <div class="flex mt-2">
+            <Tag class="ml-1" color="blue" size="small" v-if="record.is_hot">热门</Tag>
+            <Tag class="ml-1" color="blue" size="small" v-if="record.is_recommend">推荐</Tag>
+            <Tag class="ml-1" color="blue" size="small" v-if="record.is_new">新品</Tag>
+            <Tag class="ml-1" color="blue" size="small" v-if="record.is_spec">多规格</Tag>
+            <Tag class="ml-1" color="blue" size="small" v-if="record.shipping_type === 1">包邮</Tag>
+          </div>
+        </template>
+        <template v-if="column.key === 'cate_id'">
+          {{record.cate.title}}
+        </template>
         <template v-if="column.key === 'action'">
           <TableAction
             :actions="[
