@@ -73,10 +73,28 @@ const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data
       attributes.value = res.attributes
     if (res.sku_list) {
       let tmpSku = res.sku_list.map(item => {
-        item.picture = [item.picture]
+        if (item.picture && item.picture.length > 0) {
+          item.picture = [item.picture]
+        } else {
+          item.picture = []
+        }
         return item
       })
       skuList.value = tmpSku
+    } else {
+      skuList.value = [
+        {
+          stock: 0,
+          price: 0,
+          cost_price: 0,
+          market_price: 0,
+          sku_no: '',
+          bar_code: '',
+          weight: 0,
+          volume: 0,
+          picture: [],
+        }
+      ]
     }
     specChanged(res.spec_list)
 
@@ -121,7 +139,9 @@ async function handleSubmit() {
       if (item.picture && item.picture.length > 0) {
         pic = item.picture[0]
       }
-      let name = item.items.map((v:any)=>v.title).join(' ')
+      var name = ""
+      if (item.items)
+        name = item.items.map((v:any)=>v.title).join(' ')
       tmpSku.push(Object.assign(item, {picture: pic, name: name}))
     })
     values.sku_list = tmpSku
@@ -183,7 +203,9 @@ function specOptionsChanged(v: any) {
     return result;
   }, [[]]);
   console.log("arr", arr);
-  oldSkuList = toRaw(skuList.value)
+  const merged = [...oldSkuList, ...toRaw((skuList.value))];
+  oldSkuList = Array.from(new Map(merged.map(item => [item.data, item])).values()
+  );
   skuList.value = arr.map((v:any)=>{
     let data = v.map((item:any) => item.id).join('-');
     let obj:ProductSkuVo = {
@@ -241,6 +263,7 @@ watch(()=>productModel.spec_template_id,  async (v) => {
     let res = await getCommonSpecsByTemplateId(v)
     specTempList.value = res
     console.log(specTempList.value)
+    specChanged(specTempList.value)
   }
 })
 

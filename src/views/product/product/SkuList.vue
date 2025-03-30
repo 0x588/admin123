@@ -33,7 +33,7 @@ const emit = defineEmits(['change']);
 
 let data: ProductSkuVo[] = []
 
-const [registerTable, {setTableData, setColumns}] = useTable({
+const [registerTable, {reload, setTableData, setColumns}] = useTable({
   title: '商品属性',
   dataSource: data,
   columns: skuColumns,
@@ -74,12 +74,14 @@ watch(
     data = toRaw(value)
     currentEditKeyRef.value = '';
     setTableData(data)
+    reload()
   },
   {deep: true},
 );
 
 onMounted(() => {
   console.log(props.dataList)
+  clearBatchProductSku()
   if (props.dataList.length > 0) {
     let columns: BasicColumn[] = []
     let items = props.dataList[0].items
@@ -218,7 +220,6 @@ function handlePictureChange(record: EditRecordRow, index: number) {
 </script>
 
 <template>
-  <div class="flex">
     <BasicTable @register="registerTable">
       <template v-if="dataList.length > 1" #headerCell="{ column }">
         <template v-if="['sku_no', 'bar_code'].includes(column.key as string)">
@@ -265,5 +266,4 @@ function handlePictureChange(record: EditRecordRow, index: number) {
         </template>
       </template>
     </BasicTable>
-  </div>
 </template>

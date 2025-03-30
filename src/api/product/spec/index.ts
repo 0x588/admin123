@@ -5,8 +5,8 @@ export interface SpecValueVo {
   id?: number,
   title: string,
   sort: number,
-  isTmp?: boolean,
-  specId?: number,
+  is_tmp?: boolean,
+  spec_id?: number,
 }
 
 export interface CommonSpecVO {
@@ -14,7 +14,7 @@ export interface CommonSpecVO {
   type: number
   title: string
   desc: string
-  isTmp: boolean
+  is_tmp: boolean
   sort: number
   status: number
   values?: SpecValueVo[]

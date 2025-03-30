@@ -82,6 +82,6 @@ function handleSuc() {
         </template>
       </template>
     </BasicTable>
-    <ProductModal width="100%"  @register="registerModal" @success="handleSuc()" />
+    <ProductModal width="90%"  @register="registerModal" @success="handleSuc()" />
   </div>
 </template>

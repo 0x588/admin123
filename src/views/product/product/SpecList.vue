@@ -77,8 +77,8 @@ function addSpecValue(v: any) {
     onOK: async (email: string) => {
       let data = {
         title: email,
-        specId: v.id,
-        isTmp: true,
+        spec_id: v.id,
+        is_tmp: true,
     } as SpecValueVo
     let ret = await createCommonSpecValue(data)
       data.id = ret
