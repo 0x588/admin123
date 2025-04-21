@@ -75,6 +75,7 @@ export function getDictObj(dictType: string, value: any) {
 export enum DICT_TYPE {
   USER_TYPE = 'user_type',
   COMMON_STATUS = 'common_status',
+  ORDER_STATUS = 'order_status',
   PRODUCT_STATUS = 'product_status',
   AUTH_TYPE = 'auth_type',
   SPEC_TYPE = 'spec_type',
