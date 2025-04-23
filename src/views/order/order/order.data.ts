@@ -1,8 +1,14 @@
 import type { BasicColumn, FormSchema } from '@/components/Table'
 import { useRender } from '@/components/Table'
 import {DICT_TYPE } from "@/utils/dict";
+import {DescItem} from "@/components/Description";
 
 export const columns: BasicColumn[] = [
+  {
+    title: 'ID',
+    dataIndex: 'id',
+    width: 40,
+  },
   {
     title: '订单号',
     dataIndex: 'order_sn',
@@ -95,3 +101,74 @@ export const searchFormSchema: FormSchema[] = [
     colProps: { span: 8 },
   },
 ]
+
+
+export const productsColumns: BasicColumn[] = [
+  {
+    title: '图片',
+    dataIndex: 'product_picture',
+    width: 60,
+    customRender: ({ text }) => {
+      return useRender.renderImg(text)
+    },
+  },
+  {
+    title: '商品',
+    dataIndex: 'product_name',
+    width: 140,
+  },
+  {
+    title: '售价',
+    dataIndex: 'price',
+    width: 60,
+  },
+  {
+    title: '购买数量',
+    dataIndex: 'num',
+    width: 40,
+  },
+  {
+    title: '总价',
+    dataIndex: 'product_money',
+    width: 60,
+  },
+  {
+    title: '订单状态',
+    dataIndex: 'order_status',
+    width: 40,
+    customRender: ({ text }) => {
+      return useRender.renderDict(text, DICT_TYPE.ORDER_STATUS)
+    },
+  }
+]
+
+export const baseSchema: DescItem[] = [
+  {
+    field: 'order_sn',
+    label: '订单编号',
+  },
+  {
+    field: 'order_type',
+    label: '订单类型',
+  },
+  {
+    field: 'pay_type',
+    label: '付款方式',
+  },
+  {
+    field: 'buyer_id',
+    label: '买家ID',
+  },
+  {
+    field: 'buyer_name',
+    label: '买家昵称',
+  },
+  {
+    field: 'buyer_message',
+    label: '买家备注',
+  },
+  {
+    field: 'seller_memo',
+    label: '卖家备注',
+  }
+];

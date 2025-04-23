@@ -5,6 +5,8 @@ import {useI18n} from "@/hooks/web/useI18n";
 import {getOrderPage, getOrderStatusCount, OrderPageReqVO} from "@/api/order/order";
 import { Tabs } from 'ant-design-vue';
 import {ref} from "vue";
+import {useDrawer} from "@/components/Drawer";
+import DetailDrawer from "@/views/order/order/DetailDrawer.vue";
 
 const { t } = useI18n()
 
@@ -39,9 +41,14 @@ function handleTabChange(tab) {
   reload()
 }
 
-function handleView(record: Recordable) {
+const [registerDrawer, { openDrawer }] = useDrawer();
 
+function handleView(record: Recordable) {
+  openDrawer(true, {
+    orderId: record.id,
+  });
 }
+
 
 </script>
 
@@ -79,5 +86,6 @@ function handleView(record: Recordable) {
         </template>
       </template>
     </BasicTable>
+    <DetailDrawer @register="registerDrawer"/>
   </div>
 </template>
