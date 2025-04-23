@@ -1,8 +1,7 @@
 import { defHttp } from '@/utils/http/axios'
 
 export interface OrderVO {
-  id?: number
-  order_status: number
+  seller_memo?: string
 }
 
 export interface OrderPageReqVO {
@@ -28,8 +27,8 @@ export function getOrder(id: number) {
   return defHttp.get({ url: `/order/get?id=${id}` })
 }
 
-export function updateProduct(params: OrderVO) {
-  return defHttp.put({ url: '/order/update', data: params })
+export function updateOrder(id: number, data: OrderVO) {
+  return defHttp.post({ url: '/order/update', data: {id, data} })
 }
 
 export function deleteOrder(id: number) {

@@ -76,6 +76,7 @@ export enum DICT_TYPE {
   USER_TYPE = 'user_type',
   COMMON_STATUS = 'common_status',
   ORDER_STATUS = 'order_status',
+  PAY_TYPE = 'pay_type',
   PRODUCT_STATUS = 'product_status',
   AUTH_TYPE = 'auth_type',
   SPEC_TYPE = 'spec_type',

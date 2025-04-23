@@ -31,7 +31,10 @@ export const columns: BasicColumn[] = [
   },
   {
     title: '支付方式',
-    dataIndex: 'pay_type',
+    dataIndex: 'payment_type',
+    customRender: ({ text }) => {
+      return useRender.renderDict(text, DICT_TYPE.PAY_TYPE)
+    },
     width: 100,
   },
   {
@@ -169,6 +172,6 @@ export const baseSchema: DescItem[] = [
   },
   {
     field: 'seller_memo',
-    label: '卖家备注',
+    label: '商家备注',
   }
 ];
