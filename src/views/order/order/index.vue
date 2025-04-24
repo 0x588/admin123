@@ -65,7 +65,7 @@ function handleMemo(record: Recordable) {
         message.success('修改成功');
       }
     },
-    inputType: 'Input',
+    inputType: 'InputTextArea',
   });
 }
 

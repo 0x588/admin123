@@ -92,6 +92,7 @@ export const formSchema: FormSchema[] = [
       params: formApiParams,
       labelField: 'name',
       valueField: 'id',
+      alwaysLoad: true,
     },
   },
   {
