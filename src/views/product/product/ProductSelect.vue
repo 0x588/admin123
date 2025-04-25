@@ -33,6 +33,13 @@ watch(()=> props.values, async (value, oldValue) => {
   products.value = ret
 })
 
+onMounted(async () => {
+ if (props.values) {
+   const ret = await getProductByIds(props.values as number[])
+   products.value = ret
+ }
+})
+
 const [registerModal, { openModal }] = useModal()
 
 function openProductSelect() {

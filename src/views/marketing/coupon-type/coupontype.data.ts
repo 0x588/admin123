@@ -39,6 +39,22 @@ export const columns: BasicColumn[] = [
     width: 160,
   },
   {
+    title: '单品券',
+    dataIndex: 'single_type',
+    width: 60,
+    customRender: ({ text }) => {
+      return useRender.renderDict(text, DICT_TYPE.YES_NO)
+    },
+  },
+  {
+    title: '新人券',
+    dataIndex: 'is_new_people',
+    width: 60,
+    customRender: ({ text }) => {
+      return useRender.renderDict(text, DICT_TYPE.YES_NO)
+    },
+  },
+  {
     title: '排序',
     dataIndex: 'sort',
     width: 40,

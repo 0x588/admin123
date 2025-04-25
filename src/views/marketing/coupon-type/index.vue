@@ -1,13 +1,15 @@
 <script lang="ts" setup>
-import { nextTick, onMounted } from 'vue'
-import { columns, searchFormSchema, formApiParam } from './coupontype.data'
+import { onMounted } from 'vue'
+import { columns, searchFormSchema } from './coupontype.data'
 import { useI18n } from '@/hooks/web/useI18n'
 import { useMessage } from '@/hooks/web/useMessage'
 import { useModal } from '@/components/Modal'
 import { IconEnum } from '@/enums/appEnum'
-import {BasicTable, TableAction, useTable} from '@/components/Table'
+import {BasicTable, TableAction, useRender, useTable} from '@/components/Table'
 import CouponTypeModal from "@/views/marketing/coupon-type/CouponTypeModal.vue";
 import {deleteCouponType, getCouponTypePage} from "@/api/market/coupon-type";
+import { Tag } from 'ant-design-vue';
+import {curTimeStatus} from "@/utils/dateUtil";
 
 defineOptions({ name: 'CouponTypeList' })
 
@@ -76,7 +78,19 @@ onMounted(async () => {
         <template v-if="column.key == 'get_type'">
           <div v-if="record.get_type == 0">无限制</div>
           <div v-if="record.get_type == 1">
-
+            <div><span>开始:</span>{{useRender.renderDate(record.get_start_time)}}</div>
+            <div><span>结束:</span>{{useRender.renderDate(record.get_end_time)}}</div>
+            <div><Tag>{{ curTimeStatus(record.get_start_time as number, record.get_end_time as number)}}</Tag></div>
+          </div>
+        </template>
+        <template v-if="column.key == 'validity_type'">
+          <div v-if="record.validity_type == 0">
+            <div><span>开始:</span>{{useRender.renderDate(record.start_time)}}</div>
+            <div><span>结束:</span>{{useRender.renderDate(record.end_time)}}</div>
+            <div><Tag>{{ curTimeStatus(record.start_time as number, record.end_time as number)}}</Tag></div>
+          </div>
+          <div v-if="record.validity_type == 1">
+            <div><span>领取后:</span>{{record.validity_days}}天内有效</div>
           </div>
         </template>
         <template v-if="column.key === 'action'">

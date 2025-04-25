@@ -30,6 +30,18 @@ const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data
   isUpdate.value = !!data?.isUpdate
   if (unref(isUpdate)) {
     const res = await getCouponType(data.record.id)
+    if (res.get_start_time) {
+      res.get_start_time = res.get_start_time * 1000
+    }
+    if (res.get_end_time) {
+      res.get_end_time = res.get_end_time * 1000
+    }
+    if (res.start_time) {
+      res.start_time = res.start_time * 1000
+    }
+    if (res.end_time) {
+      res.end_time = res.end_time * 1000
+    }
     setFieldsValue({ ...res })
   } else {
     if (data?.pid) {
