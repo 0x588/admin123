@@ -1,31 +1,28 @@
 <script lang="ts" setup>
 import { nextTick, onMounted } from 'vue'
 import { columns, searchFormSchema, formApiParam } from './coupontype.data'
-import { handleTree } from '@/utils/tree'
 import { useI18n } from '@/hooks/web/useI18n'
 import { useMessage } from '@/hooks/web/useMessage'
 import { useModal } from '@/components/Modal'
 import { IconEnum } from '@/enums/appEnum'
 import {BasicTable, TableAction, useTable} from '@/components/Table'
-import { deleteCate, getCatePage } from '@/api/product/cate'
-import {randomUUID} from "@/views/form-design/utils";
 import CouponTypeModal from "@/views/marketing/coupon-type/CouponTypeModal.vue";
+import {deleteCouponType, getCouponTypePage} from "@/api/market/coupon-type";
 
 defineOptions({ name: 'CouponTypeList' })
 
 const { t } = useI18n()
 const { createMessage } = useMessage()
 const [registerModal, { openModal }] = useModal()
-const [register, { expandAll, collapseAll, getForm, reload, deleteTableDataRecord, updateTableDataRecord }] = useTable({
-  title: '商品分类',
-  api: getList,
+const [register, { reload, deleteTableDataRecord, updateTableDataRecord }] = useTable({
+  title: '优惠券列表',
+  api: getCouponTypePage,
   columns,
   rowKey: 'id',
   formConfig: { labelWidth: 120, schemas: searchFormSchema },
-  isTreeTable: true,
-  pagination: false,
+  pagination: true,
   useSearchForm: true,
-  showTableSetting: true,
+  showTableSetting: false,
   showIndexColumn: false,
   actionColumn: {
     width: 140,
@@ -34,11 +31,6 @@ const [register, { expandAll, collapseAll, getForm, reload, deleteTableDataRecor
     fixed: 'right',
   },
 })
-
-async function getList() {
-  const res = await getCatePage(getForm().getFieldsValue() as any)
-  return handleTree(res, 'id', 'pid')
-}
 
 function handleCreate(pid: number) {
   openModal(true, {isUpdate: false , pid: pid})
@@ -49,14 +41,9 @@ function handleEdit(record: Recordable) {
 }
 
 async function handleDelete(record: Recordable) {
-  await deleteCate(record.id)
+  await deleteCouponType(record.id)
   createMessage.success(t('common.delSuccessText'))
-  formApiParam['title'] = randomUUID()
   deleteTableDataRecord(record.id)
-}
-
-function onFetchSuccess() {
-  nextTick(expandAll)
 }
 
 function handleSuccess(isUpdate: boolean, record: Record<any, any>) {
@@ -73,19 +60,25 @@ onMounted(async () => {
 
 <template>
   <div>
-    <BasicTable @register="register" @fetch-success="onFetchSuccess">
+    <BasicTable @register="register">
       <template #toolbar>
         <a-button v-auth="['system:dept:create']" type="primary" :pre-icon="IconEnum.ADD" @click="handleCreate">
           {{ t('action.create') }}
         </a-button>
-        <a-button @click="expandAll">
-          {{ t('component.tree.expandAll') }}
-        </a-button>
-        <a-button @click="collapseAll">
-          {{ t('component.tree.unExpandAll') }}
-        </a-button>
       </template>
       <template #bodyCell="{ column, record }">
+        <template v-if="column.key == 'discount_type'">
+          <span v-if="record.at_least <= 0">无门槛 </span>
+          <span v-if="record.at_least > 0">满{{record.at_least}}元 </span>
+          <span v-if="record.discount_type == 1">减{{record.discount}}元</span>
+          <span v-if="record.discount_type == 2">打{{record.discount}}折</span>
+        </template>
+        <template v-if="column.key == 'get_type'">
+          <div v-if="record.get_type == 0">无限制</div>
+          <div v-if="record.get_type == 1">
+
+          </div>
+        </template>
         <template v-if="column.key === 'action'">
           <TableAction
             :actions="[

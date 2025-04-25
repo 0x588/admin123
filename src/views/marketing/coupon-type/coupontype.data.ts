@@ -6,45 +6,47 @@ import {listSimpleCate} from "@/api/product/cate";
 import ProductSelect from "@/views/product/product/ProductSelect.vue";
 export const columns: BasicColumn[] = [
   {
-    title: '名称',
-    dataIndex: 'title',
-    width: 260,
-    align: 'left',
+    title: 'ID',
+    dataIndex: 'id',
+    width: '40',
   },
   {
-    title: '副标题',
-    dataIndex: 'sub_title',
+    title: '优惠券名称',
+    dataIndex: 'title',
     width: 120,
   },
   {
-    title: '分类图标',
-    dataIndex: 'cover',
-    width: 150,
+    title: '参与商品',
+    dataIndex: 'rang_type',
+    width: 100,
     customRender: ({ text }) => {
-      return useRender.renderImg(text)
+      return useRender.renderDict(text, DICT_TYPE.RANGE_TYPE)
     },
   },
   {
-    title: '是否推荐',
-    dataIndex: 'is_recommend',
-    width: 80,
-    customRender: ({ text }) => {
-      if (text) {
-        return useRender.renderTag('是', 'green')
-      } else {
-        return useRender.renderTag('否', 'red')
-      }
-    }
+    title: '优惠内容',
+    dataIndex: 'discount_type',
+    width: 120,
+  },
+  {
+    title: '领取时间',
+    dataIndex: 'get_type',
+    width: 160,
+  },
+  {
+    title: '生效时间',
+    dataIndex: 'validity_type',
+    width: 160,
   },
   {
     title: '排序',
     dataIndex: 'sort',
-    width: 60,
+    width: 40,
   },
   {
     title: '状态',
     dataIndex: 'status',
-    width: 180,
+    width: 60,
     customRender: ({ text }) => {
       return useRender.renderDict(text, DICT_TYPE.COMMON_STATUS)
     },
@@ -52,7 +54,7 @@ export const columns: BasicColumn[] = [
   {
     title: '创建时间',
     dataIndex: 'created_at',
-    width: 180,
+    width: 150,
     customRender: ({ text }) => {
       return useRender.renderDate(text)
     },
@@ -121,7 +123,7 @@ export const formSchema: FormSchema[] = [
           value: 1,
         },
         {
-          label: '折扣比例',
+          label: '折扣',
           value: 2,
         },
       ],
@@ -138,7 +140,7 @@ export const formSchema: FormSchema[] = [
     },
     required: true,
     componentProps: {
-      min: 0,
+      min: 0.01,
       precision: 2,
     },
     helpMessage: ({values}) => {
