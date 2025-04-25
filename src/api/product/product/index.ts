@@ -62,6 +62,10 @@ export function getProduct(id: number) {
   return defHttp.get({ url: `/product/product/get?id=${id}` })
 }
 
+export function getProductByIds(ids: number[]) {
+  return defHttp.post({ url: `/product/product/get-by-ids`, params:{ids}})
+}
+
 export function createProduct(data: ProductVO) {
   return defHttp.post({ url: '/product/product/create', data })
 }

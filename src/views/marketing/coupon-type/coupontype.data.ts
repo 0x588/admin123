@@ -3,7 +3,7 @@ import { useRender } from '@/components/Table'
 import { DICT_TYPE, getDictOptions } from '@/utils/dict'
 import {h, reactive} from "vue";
 import {listSimpleCate} from "@/api/product/cate";
-
+import ProductSelect from "@/views/product/product/ProductSelect.vue";
 export const columns: BasicColumn[] = [
   {
     title: '名称',
@@ -190,9 +190,6 @@ export const formSchema: FormSchema[] = [
     field: 'get_type',
     component: 'RadioGroup',
     required: true,
-    colProps: {
-      span: 12,
-    },
     componentProps: {
       options: [
         {
@@ -209,9 +206,6 @@ export const formSchema: FormSchema[] = [
   {
     field: '[get_start_time, get_end_time]',
     label: '领取时间',
-    colProps: {
-      span: 12,
-    },
     required: true,
     component: 'RangePicker',
     componentProps: {
@@ -222,21 +216,6 @@ export const formSchema: FormSchema[] = [
     ifShow: ({ values }) => {
       return values.get_type == 1
     }
-  },
-  {
-    label: '每人每天最大领取数量',
-    field: 'max_fetch_per_day',
-    component: 'InputNumber',
-    defaultValue: 0,
-    required: true,
-    colProps: {
-      span: 12,
-    },
-    componentProps: {
-      min: 0,
-      precision: 0,
-    },
-    helpMessage: "输入0表示无限制",
   },
   {
     label: '使用有效期类型',
@@ -316,7 +295,7 @@ export const formSchema: FormSchema[] = [
     },
   },
   {
-    label: '参与商品分类',
+    label: '选择指定分类',
     field: 'cateIds',
     required: true,
     component: 'ApiCascader',
@@ -339,12 +318,17 @@ export const formSchema: FormSchema[] = [
     }
   },
   {
-    label: '参与商品',
+    label: '选择指定商品',
     field: 'productIds',
     component: 'Input',
     required: true,
     render: ({ model, field }) => {
-      return h('Button', {}, "hhhhhh");
+      return h(ProductSelect, {
+        values: model[field],
+        'onUpdate:values': (val) => {
+          model[field] = val
+        },
+      });
     },
     ifShow: ({ values }) => {
       return values.rang_type == 1

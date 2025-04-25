@@ -22,7 +22,7 @@ export const columns: BasicColumn[] = [
     width: 60,
   },
   {
-    title: '广告封面',
+    title: '商品图',
     dataIndex: 'picture',
     width: 60,
     customRender: ({ text }) => {
@@ -71,7 +71,7 @@ export const columns: BasicColumn[] = [
 
 export const searchFormSchema: FormSchema[] = [
   {
-    label: '服务名称',
+    label: '商品名称',
     field: 'name',
     component: 'Input',
     colProps: { span: 8 },
@@ -83,6 +83,12 @@ export const searchFormSchema: FormSchema[] = [
     componentProps: {
       options: getDictOptions(DICT_TYPE.COMMON_STATUS) as any,
     },
+    colProps: { span: 8 },
+  },
+  {
+    label: '创建时间',
+    field: 'createdTime',
+    component: 'RangePicker',
     colProps: { span: 8 },
   },
 ]
@@ -633,5 +639,49 @@ export const tableValuesColumns: BasicColumn[] = [
     title: '排序',
     dataIndex: 'sort',
     width: 50,
+  },
+]
+
+
+export const selectColumns: BasicColumn[] = [
+  {
+    title: 'ID',
+    dataIndex: 'id',
+    width: 60,
+  },
+  {
+    title: '商品图',
+    dataIndex: 'picture',
+    width: 60,
+    customRender: ({ text }) => {
+      return useRender.renderImg(text)
+    },
+  },
+  {
+    title: '商品名称',
+    dataIndex: 'name',
+  },
+  {
+    title: '销售价',
+    dataIndex: 'price',
+    width: 80,
+  },
+  {
+    title: '库存',
+    dataIndex: 'stock',
+    width: 80,
+  },
+  {
+    title: '商品分类',
+    dataIndex: 'cate_id',
+    width: 100,
+  },
+  {
+    title: '状态',
+    dataIndex: 'status',
+    width: 60,
+    customRender: ({ text }) => {
+      return useRender.renderDict(text, DICT_TYPE.PRODUCT_STATUS)
+    },
   },
 ]

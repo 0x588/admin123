@@ -60,7 +60,7 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <BasicModal
+  <BasicModal :maskClosable="false"
     v-bind="$attrs" :title="isUpdate ? t('action.edit') : t('action.create')" @register="registerModal"
     @ok="handleSubmit"
   >
