@@ -13,12 +13,9 @@ export const columns: BasicColumn[] = [
     width: 120,
   },
   {
-    title: '参与商品',
-    dataIndex: 'rang_type',
-    width: 100,
-    customRender: ({ text }) => {
-      return useRender.renderDict(text, DICT_TYPE.RANGE_TYPE)
-    },
+    title: '领取人',
+    dataIndex: 'member_id',
+    width: 160,
   },
   {
     title: '优惠内容',
@@ -26,14 +23,12 @@ export const columns: BasicColumn[] = [
     width: 120,
   },
   {
-    title: '领取时间',
-    dataIndex: 'get_type',
+    title: '过期时间',
+    dataIndex: 'end_time',
     width: 160,
-  },
-  {
-    title: '生效时间',
-    dataIndex: 'validity_type',
-    width: 160,
+    customRender: ({ text }) => {
+      return useRender.renderDate(text)
+    },
   },
   {
     title: '单品券',
@@ -44,34 +39,16 @@ export const columns: BasicColumn[] = [
     },
   },
   {
-    title: '新人券',
-    dataIndex: 'is_new_people',
-    width: 60,
-    customRender: ({ text }) => {
-      return useRender.renderDict(text, DICT_TYPE.YES_NO)
-    },
-  },
-  {
-    title: '数量',
-    dataIndex: 'count',
-    width: 100,
-  },
-  {
-    title: '排序',
-    dataIndex: 'sort',
-    width: 40,
-  },
-  {
-    title: '是否开启',
-    dataIndex: 'status',
+    title: '状态',
+    dataIndex: 'state',
     width: 80,
     customRender: ({ text }) => {
-      return useRender.renderDict(text, DICT_TYPE.OPEN_STATUS)
+      return useRender.renderDict(text, DICT_TYPE.COUPON_STATE)
     },
   },
   {
-    title: '创建时间',
-    dataIndex: 'created_at',
+    title: '领取时间',
+    dataIndex: 'fetch_time',
     width: 150,
     customRender: ({ text }) => {
       return useRender.renderDate(text)
