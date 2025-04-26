@@ -1,11 +1,10 @@
 <script lang="ts" setup>
 import { ref, unref } from 'vue'
-import { formSchema, formApiParam } from './coupontype.data'
+import { formSchema } from './coupontype.data'
 import { useI18n } from '@/hooks/web/useI18n'
 import { useMessage } from '@/hooks/web/useMessage'
 import { BasicForm, useForm } from '@/components/Form'
 import { BasicModal, useModalInner } from '@/components/Modal'
-import {randomUUID} from "@/views/form-design/utils";
 import {createCuponType, getCouponType, updateCouponType} from "@/api/market/coupon-type";
 import dayjs from "dayjs";
 
@@ -70,7 +69,6 @@ async function handleSubmit() {
       await updateCouponType(values as any)
     else
       await createCuponType(values as any)
-    formApiParam['title'] = randomUUID()
     closeModal()
     emit('success', unref(isUpdate), values)
     createMessage.success(t('common.saveSuccessText'))

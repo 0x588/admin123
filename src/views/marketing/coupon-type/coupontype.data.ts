@@ -1,14 +1,14 @@
 import type { BasicColumn, FormSchema } from '@/components/Table'
 import { useRender } from '@/components/Table'
 import { DICT_TYPE, getDictOptions } from '@/utils/dict'
-import {h, reactive} from "vue";
+import {h} from "vue";
 import {listSimpleCate} from "@/api/product/cate";
 import ProductSelect from "@/views/product/product/ProductSelect.vue";
 export const columns: BasicColumn[] = [
   {
     title: 'ID',
     dataIndex: 'id',
-    width: '40',
+    width: 40,
   },
   {
     title: '优惠券名称',
@@ -55,16 +55,21 @@ export const columns: BasicColumn[] = [
     },
   },
   {
+    title: '数量',
+    dataIndex: 'count',
+    width: 100,
+  },
+  {
     title: '排序',
     dataIndex: 'sort',
     width: 40,
   },
   {
-    title: '状态',
+    title: '是否开启',
     dataIndex: 'status',
-    width: 60,
+    width: 80,
     customRender: ({ text }) => {
-      return useRender.renderDict(text, DICT_TYPE.COMMON_STATUS)
+      return useRender.renderDict(text, DICT_TYPE.OPEN_STATUS)
     },
   },
   {
@@ -89,12 +94,11 @@ export const searchFormSchema: FormSchema[] = [
     field: 'status',
     component: 'Select',
     componentProps: {
-      options: getDictOptions(DICT_TYPE.COMMON_STATUS) as any,
+      options: getDictOptions(DICT_TYPE.OPEN_STATUS) as any,
     },
     colProps: { span: 8 },
   },
 ]
-export const formApiParam = reactive({})
 export const formSchema: FormSchema[] = [
   {
     label: '编号',
@@ -415,7 +419,7 @@ export const formSchema: FormSchema[] = [
     },
     component: 'Select',
     componentProps: {
-      options: getDictOptions(DICT_TYPE.COMMON_STATUS) as any,
+      options: getDictOptions(DICT_TYPE.OPEN_STATUS) as any,
     },
   },
 ]

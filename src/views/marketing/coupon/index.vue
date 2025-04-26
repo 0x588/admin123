@@ -1,24 +1,19 @@
 <script lang="ts" setup>
-import { onMounted } from 'vue'
-import { columns, searchFormSchema } from './coupontype.data'
+import { columns, searchFormSchema } from './coupon.data'
 import { useI18n } from '@/hooks/web/useI18n'
 import { useMessage } from '@/hooks/web/useMessage'
-import { useModal } from '@/components/Modal'
-import { IconEnum } from '@/enums/appEnum'
-import {BasicTable, TableAction, useRender, useTable} from '@/components/Table'
-import CouponTypeModal from "@/views/marketing/coupon-type/CouponTypeModal.vue";
-import {deleteCouponType, getCouponTypePage} from "@/api/market/coupon-type";
+import {BasicTable, useRender, useTable} from '@/components/Table'
 import { Tag } from 'ant-design-vue';
 import {curTimeStatus} from "@/utils/dateUtil";
+import {getCouponPage} from "@/api/market/coupon";
 
-defineOptions({ name: 'CouponTypeList' })
+defineOptions({ name: 'CouponList' })
 
 const { t } = useI18n()
 const { createMessage } = useMessage()
-const [registerModal, { openModal }] = useModal()
 const [register, { reload, deleteTableDataRecord, updateTableDataRecord }] = useTable({
-  title: '优惠券列表',
-  api: getCouponTypePage,
+  title: '领取列表',
+  api: getCouponPage,
   columns,
   rowKey: 'id',
   formConfig: { labelWidth: 120, schemas: searchFormSchema },
@@ -26,47 +21,14 @@ const [register, { reload, deleteTableDataRecord, updateTableDataRecord }] = use
   useSearchForm: true,
   showTableSetting: false,
   showIndexColumn: false,
-  actionColumn: {
-    width: 140,
-    title: t('common.action'),
-    dataIndex: 'action',
-    fixed: 'right',
-  },
 })
 
-function handleCreate(pid: number) {
-  openModal(true, {isUpdate: false , pid: pid})
-}
-
-function handleEdit(record: Recordable) {
-  openModal(true, { record, isUpdate: true })
-}
-
-async function handleDelete(record: Recordable) {
-  await deleteCouponType(record.id)
-  createMessage.success(t('common.delSuccessText'))
-  deleteTableDataRecord(record.id)
-}
-
-function handleSuccess(isUpdate: boolean, record: Record<any, any>) {
-  if (isUpdate) {
-    updateTableDataRecord(record.id, record)
-  } else {
-    reload()
-  }
-}
-
-onMounted(async () => {
-})
 </script>
 
 <template>
   <div>
     <BasicTable @register="register">
       <template #toolbar>
-        <a-button v-auth="['system:dept:create']" type="primary" :pre-icon="IconEnum.ADD" @click="handleCreate">
-          {{ t('action.create') }}
-        </a-button>
       </template>
       <template #bodyCell="{ column, record }">
         <template v-if="column.key == 'discount_type'">
@@ -97,24 +59,7 @@ onMounted(async () => {
           <div><span>发布：</span> {{record.count}}</div>
           <div class="text-red-4"><span >剩余：</span> {{record.count - record.get_count}}</div>
         </template>
-        <template v-if="column.key === 'action'">
-          <TableAction
-            :actions="[
-              { label: t('action.edit'), onClick: handleEdit.bind(null, record) },
-              {
-                danger: true,
-                label: t('action.delete'),
-                popConfirm: {
-                  title: t('common.delMessage'),
-                  placement: 'left',
-                  confirm: handleDelete.bind(null, record),
-                },
-              },
-            ]"
-          />
-        </template>
       </template>
     </BasicTable>
-    <CouponTypeModal width="50%" @register="registerModal" @success="handleSuccess" />
   </div>
 </template>
