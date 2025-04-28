@@ -13,7 +13,7 @@ const { t } = useI18n()
 const { createMessage } = useMessage()
 
 const [registerForm, { setFieldsValue,validate }] = useForm({
-  labelWidth: 180,
+  labelWidth: 280,
   baseColProps: { span: 24 },
   schemas: formSchema,
   showActionButtonGroup: true,

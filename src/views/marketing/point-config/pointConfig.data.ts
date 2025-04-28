@@ -1,5 +1,4 @@
 import type { FormSchema } from '@/components/Table'
-import {DICT_TYPE, getDictOptions} from "@/utils/dict";
 export const formSchema: FormSchema[] = [
   {
     label: '编号',
@@ -88,6 +87,7 @@ export const formSchema: FormSchema[] = [
   },
   {
     label: '每笔订单最多抵扣比率',
+    subLabel: '单位(%)',
     field: 'max_rate',
     component: 'InputNumber',
     required: true,
@@ -96,7 +96,7 @@ export const formSchema: FormSchema[] = [
       max: 100,
       precision: 2,
     },
-    helpMessage: "单位: 百分比；0 - 100%",
+    helpMessage: "0 - 100之间",
     ifShow: ({ values }) => {
       return values.deduction_type == 2
     }
