@@ -11,14 +11,25 @@ export const formSchema: FormSchema[] = [
     label: '开启积分抵现',
     field: 'status',
     required: true,
-    component: 'Select',
+    component: 'RadioGroup',
+    defaultValue: 0,
     componentProps: {
-      options: getDictOptions(DICT_TYPE.OPEN_STATUS) as any,
+      options: [
+        {
+          label: '关闭',
+          value: 0,
+        },
+        {
+          label: '开启',
+          value: 1,
+        },
+      ],
     },
     helpMessage: "只有启用该选项，才可以使用积分抵现功能",
   },
   {
     label: '积分抵现比率',
+    subLabel: '单位(元)',
     field: 'convert_rate',
     component: 'InputNumber',
     required: true,
@@ -26,7 +37,7 @@ export const formSchema: FormSchema[] = [
       min: 0.0001,
       precision: 4,
     },
-    helpMessage: "单位: 元; 积分抵现比率; 1积分可抵多少元现金",
+    helpMessage: "1积分可抵多少元现金",
   },
   {
     label: '订单金额门槛',
