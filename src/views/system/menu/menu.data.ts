@@ -166,7 +166,7 @@ export const formSchema: FormSchema[] = [
     },
   },
   {
-    label: '显示状态',
+    label: '展示在侧边栏',
     field: 'visible',
     component: 'Switch',
     defaultValue: true,
