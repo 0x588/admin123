@@ -15,12 +15,8 @@ export const columns: BasicColumn[] = [
     width: 120,
   },
   {
-    title: '默认模版',
+    title: '模板物流区域',
     dataIndex: 'is_default',
-    width: 60,
-    customRender: ({text}) => {
-      return useRender.renderDict(text, DICT_TYPE.YES_NO)
-    },
   },
   {
     title: '排序',
@@ -76,29 +72,38 @@ export const formSchema: FormSchema[] = [
     component: 'Input',
   },
   {
+    label: '物流ID',
+    field: 'hasDefault',
+    show: false,
+    component: 'Checkbox',
+  },
+  {
     label: '模版名称',
     field: 'title',
     required: true,
     component: 'Input',
   },
   {
-    label: '物流区域类型',
-    field: 'area_type',
+    label: '模板物流区域',
+    field: 'is_default',
     component: 'RadioGroup',
     required: true,
-    defaultValue: 0,
     componentProps: {
       options: [
         {
           label: '全国',
-          value: 0,
+          value: 1,
         },
         {
           label: '指定区域',
-          value: 1,
+          value: 0,
         },
       ],
     },
+    ifShow: ({values}) => {
+      console.log(values)
+      return values.hasDefault == false
+    }
   },
   {
     label: '选择指定区域',
@@ -108,11 +113,10 @@ export const formSchema: FormSchema[] = [
     componentProps: {
       options: areaOption,
       multiple: true,
-      showCheckedStrategy: 'SHOW_CHILD',
       maxTagCount: 'responsive',
     },
     ifShow: ({values}) => {
-      return values.area_type == 1
+      return values.is_default == 0
     }
   },
   {
@@ -288,24 +292,6 @@ export const formSchema: FormSchema[] = [
     ifShow: ({values}) => {
       return values.volume_used == true
     }
-  },
-  {
-    label: '默认模板',
-    field: 'is_default',
-    component: 'RadioGroup',
-    required: true,
-    componentProps: {
-      options: [
-        {
-          label: '否',
-          value: 0,
-        },
-        {
-          label: '是',
-          value: 1,
-        },
-      ],
-    },
   },
   {
     label: '显示顺序',

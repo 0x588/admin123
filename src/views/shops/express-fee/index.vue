@@ -6,6 +6,7 @@ import { useMessage } from '@/hooks/web/useMessage'
 import { useModal } from '@/components/Modal'
 import { IconEnum } from '@/enums/appEnum'
 import {BasicTable, TableAction, useTable} from '@/components/Table'
+import { Tag } from 'ant-design-vue'
 import {
   deleteExpressFee,
   ExpressFeePageReqVO,
@@ -13,6 +14,7 @@ import {
 } from "@/api/shops/express-fee";
 import {useRoute} from "vue-router";
 import ExpressFeeModal from "@/views/shops/express-fee/ExpressFeeModal.vue";
+import { showAreasWithJson} from "@/utils/areas";
 
 defineOptions({ name: 'ExpressList' })
 
@@ -50,7 +52,7 @@ function handleCreate(pid: number) {
 }
 
 function handleEdit(record: Recordable) {
-  openModal(true, { record, isUpdate: true })
+  openModal(true, { record, isUpdate: true,  express_id: route.params.id })
 }
 
 async function handleDelete(record: Recordable) {
@@ -74,12 +76,29 @@ onMounted(async () => {
 <template>
   <div>
     <BasicTable @register="register">
+      <template #tableTitle>
+        <div>
+          运费模版
+        </div>
+        <div class="text-red-4 ml-2">
+          规则：根据目的区域优先匹配指定区域运费模版，找不到就使用全国模版
+        </div>
+      </template>
       <template #toolbar>
         <a-button  type="primary" :pre-icon="IconEnum.ADD" @click="handleCreate">
           {{ t('action.create') }}
         </a-button>
       </template>
       <template #bodyCell="{ column, record }">
+        <template v-if="column.key == 'is_default'">
+          <div>
+            <Tag v-if="record.is_default" color="green">全国</Tag>
+            <Tag v-else color="red">指定地区</Tag>
+          </div>
+          <div class="flex flex-row flex-wrap">
+            <Tag class="my-1 mx-1" v-for="item in showAreasWithJson(record.areas)">{{item}}</Tag>
+          </div>
+        </template>
         <template v-if="column.key === 'action'">
           <TableAction
             :actions="[

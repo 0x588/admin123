@@ -26,3 +26,52 @@ export const areaOption = provinces.map(province => {
     children: childrenCities,
   };
 });
+
+export function showAreaText(ar: Array<any>) {
+  if (ar.length === 0) {
+    return '';
+  }
+  var result : Array<string> = [];
+  if (ar.length >= 1) {
+    provinces.forEach((province, index) => {
+      if (province.code === ar[0]) {
+        result.push(province.name);
+      }
+    })
+  }
+  if (ar.length >= 2) {
+    cities.forEach((city, index) => {
+      if (city.code === ar[1]) {
+        result.push(city.name);
+      }
+    })
+  }
+  if (ar.length >= 3) {
+    areas.forEach((area, index) => {
+      if (area.code === ar[2]) {
+        result.push(area.name);
+      }
+    })
+  }
+  return result.join('-');
+}
+
+export function showAreasText(ars: Array<any>) {
+  var result : Array<string> = [];
+  ars.forEach((area, index) => {
+    result.push(showAreaText(area))
+  })
+  return result;
+}
+
+export function showAreasWithJson(json: any) {
+  if (typeof json !== 'object') {
+    try {
+    var data = JSON.parse(json);
+    return showAreasText(data)
+    } catch (e) {
+      return []
+    }
+  }
+  return showAreasText(json)
+}

@@ -5,8 +5,12 @@ import { useI18n } from '@/hooks/web/useI18n'
 import { useMessage } from '@/hooks/web/useMessage'
 import { BasicForm, useForm } from '@/components/Form'
 import { BasicModal, useModalInner } from '@/components/Modal'
-import dayjs from "dayjs";
-import {createExpressFee, getExpressFee, updateExpressFee} from "@/api/shops/express-fee";
+import {
+  createExpressFee,
+  getExpressFee,
+  getExpressFeeHasDefault,
+  updateExpressFee
+} from "@/api/shops/express-fee";
 
 defineOptions({ name: 'ExpressFeeModal' })
 
@@ -27,12 +31,16 @@ const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data
   resetFields()
   setModalProps({ confirmLoading: false })
   isUpdate.value = !!data?.isUpdate
+  var hasDefault = await getExpressFeeHasDefault(data?.express_id)
   if (unref(isUpdate)) {
     const res = await getExpressFee(data.record.id)
-    setFieldsValue({ ...res })
+    if (res.is_default == 1) {
+      hasDefault = false
+    }
+    setFieldsValue({ ...res, hasDefault })
   } else {
     if (data?.express_id) {
-      setFieldsValue({ "express_id": Number(data?.express_id)})
+      setFieldsValue({ "express_id": Number(data?.express_id), hasDefault, "is_default": 0})
     }
   }
 })

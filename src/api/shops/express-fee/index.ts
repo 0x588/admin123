@@ -48,3 +48,7 @@ export function updateExpressFee(params: ExpressFeeVO) {
 export function deleteExpressFee(id: number) {
   return defHttp.delete({ url: `/common/express-fee/delete?id=${id}` })
 }
+
+export function getExpressFeeHasDefault(id: number) {
+  return defHttp.get({ url: `/common/express-fee/has-default?express_id=${id}` })
+}
