@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted } from 'vue'
+import {onMounted, ref} from 'vue'
 import { columns, searchFormSchema } from './expressfee.data'
 import { useI18n } from '@/hooks/web/useI18n'
 import { useMessage } from '@/hooks/web/useMessage'
@@ -15,6 +15,7 @@ import {
 import {useRoute} from "vue-router";
 import ExpressFeeModal from "@/views/shops/express-fee/ExpressFeeModal.vue";
 import { showAreasWithJson} from "@/utils/areas";
+import {getExpress} from "@/api/shops/express";
 
 defineOptions({ name: 'ExpressList' })
 
@@ -69,7 +70,9 @@ function handleSuccess(isUpdate: boolean, record: Record<any, any>) {
   }
 }
 
+const express = ref<any>({})
 onMounted(async () => {
+  express.value = await getExpress(route.params.id as number)
 })
 </script>
 
@@ -78,6 +81,7 @@ onMounted(async () => {
     <BasicTable @register="register">
       <template #tableTitle>
         <div>
+          {{express.name}}
           运费模版
         </div>
         <div class="text-red-4 ml-2">
