@@ -8,6 +8,7 @@ import {listSimpleSpecTemplate} from "@/api/product/spec-temp";
 import {uploadApi} from "@/api/sys/upload";
 import {Ueditor} from "@/components/Ueditor";
 import {listSimpleAttribute} from "@/api/product/attribute";
+import {getExpressListAll} from "@/api/shops/express";
 
 export let productModel = reactive({
   is_spec: false,
@@ -215,8 +216,8 @@ export const tabsFormSchema: FormSchema[][] = [
         span: 12,
       },
       componentProps: {
-        api: listSimpleTag,
-        labelField: 'title',
+        api: getExpressListAll,
+        labelField: 'name',
         valueField: 'id',
       },
       ifShow: ({ values }) => {

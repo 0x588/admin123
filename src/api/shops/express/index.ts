@@ -32,3 +32,7 @@ export function updateExpress(params: ExpressVO) {
 export function deleteExpress(id: number) {
   return defHttp.delete({ url: `/common/express/delete?id=${id}` })
 }
+
+export function getExpressListAll() {
+  return defHttp.get({ url: '/common/express/list-all-simple' })
+}
