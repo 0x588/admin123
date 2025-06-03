@@ -75,7 +75,63 @@ export const searchFormSchema: FormSchema[] = [
     label: '商品名称',
     field: 'name',
     component: 'Input',
-    colProps: { span: 8 },
+    colProps: { span: 6 },
+  },
+  {
+    label: '商品分类',
+    field: 'cateIds',
+    component: 'ApiCascader',
+    componentProps: {
+      api: listSimpleCate,
+      apiParamKey: 'pid',
+      checkStrategy: 'SHOW_CHILD',
+      labelField: 'title',
+      valueField: 'id',
+      initFetchParams: {
+        pid: 0,
+      },
+      isLeaf: (record) => {
+        if (record.children == null) return true
+        return false
+      },
+    },
+    colProps: { span: 6 },
+  },
+  {
+    field: 'is_new',
+    defaultValue: '',
+    component: 'Select',
+    label: '新品',
+    componentProps: {
+      options: getDictOptions(DICT_TYPE.YES_NO) as any,
+    },
+    colProps: {
+      span: 3,
+    },
+  },
+  {
+    field: 'is_hot',
+    defaultValue: '',
+    component: 'Select',
+    label: '热门',
+    componentProps: {
+      options: getDictOptions(DICT_TYPE.YES_NO) as any,
+    },
+    colProps: {
+      span: 3,
+    },
+  },
+  {
+    field: 'is_recommend',
+    defaultValue: '',
+    component: 'Select',
+    label: '推荐',
+    componentProps: {
+      options: getDictOptions(DICT_TYPE.YES_NO) as any,
+    },
+    colProps: {
+      span: 3,
+    },
   },
   {
     label: '状态',
@@ -84,7 +140,7 @@ export const searchFormSchema: FormSchema[] = [
     componentProps: {
       options: getDictOptions(DICT_TYPE.COMMON_STATUS) as any,
     },
-    colProps: { span: 8 },
+    colProps: { span: 4 },
   },
   {
     label: '创建时间',
