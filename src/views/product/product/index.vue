@@ -73,12 +73,12 @@ async function beforeEditSubmit({ record, index, key, value }) {
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'name'">
           <div class="whitespace-normal break-wordsi text-left" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">{{record.name}}</div>
-          <div class="flex mt-2">
-            <Tag class="ml-1" color="blue" size="small" v-if="record.is_hot">热门</Tag>
-            <Tag class="ml-1" color="blue" size="small" v-if="record.is_recommend">推荐</Tag>
-            <Tag class="ml-1" color="blue" size="small" v-if="record.is_new">新品</Tag>
-            <Tag class="ml-1" color="blue" size="small" v-if="record.is_spec">多规格</Tag>
-            <Tag class="ml-1" color="blue" size="small" v-if="record.shipping_type === 1">包邮</Tag>
+          <div class="flex mt-1 space-x-1">
+            <Tag class="" color="blue" size="small" v-if="record.is_hot">热门</Tag>
+            <Tag class="" color="blue" size="small" v-if="record.is_recommend">推荐</Tag>
+            <Tag class="" color="blue" size="small" v-if="record.is_new">新品</Tag>
+            <Tag class="" color="blue" size="small" v-if="record.is_spec">多规格</Tag>
+            <Tag class="" color="blue" size="small" v-if="record.shipping_type === 1">包邮</Tag>
           </div>
         </template>
         <template v-if="column.key === 'cate_id'">

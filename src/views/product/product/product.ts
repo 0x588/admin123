@@ -124,6 +124,7 @@ export const tabsFormSchema: FormSchema[][] = [
       componentProps: {
         api: listSimpleCate,
         apiParamKey: 'pid',
+        checkStrategy: 'SHOW_CHILD',
         labelField: 'title',
         valueField: 'id',
         multiple: true,

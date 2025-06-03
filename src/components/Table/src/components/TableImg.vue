@@ -1,7 +1,7 @@
 <template>
   <div
     :class="prefixCls"
-    class="flex items-center mx-auto"
+    class="flex items-center mx-auto overflow-hidden"
     v-if="imgList && imgList.length"
     :style="getWrapStyle"
   >

@@ -4,7 +4,7 @@
     :options="options"
     :load-data="loadData"
     :multiple="multiple"
-    :show-checked-strategy="Cascader.SHOW_PARENT"
+    :show-checked-strategy="checkStrategy"
     change-on-select
     @change="handleChange"
     :displayRender="handleRenderDisplay"
@@ -52,6 +52,10 @@
       default: null,
     },
     numberToString: propTypes.bool,
+    checkStrategy: {
+      type: String as PropType<'SHOW_PARENT' | 'SHOW_CHILD'>,
+      default: 'SHOW_PARENT',
+    },
     resultField: propTypes.string.def(''),
     labelField: propTypes.string.def('label'),
     valueField: propTypes.string.def('value'),
