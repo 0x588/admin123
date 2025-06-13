@@ -70,7 +70,9 @@ function handleSuc() {
       </template>
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'values'">
-          <Tag color="green" v-for="item in record.values">{{item.title}}</Tag>
+          <div class="flex space-x-1">
+            <Tag class="" color="blue" v-for="item in record.values">{{item.title}}</Tag>
+          </div>
         </template>
         <template v-if="column.key === 'action'">
           <TableAction

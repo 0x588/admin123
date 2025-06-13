@@ -80,7 +80,9 @@ onMounted( async () => {
       </template>
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'specIds'">
-          <Tag color="red" v-for="item in JSON.parse(record.specIds)">{{idForSpecTitle[item]}}</Tag>
+          <div class="flex space-x-1">
+            <Tag color="red" v-for="item in JSON.parse(record.specIds)">{{idForSpecTitle[item]}}</Tag>
+          </div>
         </template>
         <template v-if="column.key === 'action'">
           <TableAction
